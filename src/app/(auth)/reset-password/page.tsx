@@ -4,7 +4,10 @@ import Link from "next/link";
 import { AuthCard } from "@/features/auth/auth-card";
 import { ResetPasswordForm } from "@/features/auth/reset-password-form";
 
-export const metadata: Metadata = { title: "Reset password" };
+export const metadata: Metadata = {
+  title: "Reset password",
+  robots: { index: false },
+};
 
 export default async function ResetPasswordPage({
   searchParams,

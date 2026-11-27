@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
+
 import { templateCatalog } from "@/templates/catalog";
 
 import { TemplateThumbnail } from "@/components/template-thumbnail";
 import { TemplateLink } from "./template-link";
+
+export const metadata: Metadata = {
+  title: "Templates",
+  description: `Free resume templates: ${templateCatalog.map((t) => t.name).join(", ")}. ATS-friendly, with a live PDF preview.`,
+};
 
 const TemplatesPage = () => {
   return (

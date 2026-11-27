@@ -8,7 +8,10 @@ import { ResumeCard } from "@/features/resumes/resume-card";
 import { listForUser } from "@/server/resume-repo";
 import { requireUser } from "@/server/session";
 
-export const metadata: Metadata = { title: "My resumes" };
+export const metadata: Metadata = {
+  title: "My resumes",
+  robots: { index: false },
+};
 
 export default async function ResumesPage({
   searchParams,

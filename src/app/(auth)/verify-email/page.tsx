@@ -4,7 +4,10 @@ import Link from "next/link";
 import { AuthCard } from "@/features/auth/auth-card";
 import { ResendVerification } from "@/features/auth/resend-verification";
 
-export const metadata: Metadata = { title: "Verify email" };
+export const metadata: Metadata = {
+  title: "Verify email",
+  robots: { index: false },
+};
 
 /** Shown after signup / unverified login, and as Better Auth's error landing for bad links. */
 export default async function VerifyEmailPage({

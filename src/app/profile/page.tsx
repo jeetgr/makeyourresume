@@ -10,7 +10,10 @@ import { DeleteAccount } from "@/features/profile/delete-account";
 import { PasswordSection } from "@/features/profile/password-section";
 import { SessionsSection } from "@/features/profile/sessions-section";
 
-export const metadata: Metadata = { title: "Profile" };
+export const metadata: Metadata = {
+  title: "Profile",
+  robots: { index: false },
+};
 
 export default async function ProfilePage() {
   const user = await requireUser();

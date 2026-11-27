@@ -1,28 +1,33 @@
-import Image from "next/image";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { LogoMark } from "@/components/logo-mark";
+import { StartLink } from "@/features/landing/start-link";
+
+export const metadata: Metadata = { title: "Page not found" };
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-svh w-full flex-col items-center justify-center">
-      <Image
-        src="/illustrations/404.svg"
-        width={500}
-        height={500}
-        alt=""
-        className="h-auto w-full max-w-xl"
-      />
-
-      <a href="https://storyset.com/online" target="_blank">
-        Online illustrations by{" "}
-        <span className="font-bold text-accent">Storyset</span>
-      </a>
-
-      <div className="mt-4">
-        <Button nativeButton={false} render={<Link href="/" />}>
-          Go to Homepage
+    <section className="flex min-h-svh flex-col items-center justify-center gap-6 py-24 text-center">
+      <LogoMark className="size-16" />
+      <div className="space-y-3">
+        <p
+          aria-hidden
+          className="text-[6rem] leading-none font-bold tracking-tight text-muted"
+        >
+          404
+        </p>
+        <h1 className="text-3xl font-bold text-accent">Page not found</h1>
+        <p className="text-muted-foreground">
+          The page you&apos;re looking for doesn&apos;t exist or was moved.
+        </p>
+      </div>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Button size="lg" nativeButton={false} render={<Link href="/" />}>
+          Go home
         </Button>
+        <StartLink size="lg" variant="outline" />
       </div>
     </section>
   );

@@ -61,6 +61,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "16.4.6",
     "knip": "^6.48.0",
+    "pg": "8.23.1",
     "postcss": "^8",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",

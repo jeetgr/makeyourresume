@@ -15,9 +15,9 @@ import EditStyles from "@/components/edit-styles";
 const ResumeOutputPage = () => {
   const templateId = useTemplateIdParam();
 
-  const componentRef = useRef(null);
+  const componentRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
+    contentRef: componentRef,
     documentTitle: "Resume",
     pageStyle: `
       @page {
@@ -55,7 +55,7 @@ const ResumeOutputPage = () => {
           </Button>
 
           <Button
-            onClick={handlePrint}
+            onClick={() => handlePrint()}
             className="ml-auto flex items-center gap-2"
           >
             <span>Download</span> <Download size={18} />

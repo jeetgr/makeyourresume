@@ -1,40 +1,23 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import {
-  Skill,
-  removeField,
-  setField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
+import { removeItem, updateItem } from "@/stores/resume-store";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { SkillPreview } from "./skill-preview";
 import { TextInput } from "@/components/form/form-input";
+import { SkillPreview } from "./skill-preview";
 
-type SkillEditorProps = Skill;
-
-export const SkillEditor = ({ id, name }: SkillEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeSkill = (id: string) => {
-    dispatch(removeField({ fieldName: "skills", id }));
-  };
-
-  const setSkill = (social: Skill) => {
-    dispatch(setField({ fieldName: "skills", value: social }));
-  };
-
+export const SkillEditor = ({ id, name }: ListItem<"skills">) => {
   return (
     <DraggableItemWrapper
       id={id}
       preview={<SkillPreview name={name} />}
-      onRemoveClick={() => removeSkill(id)}
+      onRemoveClick={() => removeItem("skills", id)}
       removeSrOnlyLabel={`Remove ${name} skill`}
     >
       <TextInput
         label="Skill Name"
         placeholder="Enter your skill name"
         value={name}
-        setValue={(value) => setSkill({ id, name: value })}
+        setValue={(value) => updateItem("skills", id, { name: value })}
       />
     </DraggableItemWrapper>
   );

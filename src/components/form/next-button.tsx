@@ -1,35 +1,27 @@
 import Link from "next/link";
 
-import { useAppSelector } from "@/redux/hooks";
-
-import { type RootState } from "@/redux/store";
-import {
-  selectSkippedSection,
-  type Section,
-} from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { useIsSectionHidden } from "@/stores/resume-store";
 
 import { Button } from "../ui/button";
 import SkipButton from "./skip-button";
 
 type NextButtonProps = {
   label: string;
-  sectionName: Section;
-  selectFunction: (state: RootState) => unknown[];
+  /** `SectionKey` or `custom:${id}`. */
+  sectionName: string;
+  isEmpty: boolean;
   href: string;
 };
 
 export default function NextButton({
   label,
-  selectFunction,
   sectionName,
+  isEmpty,
   href,
 }: NextButtonProps) {
-  const length = useAppSelector(selectFunction).length;
-  const isSkipped = useAppSelector((state) =>
-    selectSkippedSection(state, sectionName),
-  );
+  const isSkipped = useIsSectionHidden(sectionName);
 
-  if (length === 0 && !isSkipped) {
+  if (isEmpty && !isSkipped) {
     return (
       <SkipButton
         sectionName={sectionName}

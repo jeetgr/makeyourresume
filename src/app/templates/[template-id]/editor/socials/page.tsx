@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import { useList } from "@/stores/resume-store";
 
-import { selectSocials } from "@/redux/features/resume-data/resumeDataSlice";
+import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
@@ -14,6 +14,7 @@ import { Socials } from "./_components/socials";
 
 const SocialsPage = () => {
   const templateId = useTemplateIdParam();
+  const isEmpty = useList("links").length === 0;
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -28,15 +29,15 @@ const SocialsPage = () => {
 
         <div className="ml-auto flex flex-wrap justify-end gap-2">
           <SkipButton
-            sectionName="socials"
+            sectionName="links"
             href={`/templates/${templateId}/editor/skills`}
           />
 
           <NextButton
             label="Next (Skills)"
             href={`/templates/${templateId}/editor/skills`}
-            selectFunction={selectSocials}
-            sectionName="socials"
+            isEmpty={isEmpty}
+            sectionName="links"
           />
         </div>
       </div>

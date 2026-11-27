@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { Download, Pencil } from "lucide-react";
 import Link from "next/link";
 
-import { templateComponents } from "@/lib/templateList";
+import { LocalTemplate } from "@/components/local-template";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
@@ -34,8 +34,6 @@ const ResumeOutputPage = () => {
       }  
     `,
   });
-
-  const Template = templateComponents[templateId];
 
   return (
     <div className="flex flex-col gap-4 py-20 md:py-24 lg:flex-row">
@@ -67,13 +65,9 @@ const ResumeOutputPage = () => {
       </div>
 
       <div className="flex-1">
-        {Template === undefined ? (
-          <div className="rounded border p-4">Template not found</div>
-        ) : (
-          <div className="overflow-hidden rounded border">
-            <Template ref={componentRef} />
-          </div>
-        )}
+        <div className="overflow-hidden rounded border">
+          <LocalTemplate templateId={templateId} ref={componentRef} />
+        </div>
       </div>
     </div>
   );

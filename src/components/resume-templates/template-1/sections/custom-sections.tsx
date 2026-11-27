@@ -1,61 +1,52 @@
 import { Circle } from "lucide-react";
 
-import { useAppSelector } from "@/redux/hooks";
+import type { CustomSection as CustomSectionData } from "@/lib/resume/schema";
 
-import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectPersonalProfiles } from "@/redux/features/resume-data/resumeDataSlice";
-
+import { useShowSection, useTemplate } from "../../components/template-context";
 import Heading from "../components/heading";
 
-import { dummyData } from "../../dummy-data";
+export default function CustomSections() {
+  const { data } = useTemplate();
 
-export default function PersonalProfileSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-  const personalProfiles = useAppSelector(selectPersonalProfiles);
+  return data.customSections.map((section) => (
+    <CustomSection key={section.id} {...section} />
+  ));
+}
 
-  const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "personalProfile"),
-  );
+function CustomSection({ id, title, items }: CustomSectionData) {
+  const accent = useTemplate().theme.accent;
 
-  if (shouldSkip) return null;
+  if (!useShowSection(`custom:${id}`, items.length)) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
       <Heading bottomLine={true} mb={12}>
-        Personal Profile
+        {title}
       </Heading>
 
       <ul className="w-fit space-y-px pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(personalProfiles.length === 0
-          ? dummyData.personalProfiles
-          : personalProfiles
-        ).map(({ id, fieldValue, fieldName }) => (
+        {items.map(({ id, title, description }) => (
           <li
             key={id}
             className="flex gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
           >
             <Circle
-              fill={accentColor}
-              color={accentColor}
+              fill={accent}
+              color={accent}
               className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
             <p className="grid w-full grid-cols-3">
               <span
                 className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold"
-                style={{
-                  color: accentColor,
-                }}
+                style={{ color: accent }}
               >
-                {fieldName}
+                {title}
               </span>
               <span className="col-span-2 flex text-[calc(var(--WIDTHPERCENTAGE)*9)]">
                 <span className="mx-[calc(var(--WIDTHPERCENTAGE)*4)] font-semibold">
                   :
                 </span>
-                {fieldValue}
+                {description}
               </span>
             </p>
           </li>

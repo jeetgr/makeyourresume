@@ -1,8 +1,8 @@
 "use client";
+import { useUser } from "@/stores/auth-store";
+import { setTemplate } from "@/stores/resume-store";
 import React from "react";
 import { api } from "@/lib/api";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
 
 export const AddTemplate = ({
   children,
@@ -11,8 +11,10 @@ export const AddTemplate = ({
   children: React.ReactNode;
   templateId: string;
 }) => {
-  const user = useAppSelector(selectUser);
+  const user = useUser();
   const handleAddTemplate = () => {
+    setTemplate(templateId);
+
     if (!user) {
       return;
     }

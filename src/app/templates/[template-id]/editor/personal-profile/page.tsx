@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import {
+  usePersonalProfile,
+  PERSONAL_PROFILE_SECTION,
+} from "./_components/personal-profiles";
 
-import { selectPersonalProfiles } from "@/redux/features/resume-data/resumeDataSlice";
+import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
@@ -14,6 +17,7 @@ import { PersonalProfiles } from "./_components/personal-profiles";
 
 const PersonalProfilePage = () => {
   const templateId = useTemplateIdParam();
+  const isEmpty = (usePersonalProfile()?.items.length ?? 0) === 0;
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -30,15 +34,15 @@ const PersonalProfilePage = () => {
 
         <div className="ml-auto flex flex-wrap justify-end gap-2">
           <SkipButton
-            sectionName="personalProfile"
+            sectionName={PERSONAL_PROFILE_SECTION}
             href={`/templates/${templateId}/resume`}
           />
 
           <NextButton
             label="Download Resume"
             href={`/templates/${templateId}/resume`}
-            selectFunction={selectPersonalProfiles}
-            sectionName="personalProfile"
+            isEmpty={isEmpty}
+            sectionName={PERSONAL_PROFILE_SECTION}
           />
         </div>
       </div>

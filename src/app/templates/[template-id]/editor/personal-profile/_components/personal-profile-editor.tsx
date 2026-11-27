@@ -1,60 +1,45 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import {
-  PersonalProfile,
-  removeField,
-  setField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { CustomSection } from "@/lib/resume/schema";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { PersonalProfilePreview } from "./personal-profile-preview";
 import { TextInput } from "@/components/form/form-input";
+import { PersonalProfilePreview } from "./personal-profile-preview";
 
-type PersonalProfileEditorProps = PersonalProfile;
+type Item = CustomSection["items"][number];
+
+type PersonalProfileEditorProps = Item & {
+  onChange: (patch: Partial<Item>) => void;
+  onRemove: () => void;
+};
 
 export const PersonalProfileEditor = ({
   id,
-  fieldName,
-  fieldValue,
+  title,
+  description,
+  onChange,
+  onRemove,
 }: PersonalProfileEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const setPersonalProfile = (personalProfile: PersonalProfile) => {
-    dispatch(
-      setField({ fieldName: "personalProfiles", value: personalProfile }),
-    );
-  };
-
-  const removePersonalProfile = (id: string) => {
-    dispatch(removeField({ fieldName: "personalProfiles", id }));
-  };
-
   return (
     <DraggableItemWrapper
       id={id}
       preview={
-        <PersonalProfilePreview fieldName={fieldName} fieldValue={fieldValue} />
+        <PersonalProfilePreview title={title} description={description} />
       }
-      onRemoveClick={() => removePersonalProfile(id)}
-      removeSrOnlyLabel={`Remove field ${fieldName} with value ${fieldValue}`}
+      onRemoveClick={onRemove}
+      removeSrOnlyLabel={`Remove field ${title} with value ${description}`}
     >
       <div className="flex flex-wrap items-end gap-2">
         <TextInput
           label="Field Name"
           placeholder="Enter the field name"
-          value={fieldName}
-          setValue={(value) =>
-            setPersonalProfile({ id, fieldValue, fieldName: value })
-          }
+          value={title}
+          setValue={(value) => onChange({ title: value })}
         />
 
         <TextInput
           label="Field Value"
           placeholder="Enter the field value"
-          value={fieldValue}
-          setValue={(value) =>
-            setPersonalProfile({ id, fieldName, fieldValue: value })
-          }
+          value={description}
+          setValue={(value) => onChange({ description: value })}
         />
       </div>
     </DraggableItemWrapper>

@@ -1,16 +1,14 @@
-import { PersonalProfile } from "@/redux/features/resume-data/resumeDataSlice";
-
-type PersonalProfilePreviewProps = Omit<PersonalProfile, "id">;
+type PersonalProfilePreviewProps = { title: string; description: string };
 
 export const PersonalProfilePreview = ({
-  fieldName,
-  fieldValue,
+  title,
+  description,
 }: PersonalProfilePreviewProps) => {
   return (
     <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
-      <p>{fieldName}</p>
-      {fieldValue && <span>|</span>}
-      <p>{fieldValue}</p>
+      <p>{title}</p>
+      {description && <span>|</span>}
+      <p>{description}</p>
     </div>
   );
 };

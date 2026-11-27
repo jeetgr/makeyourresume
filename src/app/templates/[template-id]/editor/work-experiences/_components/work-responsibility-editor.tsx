@@ -1,69 +1,34 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import {
-  WorkResponsibility,
-  removeWorkResponsibilityField,
-  setWorkResponsibilityField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { Experience } from "@/lib/resume/schema";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { Textarea } from "@/components/ui/textarea";
 
 type WorkResponsibilityEditorProps = {
-  id: string;
-  workResponsibility: WorkResponsibility;
+  bullet: Experience["bullets"][number];
+  onChange: (text: string) => void;
+  onRemove: () => void;
 };
 
 export const WorkResponsibilityEditor = ({
-  id,
-  workResponsibility,
+  bullet,
+  onChange,
+  onRemove,
 }: WorkResponsibilityEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const setWorkResponsibility = (
-    id: string,
-    newWorkResponsibility: WorkResponsibility,
-  ) => {
-    dispatch(
-      setWorkResponsibilityField({
-        workExperienceId: id,
-        workResponsibility: newWorkResponsibility,
-      }),
-    );
-  };
-
-  const removeWorkResponsibility = (
-    id: string,
-    workResponsibilityId: string,
-  ) => {
-    dispatch(
-      removeWorkResponsibilityField({
-        workExperienceId: id,
-        workResponsibilityId,
-      }),
-    );
-  };
-
   return (
     <DraggableItemWrapper
-      id={workResponsibility.id}
+      id={bullet.id}
       preview={
         <div className="flex min-h-full items-center text-sm font-medium text-accent">
-          <p>{workResponsibility.responsibility}</p>
+          <p>{bullet.text}</p>
         </div>
       }
-      onRemoveClick={() => removeWorkResponsibility(id, workResponsibility.id)}
-      removeSrOnlyLabel={`Remove ${workResponsibility.responsibility} from your resume`}
+      onRemoveClick={onRemove}
+      removeSrOnlyLabel={`Remove ${bullet.text} from your resume`}
     >
       <Textarea
         placeholder="Enter your work responsibility"
-        value={workResponsibility.responsibility}
-        onChange={(e) =>
-          setWorkResponsibility(id, {
-            ...workResponsibility,
-            responsibility: e.target.value,
-          })
-        }
+        value={bullet.text}
+        onChange={(e) => onChange(e.target.value)}
       />
     </DraggableItemWrapper>
   );

@@ -1,6 +1,6 @@
-import { Interest } from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
 
-type InterestPreviewProps = Omit<Interest, "id">;
+type InterestPreviewProps = Omit<ListItem<"interests">, "id">;
 
 export const InterestPreview = ({ name }: InterestPreviewProps) => {
   return (

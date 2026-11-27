@@ -1,51 +1,70 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectPersonalProfiles,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { CustomSection } from "@/lib/resume/schema";
+import { move } from "@/lib/resume/ops";
+import { addItem, updateItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
-import { PersonalProfileEditor } from "./personal-profile-editor";
 import { Button } from "@/components/ui/button";
+import { PersonalProfileEditor } from "./personal-profile-editor";
+
+/** Wizard's "Personal Profile" step edits this fixed custom section. */
+const SECTION_ID = "personal-profile";
+export const PERSONAL_PROFILE_SECTION = `custom:${SECTION_ID}`;
+
+export const usePersonalProfile = () =>
+  useList("customSections").find((s) => s.id === SECTION_ID);
+
+type Item = CustomSection["items"][number];
 
 export const PersonalProfiles = () => {
-  const personalProfiles = useAppSelector(selectPersonalProfiles);
-  const dispatch = useAppDispatch();
+  const section = usePersonalProfile();
+  const items = section?.items ?? [];
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "personalProfiles",
-        value: arrayMove(personalProfiles, oldIndex, newIndex),
-      }),
-    );
+  const setItems = (next: Item[]) => {
+    if (section) updateItem("customSections", SECTION_ID, { items: next });
+    else
+      addItem("customSections", {
+        id: SECTION_ID,
+        title: "Personal Profile",
+        items: next,
+      });
   };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
         <DNDContexts
-          items={personalProfiles.map((personalProfile) => ({
-            id: personalProfile.id,
-          }))}
-          setItems={setItems}
+          items={items}
+          setItems={(from, to) => setItems(move(items, from, to))}
         >
-          {personalProfiles.map((personalProfile) => (
+          {items.map((item) => (
             <PersonalProfileEditor
-              {...personalProfile}
-              key={personalProfile.id}
+              key={item.id}
+              {...item}
+              onChange={(patch) =>
+                setItems(
+                  items.map((i) => (i.id === item.id ? { ...i, ...patch } : i)),
+                )
+              }
+              onRemove={() => setItems(items.filter((i) => i.id !== item.id))}
             />
           ))}
         </DNDContexts>
       </ul>
+
       <Button
         type="button"
         variant="accent"
-        onClick={() => dispatch(addField("personalProfiles"))}
+        onClick={() =>
+          setItems([
+            ...items,
+            {
+              id: crypto.randomUUID(),
+              title: "",
+              subtitle: "",
+              description: "",
+            },
+          ])
+        }
       >
         Add Personal Profile
       </Button>

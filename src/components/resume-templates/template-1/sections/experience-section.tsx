@@ -1,28 +1,15 @@
 import { Circle, Square } from "lucide-react";
 
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
+import { formatDateRange } from "@/lib/resume/format";
 
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectWorkExperiences } from "@/redux/features/resume-data/resumeDataSlice";
-
+import { useShowSection, useTemplate } from "../../components/template-context";
 import Heading from "../components/heading";
 
-import { dummyData } from "../../dummy-data";
-
 export default function ExperienceSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-  const workExperiences = useAppSelector(selectWorkExperiences);
+  const { data, theme } = useTemplate();
+  const accent = theme.accent;
 
-  const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "workExperiences"),
-  );
-
-  if (shouldSkip) return null;
+  if (!useShowSection("experience", data.experience.length)) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -31,91 +18,67 @@ export default function ExperienceSection() {
       </Heading>
 
       <ul className="grid gap-[calc(var(--WIDTHPERCENTAGE)*9)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(workExperiences.length === 0
-          ? dummyData.workExperiences
-          : workExperiences
-        ).map(
-          ({
-            id,
-            jobTitle,
-            companyName,
-            joiningDate,
-            leavingDate,
-            location,
-            workResponsibilities,
-          }) => (
-            <li
-              key={id}
-              className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
-            >
-              <Circle
-                color={accentColor}
-                fill={accentColor}
-                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
-              />
+        {data.experience.map(
+          ({ id, role, company, dates, location, bullets }) => {
+            const range = formatDateRange(dates);
 
-              <div className="grid flex-1">
-                {!isDoubleHyphens(jobTitle) && (
-                  <h3
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-none font-bold"
-                    style={{ color: accentColor }}
+            return (
+              <li
+                key={id}
+                className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
+              >
+                <Circle
+                  color={accent}
+                  fill={accent}
+                  className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
+                />
+
+                <div className="grid flex-1">
+                  {role && (
+                    <h3
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-none font-bold"
+                      style={{ color: accent }}
+                    >
+                      {role}
+                    </h3>
+                  )}
+
+                  {company && (
+                    <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] leading-tight font-semibold">
+                      {company}
+                    </p>
+                  )}
+
+                  <div
+                    className="flex justify-between text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-tight italic"
+                    style={{ color: accent }}
                   >
-                    {jobTitle}
-                  </h3>
-                )}
+                    {range && <p>{range}</p>}
+                    {location && <p>{location}</p>}
+                  </div>
 
-                {!isDoubleHyphens(companyName) && (
-                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] leading-tight font-semibold">
-                    {companyName}
-                  </p>
-                )}
-
-                <div className="flex justify-between">
-                  {(!isDoubleHyphens(joiningDate) ||
-                    !isDoubleHyphens(leavingDate)) && (
-                    <p
-                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-tight italic"
-                      style={{ color: accentColor }}
-                    >
-                      {!isDoubleHyphens(joiningDate) && joiningDate}
-                      {!isDoubleHyphens(joiningDate) &&
-                        !isDoubleHyphens(leavingDate) &&
-                        " - "}
-                      {!isDoubleHyphens(leavingDate) && leavingDate}
-                    </p>
-                  )}
-                  {!isDoubleHyphens(location) && (
-                    <p
-                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-tight italic"
-                      style={{ color: accentColor }}
-                    >
-                      {location}
-                    </p>
-                  )}
-                </div>
-
-                <ul>
-                  {workResponsibilities.map(
-                    ({ id, responsibility }) =>
-                      !isDoubleHyphens(responsibility) && (
+                  <ul>
+                    {bullets
+                      .filter((b) => b.text)
+                      .map(({ id, text }) => (
                         <li
                           key={id}
                           className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]"
                         >
                           <Square
-                            color={accentColor}
+                            color={accent}
                             className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
                           />
                           <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                            {responsibility}
+                            {text}
                           </p>
                         </li>
-                      ),
-                  )}
-                </ul>
-              </div>
-            </li>
-          ),
+                      ))}
+                  </ul>
+                </div>
+              </li>
+            );
+          },
         )}
       </ul>
     </div>

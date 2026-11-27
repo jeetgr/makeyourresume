@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectSkills,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { SkillEditor } from "./skill-editor";
 import { Button } from "@/components/ui/button";
 
 export const Skills = () => {
-  const dispatch = useAppDispatch();
-  const skills = useAppSelector(selectSkills);
+  const skills = useList("skills");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "skills",
-        value: arrayMove(skills, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("skills", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -38,11 +23,7 @@ export const Skills = () => {
         </DNDContexts>
       </ul>
 
-      <Button
-        type="button"
-        variant="accent"
-        onClick={() => dispatch(addField("skills"))}
-      >
+      <Button type="button" variant="accent" onClick={() => addItem("skills")}>
         Add Skill
       </Button>
     </div>

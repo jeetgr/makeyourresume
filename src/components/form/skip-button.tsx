@@ -1,12 +1,6 @@
 import Link from "next/link";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  selectSkippedSection,
-  toggleSkippedSection,
-  type Section,
-} from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { toggleSection, useIsSectionHidden } from "@/stores/resume-store";
 
 import {
   AlertDialog,
@@ -22,7 +16,8 @@ import {
 import { Button } from "../ui/button";
 
 type SkipButtonProps = {
-  sectionName: Section;
+  /** `SectionKey` or `custom:${id}`. */
+  sectionName: string;
   href: string;
   buttonLabel?: string;
   buttonVariant?: "default" | "secondary" | "outline" | "accent";
@@ -34,15 +29,10 @@ export default function SkipButton({
   buttonLabel = "Skip",
   buttonVariant = "outline",
 }: SkipButtonProps) {
-  const isSkipped = useAppSelector((state) =>
-    selectSkippedSection(state, sectionName),
-  );
+  const isSkipped = useIsSectionHidden(sectionName);
 
-  const dispatch = useAppDispatch();
-
-  const handleToggleSkippedSection = (value: boolean) => {
-    dispatch(toggleSkippedSection({ section: sectionName, value }));
-  };
+  const handleToggleSkippedSection = (value: boolean) =>
+    toggleSection(sectionName, value);
 
   if (isSkipped) {
     return (

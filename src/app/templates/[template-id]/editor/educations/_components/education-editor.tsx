@@ -1,72 +1,53 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import {
-  Education,
-  removeField,
-  setField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { DateRange, ListItem } from "@/lib/resume/schema";
+import { removeItem, updateItem } from "@/stores/resume-store";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { EducationPreview } from "./education-preview";
 import { TextInput } from "@/components/form/form-input";
+import { MonthInput } from "@/components/form/month-input";
+import { EducationPreview } from "./education-preview";
 
-type EducationEditorProps = Education;
+export const EducationEditor = (education: ListItem<"education">) => {
+  const { id, degree, institution, dates } = education;
 
-export const EducationEditor = (education: EducationEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeEducation = (id: string) => {
-    dispatch(removeField({ fieldName: "educations", id }));
-  };
-
-  const setEducation = (education: Education) => {
-    dispatch(setField({ fieldName: "educations", value: education }));
-  };
+  const setDates = (patch: Partial<DateRange>) =>
+    updateItem("education", id, { dates: { ...dates, ...patch } });
 
   return (
     <DraggableItemWrapper
-      id={education.id}
+      id={id}
       preview={<EducationPreview {...education} />}
-      onRemoveClick={() => removeEducation(education.id)}
-      removeSrOnlyLabel={`Remove ${education.courseName} from your resume`}
+      onRemoveClick={() => removeItem("education", id)}
+      removeSrOnlyLabel={`Remove ${degree} from your resume`}
     >
       <div className="grid items-end gap-2">
         <TextInput
           label="Degree / Course Name"
           placeholder="Enter your course name"
-          value={education.courseName}
-          setValue={(value) => {
-            setEducation({ ...education, courseName: value });
-          }}
+          value={degree}
+          setValue={(value) => updateItem("education", id, { degree: value })}
         />
 
         <TextInput
           label="Institute / College Name"
           placeholder="Enter your college name"
-          value={education.collegeName}
-          setValue={(value) => {
-            setEducation({ ...education, collegeName: value });
-          }}
+          value={institution}
+          setValue={(value) =>
+            updateItem("education", id, { institution: value })
+          }
         />
 
         <div className="flex flex-wrap items-end justify-between gap-2">
-          <TextInput
+          <MonthInput
             label="Start Date"
-            placeholder="Enter your start date"
-            value={education.from}
-            setValue={(value) => {
-              setEducation({ ...education, from: value });
-            }}
+            value={dates.start}
+            onChange={(start) => setDates({ start })}
             className="min-w-40 flex-1"
           />
 
-          <TextInput
+          <MonthInput
             label="End Date"
-            placeholder="Enter your end date"
-            value={education.to}
-            setValue={(value) => {
-              setEducation({ ...education, to: value });
-            }}
+            value={dates.end}
+            onChange={(end) => setDates({ end })}
             className="min-w-40 flex-1"
           />
         </div>

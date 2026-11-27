@@ -1,14 +1,10 @@
 "use client";
 
+import { setUser, type User } from "@/stores/auth-store";
 import { useEffect } from "react";
-import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/auth/authSlice";
 import { api } from "@/lib/api";
-import type { User } from "@/redux/features/auth/authSlice";
 
 export const RefreshUser = () => {
-  const dispatch = useAppDispatch();
-
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -18,10 +14,10 @@ export const RefreshUser = () => {
           signal: abortController.signal,
         });
 
-        dispatch(setUser(data.user));
+        setUser(data.user);
       } catch (error) {
         if (abortController.signal.aborted) return;
-        dispatch(setUser(null));
+        setUser(null);
         console.log(error);
       }
     })();
@@ -29,7 +25,7 @@ export const RefreshUser = () => {
     return () => {
       abortController.abort();
     };
-  }, [dispatch]);
+  }, []);
 
   return null;
 };

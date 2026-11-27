@@ -1,27 +1,27 @@
-import { Project } from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
 
-type ProjectPreviewProps = Omit<Project, "id">;
+type ProjectPreviewProps = Omit<ListItem<"projects">, "id">;
 
 export const ProjectPreview = ({
-  projectName,
-  projectDescription,
-  liveLink,
-  sourceLink,
+  name,
+  description,
+  liveUrl,
+  sourceUrl,
   tags,
 }: ProjectPreviewProps) => {
   return (
     <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
       <div className="flex gap-2">
-        <p>{projectName}</p>
-        {tags && <span>|</span>}
-        <p>{tags}</p>
+        <p>{name}</p>
+        {tags.length > 0 && <span>|</span>}
+        <p>{tags.join(",")}</p>
       </div>
       <div className="flex gap-2">
-        <p className="break-all">{sourceLink}</p>
-        {liveLink && <span>-</span>}
-        <p className="break-all">{liveLink}</p>
+        <p className="break-all">{sourceUrl}</p>
+        {liveUrl && <span>-</span>}
+        <p className="break-all">{liveUrl}</p>
       </div>
-      <p className="line-clamp-1 text-accent/60">{projectDescription}</p>
+      <p className="line-clamp-1 text-accent/60">{description}</p>
     </div>
   );
 };

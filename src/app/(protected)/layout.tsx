@@ -1,7 +1,6 @@
 "use client";
 
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/hooks";
+import { useUser } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -10,7 +9,7 @@ export default function ProtectLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = useAppSelector(selectUser);
+  const user = useUser();
   const router = useRouter();
 
   useEffect(() => {

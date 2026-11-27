@@ -1,49 +1,34 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import { TextInput } from "@/components/form/form-input";
-import FormSelect from "@/components/form/form-select";
-import {
-  Social,
-  removeField,
-  setField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem, Network } from "@/lib/resume/schema";
+import { removeItem, updateItem } from "@/stores/resume-store";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { TextInput } from "@/components/form/form-input";
+import FormSelect from "@/components/form/form-select";
 import { SocialPreview } from "./social-preview";
 
-type SocialEditorProps = Social;
-
-export const SocialEditor = ({ id, name, url }: SocialEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeSocial = (id: string) => {
-    dispatch(removeField({ fieldName: "socials", id }));
-  };
-
-  const setSocial = (social: Social) => {
-    dispatch(setField({ fieldName: "socials", value: social }));
-  };
-
+export const SocialEditor = ({ id, network, url }: ListItem<"links">) => {
   return (
     <DraggableItemWrapper
       id={id}
-      preview={<SocialPreview name={name} url={url} />}
-      onRemoveClick={() => removeSocial(id)}
-      removeSrOnlyLabel={`Remove ${name} social with url ${url}`}
+      preview={<SocialPreview network={network} url={url} />}
+      onRemoveClick={() => removeItem("links", id)}
+      removeSrOnlyLabel={`Remove ${network} social with url ${url}`}
     >
       <div className="flex flex-wrap items-end gap-2">
         <FormSelect
           label="Social Name"
           placeholder="Select an Option"
-          defaultValue={name}
-          onValueChange={(value) => setSocial({ id, url, name: value })}
+          defaultValue={network}
+          onValueChange={(value) =>
+            updateItem("links", id, { network: value as Network })
+          }
         />
 
         <TextInput
           label="Social URL"
           placeholder="Enter your social link"
           value={url}
-          setValue={(value) => setSocial({ id, name, url: value })}
+          setValue={(value) => updateItem("links", id, { url: value })}
         />
       </div>
     </DraggableItemWrapper>

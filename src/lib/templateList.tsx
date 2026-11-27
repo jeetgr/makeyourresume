@@ -1,11 +1,12 @@
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { ComponentType } from "react";
 
 import Template1 from "@/components/resume-templates/template-1";
+import type { TemplateProps } from "@/components/resume-templates/components/template-context";
 
 type TemplateList = {
   id: string;
   name: string;
-  component: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>>;
+  component: ComponentType<TemplateProps>;
 }[];
 
 export const templatesList: TemplateList = [

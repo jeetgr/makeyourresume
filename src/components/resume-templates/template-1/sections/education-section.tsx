@@ -1,28 +1,15 @@
 import { Circle } from "lucide-react";
 
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
+import { formatDateRange } from "@/lib/resume/format";
 
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectEducations } from "@/redux/features/resume-data/resumeDataSlice";
-
+import { useShowSection, useTemplate } from "../../components/template-context";
 import Heading from "../components/heading";
 
-import { dummyData } from "../../dummy-data";
-
 export default function EducationSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-  const educations = useAppSelector(selectEducations);
+  const { data, theme } = useTemplate();
+  const accent = theme.accent;
 
-  const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "educations"),
-  );
-
-  if (shouldSkip) return null;
+  if (!useShowSection("education", data.education.length)) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -31,49 +18,47 @@ export default function EducationSection() {
       </Heading>
 
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(educations.length === 0 ? dummyData.educations : educations).map(
-          ({ id, courseName, collegeName, from, to }) => (
+        {data.education.map(({ id, degree, institution, dates }) => {
+          const range = formatDateRange(dates);
+
+          return (
             <li
               key={id}
               className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
             >
               <Circle
-                fill={accentColor}
-                color={accentColor}
+                fill={accent}
+                color={accent}
                 className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
-                {!isDoubleHyphens(courseName) && (
+                {degree && (
                   <h3
                     className="text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-[1.1] font-bold"
-                    style={{
-                      color: accentColor,
-                    }}
+                    style={{ color: accent }}
                   >
-                    {courseName}
+                    {degree}
                   </h3>
                 )}
 
-                {!isDoubleHyphens(collegeName) && (
+                {institution && (
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug italic">
-                    {collegeName}
+                    {institution}
                   </p>
                 )}
 
-                {(!isDoubleHyphens(from) || !isDoubleHyphens(to)) && (
+                {range && (
                   <p
                     className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
-                    style={{ color: accentColor }}
+                    style={{ color: accent }}
                   >
-                    {!isDoubleHyphens(from) && from}
-                    {!isDoubleHyphens(from) && !isDoubleHyphens(to) && " - "}
-                    {!isDoubleHyphens(to) && to}
+                    {range}
                   </p>
                 )}
               </div>
             </li>
-          ),
-        )}
+          );
+        })}
       </ul>
     </div>
   );

@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { capitalize } from "@/utils/capitalize";
 import { cn } from "@/utils/cn";
 
-import { socialNames } from "@/lib/data";
+import { NETWORKS } from "@/lib/resume/schema";
 
 import {
   Select,
@@ -14,7 +14,7 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 
-const items = socialNames.map((name) => ({
+const items = NETWORKS.map((name) => ({
   value: name,
   label: capitalize(name),
 }));
@@ -46,7 +46,7 @@ export default function FormSelect({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {socialNames.map((socialName) => (
+          {NETWORKS.map((socialName) => (
             <Fragment key={socialName}>
               <SelectItem value={socialName}>
                 {capitalize(socialName)}

@@ -1,25 +1,21 @@
-import { Education } from "@/redux/features/resume-data/resumeDataSlice";
+import { formatDateRange } from "@/lib/resume/format";
+import type { ListItem } from "@/lib/resume/schema";
 
-type EducationPreviewProps = Omit<Education, "id">;
+type EducationPreviewProps = Omit<ListItem<"education">, "id">;
 
 export const EducationPreview = ({
-  courseName,
-  collegeName,
-  from,
-  to,
+  degree,
+  institution,
+  dates,
 }: EducationPreviewProps) => {
   return (
     <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
       <div className="flex gap-2">
-        <p>{courseName}</p>
-        {collegeName && <span>|</span>}
-        <p>{collegeName}</p>
+        <p>{degree}</p>
+        {institution && <span>|</span>}
+        <p>{institution}</p>
       </div>
-      <div className="flex gap-2">
-        <p>{from}</p>
-        {to && <span>-</span>}
-        <p>{to}</p>
-      </div>
+      <p>{formatDateRange(dates)}</p>
     </div>
   );
 };

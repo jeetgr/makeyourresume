@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectInterests,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { InterestEditor } from "./interest-editor";
 import { Button } from "@/components/ui/button";
 
 export const Interests = () => {
-  const dispatch = useAppDispatch();
-  const interests = useAppSelector(selectInterests);
+  const interests = useList("interests");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "interests",
-        value: arrayMove(interests, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("interests", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -40,7 +25,7 @@ export const Interests = () => {
       <Button
         type="button"
         variant="accent"
-        onClick={() => dispatch(addField("interests"))}
+        onClick={() => addItem("interests")}
       >
         Add Interest
       </Button>

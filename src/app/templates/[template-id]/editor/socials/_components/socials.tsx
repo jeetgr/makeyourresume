@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectSocials,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { Button } from "@/components/ui/button";
 import { SocialEditor } from "./social-editor";
 
 export const Socials = () => {
-  const dispatch = useAppDispatch();
-  const socials = useAppSelector(selectSocials);
+  const socials = useList("links");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "socials",
-        value: arrayMove(socials, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("links", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -38,11 +23,7 @@ export const Socials = () => {
         </DNDContexts>
       </ul>
 
-      <Button
-        type="button"
-        variant="accent"
-        onClick={() => dispatch(addField("socials"))}
-      >
+      <Button type="button" variant="accent" onClick={() => addItem("links")}>
         Add Social
       </Button>
     </div>

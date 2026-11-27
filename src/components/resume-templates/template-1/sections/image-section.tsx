@@ -1,86 +1,33 @@
 import { Image } from "lucide-react";
 
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
-
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectProfile } from "@/redux/features/resume-data/resumeDataSlice";
-
-import { dummyData } from "../../dummy-data";
+import { useTemplate } from "../../components/template-context";
 
 export default function ImageSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-
-  const { image, firstName, lastName } = useAppSelector(selectProfile);
+  const { data, theme } = useTemplate();
+  const { photo, firstName, lastName } = data.profile;
+  const initials = (firstName[0] ?? "") + (lastName[0] ?? "");
 
   return (
     <div
       className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-[calc(var(--WIDTHPERCENTAGE)*3)]"
       style={{
-        border: `calc(var(--WIDTHPERCENTAGE)*1) solid ${accentColor}`,
+        border: `calc(var(--WIDTHPERCENTAGE)*1) solid ${theme.accent}`,
       }}
     >
-      {image !== "" ? (
+      {photo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={image} className="object-cover object-center" alt="" />
+        <img src={photo} className="object-cover object-center" alt="" />
       ) : (
-        <ImagePlaceholder
-          accentColor={accentColor}
-          firstName={firstName}
-          lastName={lastName}
-        />
+        <p
+          className="text-[calc(var(--WIDTHPERCENTAGE)*62)] leading-none font-semibold"
+          style={{ color: theme.accent }}
+        >
+          {initials || (
+            // eslint-disable-next-line jsx-a11y/alt-text
+            <Image className="h-[calc(var(--WIDTHPERCENTAGE)*50)] w-[calc(var(--WIDTHPERCENTAGE)*50)] stroke-[calc(var(--WIDTHPERCENTAGE)*1.2)]" />
+          )}
+        </p>
       )}
     </div>
   );
 }
-
-function ImagePlaceholder({
-  accentColor,
-  firstName,
-  lastName,
-}: {
-  accentColor: string;
-  firstName: string;
-  lastName: string;
-}) {
-  return (
-    <p
-      className="text-[calc(var(--WIDTHPERCENTAGE)*62)] leading-none font-semibold"
-      style={{
-        color: accentColor,
-      }}
-    >
-      {isDoubleHyphens(firstName) && isDoubleHyphens(lastName) ? (
-        // eslint-disable-next-line jsx-a11y/alt-text
-        <Image className="h-[calc(var(--WIDTHPERCENTAGE)*50)] w-[calc(var(--WIDTHPERCENTAGE)*50)] stroke-[calc(var(--WIDTHPERCENTAGE)*1.2)]" />
-      ) : (
-        <Fallback firstName={firstName} lastName={lastName} />
-      )}
-    </p>
-  );
-}
-
-const Fallback = ({
-  firstName,
-  lastName,
-}: {
-  firstName: string;
-  lastName: string;
-}) => {
-  if (firstName && lastName) {
-    return `${firstName[0]}${lastName[0]}`;
-  }
-
-  if (firstName) {
-    return firstName[0];
-  }
-
-  if (lastName) {
-    return lastName[0];
-  }
-
-  return dummyData.profile.firstName[0] + dummyData.profile.lastName[0];
-};

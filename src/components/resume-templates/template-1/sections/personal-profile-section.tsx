@@ -7,7 +7,6 @@ import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSli
 import { selectPersonalProfiles } from "@/redux/features/resume-data/resumeDataSlice";
 
 import Heading from "../components/heading";
-import { For } from "@/components/control-flow/for";
 
 import { dummyData } from "../../dummy-data";
 
@@ -30,42 +29,37 @@ export default function PersonalProfileSection() {
       </Heading>
 
       <ul className="w-fit space-y-px pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        <For
-          each={
-            personalProfiles.length === 0
-              ? dummyData.personalProfiles
-              : personalProfiles
-          }
-        >
-          {({ id, fieldValue, fieldName }) => (
-            <li
-              key={id}
-              className="flex gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
-            >
-              <Circle
-                fill={accentColor}
-                color={accentColor}
-                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
-              />
-              <p className="grid w-full grid-cols-3">
-                <span
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold"
-                  style={{
-                    color: accentColor,
-                  }}
-                >
-                  {fieldName}
+        {(personalProfiles.length === 0
+          ? dummyData.personalProfiles
+          : personalProfiles
+        ).map(({ id, fieldValue, fieldName }) => (
+          <li
+            key={id}
+            className="flex gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
+          >
+            <Circle
+              fill={accentColor}
+              color={accentColor}
+              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
+            />
+            <p className="grid w-full grid-cols-3">
+              <span
+                className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold"
+                style={{
+                  color: accentColor,
+                }}
+              >
+                {fieldName}
+              </span>
+              <span className="col-span-2 flex text-[calc(var(--WIDTHPERCENTAGE)*9)]">
+                <span className="mx-[calc(var(--WIDTHPERCENTAGE)*4)] font-semibold">
+                  :
                 </span>
-                <span className="col-span-2 flex text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                  <span className="mx-[calc(var(--WIDTHPERCENTAGE)*4)] font-semibold">
-                    :
-                  </span>
-                  {fieldValue}
-                </span>
-              </p>
-            </li>
-          )}
-        </For>
+                {fieldValue}
+              </span>
+            </p>
+          </li>
+        ))}
       </ul>
     </div>
   );

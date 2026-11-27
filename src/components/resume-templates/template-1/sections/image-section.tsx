@@ -7,8 +7,6 @@ import { useAppSelector } from "@/redux/hooks";
 import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
 import { selectProfile } from "@/redux/features/resume-data/resumeDataSlice";
 
-import { Show } from "@/components/control-flow/show";
-
 import { dummyData } from "../../dummy-data";
 
 export default function ImageSection() {
@@ -25,19 +23,16 @@ export default function ImageSection() {
         border: `calc(var(--WIDTHPERCENTAGE)*1) solid ${accentColor}`,
       }}
     >
-      <Show
-        when={image !== ""}
-        fallback={
-          <ImagePlaceholder
-            accentColor={accentColor}
-            firstName={firstName}
-            lastName={lastName}
-          />
-        }
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+      {image !== "" ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img src={image} className="object-cover object-center" alt="" />
-      </Show>
+      ) : (
+        <ImagePlaceholder
+          accentColor={accentColor}
+          firstName={firstName}
+          lastName={lastName}
+        />
+      )}
     </div>
   );
 }
@@ -58,13 +53,12 @@ function ImagePlaceholder({
         color: accentColor,
       }}
     >
-      <Show
-        when={isDoubleHyphens(firstName) && isDoubleHyphens(lastName)}
-        fallback={<Fallback firstName={firstName} lastName={lastName} />}
-      >
-        {/* eslint-disable-next-line jsx-a11y/alt-text */}
+      {isDoubleHyphens(firstName) && isDoubleHyphens(lastName) ? (
+        // eslint-disable-next-line jsx-a11y/alt-text
         <Image className="h-[calc(var(--WIDTHPERCENTAGE)*50)] w-[calc(var(--WIDTHPERCENTAGE)*50)] stroke-[calc(var(--WIDTHPERCENTAGE)*1.2)]" />
-      </Show>
+      ) : (
+        <Fallback firstName={firstName} lastName={lastName} />
+      )}
     </p>
   );
 }

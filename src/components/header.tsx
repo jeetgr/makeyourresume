@@ -8,9 +8,7 @@ import { LogOut, User, Menu } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 
-import { Show } from "./control-flow/show";
 import { Button } from "./ui/button";
-import { For } from "./control-flow/for";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -88,25 +86,23 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <nav className="hidden gap-4 md:flex">
-            <For each={navLinks}>
-              {({ href, label }) => (
-                <Link
-                  href={href}
-                  key={href}
-                  className={cn(
-                    "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
-                    {
-                      "text-secondary": path === href,
-                    },
-                  )}
-                >
-                  {label}
-                </Link>
-              )}
-            </For>
+            {navLinks.map(({ href, label }) => (
+              <Link
+                href={href}
+                key={href}
+                className={cn(
+                  "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                  {
+                    "text-secondary": path === href,
+                  },
+                )}
+              >
+                {label}
+              </Link>
+            ))}
           </nav>
 
-          <Show when={user !== null} fallback={<LoginAndSignUp />}>
+          {user !== null ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
@@ -135,7 +131,9 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </Show>
+          ) : (
+            <LoginAndSignUp />
+          )}
 
           {/* Hamburger Menu */}
           <Sheet>
@@ -144,25 +142,23 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent>
               <nav className="grid gap-4 py-10 pl-4">
-                <For each={navLinks}>
-                  {({ href, label }) => (
-                    <SheetClose key={href} asChild>
-                      <Link
-                        href={href}
-                        className={cn(
-                          "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
-                          {
-                            "text-secondary": path === href,
-                          },
-                        )}
-                      >
-                        {label}
-                      </Link>
-                    </SheetClose>
-                  )}
-                </For>
+                {navLinks.map(({ href, label }) => (
+                  <SheetClose key={href} asChild>
+                    <Link
+                      href={href}
+                      className={cn(
+                        "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                        {
+                          "text-secondary": path === href,
+                        },
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </SheetClose>
+                ))}
 
-                <Show when={user === null}>
+                {user === null && (
                   <SheetClose asChild>
                     <Link
                       href="/register"
@@ -171,7 +167,7 @@ export default function Header() {
                       Register
                     </Link>
                   </SheetClose>
-                </Show>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

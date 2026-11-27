@@ -2,7 +2,6 @@
 import { Separator } from "@/components/ui/separator";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { For } from "@/components/control-flow/for";
 import { templatesList } from "@/lib/templateList";
 import Link from "next/link";
 
@@ -24,28 +23,26 @@ export default function ProfilePage() {
         </h2>
 
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <For each={user?.resumes}>
-            {(templateId) => {
-              const Template = templatesList.find(
-                (t) => t.id === templateId,
-              )?.component;
+          {user?.resumes?.map((templateId) => {
+            const Template = templatesList.find(
+              (t) => t.id === templateId,
+            )?.component;
 
-              if (!Template) {
-                return null;
-              }
+            if (!Template) {
+              return null;
+            }
 
-              return (
-                <li
-                  key={templateId}
-                  className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
-                >
-                  <Link href={`/templates/${templateId}/editor/profile`}>
-                    <Template />
-                  </Link>
-                </li>
-              );
-            }}
-          </For>
+            return (
+              <li
+                key={templateId}
+                className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
+              >
+                <Link href={`/templates/${templateId}/editor/profile`}>
+                  <Template />
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>

@@ -9,8 +9,6 @@ import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSli
 import { selectInterests } from "@/redux/features/resume-data/resumeDataSlice";
 
 import Heading from "../components/heading";
-import { For } from "@/components/control-flow/for";
-import { Show } from "@/components/control-flow/show";
 
 import { dummyData } from "../../dummy-data";
 
@@ -26,15 +24,14 @@ export default function InterestsSection() {
     <div>
       <Heading>Interests</Heading>
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
-        <For each={interests.length === 0 ? dummyData.interests : interests}>
-          {({ id, name }) => (
-            <Show key={id} when={!isDoubleHyphens(name)}>
-              <li>
+        {(interests.length === 0 ? dummyData.interests : interests).map(
+          ({ id, name }) =>
+            !isDoubleHyphens(name) && (
+              <li key={id}>
                 <InterestText text={name} />
               </li>
-            </Show>
-          )}
-        </For>
+            ),
+        )}
       </ul>
     </div>
   );

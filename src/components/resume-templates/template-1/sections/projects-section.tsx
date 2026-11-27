@@ -9,8 +9,6 @@ import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSli
 import { selectProjects } from "@/redux/features/resume-data/resumeDataSlice";
 
 import Heading from "../components/heading";
-import { For } from "@/components/control-flow/for";
-import { Show } from "@/components/control-flow/show";
 
 import { dummyData } from "../../dummy-data";
 
@@ -33,8 +31,8 @@ export default function ProjectsSection() {
       </Heading>
 
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*9)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        <For each={projects.length === 0 ? dummyData.projects : projects}>
-          {({
+        {(projects.length === 0 ? dummyData.projects : projects).map(
+          ({
             id,
             projectName,
             projectDescription,
@@ -58,33 +56,33 @@ export default function ProjectsSection() {
                     color: accentColor,
                   }}
                 >
-                  <Show when={!isDoubleHyphens(projectName)}>
+                  {!isDoubleHyphens(projectName) && (
                     <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
                       {projectName}
                     </h3>
-                  </Show>
+                  )}
 
-                  <Show when={!isDoubleHyphens(liveLink)}>
+                  {!isDoubleHyphens(liveLink) && (
                     <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
                       ({liveLink})
                     </p>
-                  </Show>
+                  )}
                 </div>
 
-                <Show when={!isDoubleHyphens(projectDescription)}>
+                {!isDoubleHyphens(projectDescription) && (
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
                     {projectDescription}
                   </p>
-                </Show>
+                )}
 
-                <Show when={!isDoubleHyphens(sourceLink)}>
+                {!isDoubleHyphens(sourceLink) && (
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
                     <span className="font-semibold">Source Code: </span>
                     <span className="text-blue-500">{sourceLink}</span>
                   </p>
-                </Show>
+                )}
 
-                <Show when={!isDoubleHyphens(tags)}>
+                {!isDoubleHyphens(tags) && (
                   <p
                     className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
                     style={{
@@ -93,11 +91,11 @@ export default function ProjectsSection() {
                   >
                     {tags}
                   </p>
-                </Show>
+                )}
               </div>
             </li>
-          )}
-        </For>
+          ),
+        )}
       </ul>
     </div>
   );

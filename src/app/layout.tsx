@@ -4,6 +4,8 @@ import NextJSTopLoader from "nextjs-toploader";
 
 import "./globals.css";
 
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
 import { Footer } from "@/components/footer";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
@@ -12,16 +14,14 @@ import { ResumeStoreHydrator } from "@/components/resume-store-hydrator";
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://myr.jeetgr.dev"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Make Your Resume",
+    default: `${SITE_NAME} · Free resume builder`,
     template: "%s · MYR",
   },
-  description: "Make your resume in seconds with our free resume builder.",
-  openGraph: {
-    siteName: "Make Your Resume",
-    type: "website",
-  },
+  description: SITE_DESCRIPTION,
+  openGraph: { siteName: SITE_NAME, type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({

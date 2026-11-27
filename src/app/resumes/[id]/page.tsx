@@ -6,7 +6,10 @@ import { resumeIdSchema } from "@/server/resume-input";
 import { findForUser } from "@/server/resume-repo";
 import { requireUser } from "@/server/session";
 
-export const metadata: Metadata = { title: "Edit resume" };
+export const metadata: Metadata = {
+  title: "Edit resume",
+  robots: { index: false },
+};
 
 export default async function ResumePage({
   params,

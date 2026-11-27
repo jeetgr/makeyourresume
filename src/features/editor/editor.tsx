@@ -12,7 +12,7 @@ import {
 
 import { cn } from "@/utils/cn";
 import { renderPdf } from "@/pdf/use-pdf";
-import { getTemplate, templates } from "@/templates/registry";
+import { getTemplateMeta, templateCatalog } from "@/templates/catalog";
 
 import {
   AlertDialog,
@@ -145,10 +145,13 @@ function TopBar() {
   );
 }
 
-const templateItems = templates.map((t) => ({ value: t.id, label: t.name }));
+const templateItems = templateCatalog.map((t) => ({
+  value: t.id,
+  label: t.name,
+}));
 
 function TemplateSelect() {
-  const templateId = getTemplate(useResumeDoc((s) => s.templateId)).id;
+  const templateId = getTemplateMeta(useResumeDoc((s) => s.templateId)).id;
   const { setTemplate } = useResumeOps();
 
   return (

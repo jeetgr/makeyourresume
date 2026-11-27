@@ -2,7 +2,7 @@ import { pdf, renderToBuffer } from "@react-pdf/renderer";
 
 import type { ResumeData } from "@/lib/resume/schema";
 import type { Theme } from "@/lib/resume/theme";
-import { getTemplate } from "@/templates/registry";
+import { getTemplateDocument } from "@/templates/registry";
 
 export type RenderInput = {
   data: ResumeData;
@@ -11,7 +11,7 @@ export type RenderInput = {
 };
 
 function resumeElement({ data, theme, templateId }: RenderInput) {
-  const { Document } = getTemplate(templateId);
+  const Document = getTemplateDocument(templateId);
   return <Document data={data} theme={theme} />;
 }
 

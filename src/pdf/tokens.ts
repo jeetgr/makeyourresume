@@ -2,7 +2,7 @@ import { createContext, use } from "react";
 
 import type { Density, Theme } from "@/lib/resume/theme";
 
-import { FONT_FAMILIES } from "./fonts";
+import { FONT_FAMILIES } from "./font-families";
 
 const densityScale: Record<Density, number> = {
   compact: 0.8,

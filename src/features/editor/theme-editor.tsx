@@ -6,8 +6,8 @@ import { Palette, RotateCcw } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 import { DENSITIES, FONTS, type Theme } from "@/lib/resume/theme";
-import { FONT_FAMILIES } from "@/pdf/fonts";
-import { getTemplate, templateTheme } from "@/templates/registry";
+import { FONT_FAMILIES } from "@/pdf/font-families";
+import { getTemplateMeta, templateTheme } from "@/templates/catalog";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -155,7 +155,7 @@ export function ThemeEditor() {
           variant="ghost"
           size="sm"
           className="self-start"
-          onClick={() => setTheme(templateTheme(getTemplate(templateId)))}
+          onClick={() => setTheme(templateTheme(getTemplateMeta(templateId)))}
         >
           <RotateCcw /> Reset to template default
         </Button>

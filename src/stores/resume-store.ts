@@ -50,9 +50,6 @@ const useResumeStore = create<ResumeState>()(
 
 export const rehydrateResumeStore = () => useResumeStore.persist.rehydrate();
 
-export const useResumeData = () => useResumeStore((s) => s.data);
-export const useTheme = () => useResumeStore((s) => s.theme);
-
 const setData = (fn: (d: ResumeData) => ResumeData) =>
   useResumeStore.setState((s) => {
     s.data = fn(s.data);
@@ -88,7 +85,7 @@ const moveSection = (from: number, to: number) =>
 const resetResume = (data = emptyResume()) =>
   setData(() => structuredClone(data));
 
-export const setTheme = (patch: Partial<Theme>) =>
+const setTheme = (patch: Partial<Theme>) =>
   useResumeStore.setState((s) => {
     Object.assign(s.theme, patch);
   });

@@ -9,10 +9,11 @@ import { registerFonts } from "@/pdf/fonts";
 
 import {
   DEFAULT_TEMPLATE_ID,
-  getTemplate,
+  getTemplateMeta,
+  templateCatalog,
   templateTheme,
-  templates,
-} from "./registry";
+} from "./catalog";
+import { templateDocuments } from "./registry";
 
 beforeAll(() => registerFonts(path.resolve("public")));
 
@@ -30,16 +31,18 @@ async function pdfText(buffer: Uint8Array) {
 
 describe("registry", () => {
   it("unknown ids fall back to default", () => {
-    expect(getTemplate("template-1").id).toBe(DEFAULT_TEMPLATE_ID);
-    expect(getTemplate(null).id).toBe(DEFAULT_TEMPLATE_ID);
+    expect(getTemplateMeta("template-1").id).toBe(DEFAULT_TEMPLATE_ID);
+    expect(getTemplateMeta(null).id).toBe(DEFAULT_TEMPLATE_ID);
   });
 
-  it("ids are unique", () => {
-    expect(new Set(templates.map((t) => t.id)).size).toBe(templates.length);
+  it("ids are unique and each has a document", () => {
+    const ids = templateCatalog.map((t) => t.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(Object.keys(templateDocuments).sort()).toEqual([...ids].sort());
   });
 });
 
-describe.each(templates)("$id", (template) => {
+describe.each(templateCatalog)("$id", (template) => {
   const theme = templateTheme(template);
   const render = (data = sampleResume) =>
     renderResumeToBuffer({ data, theme, templateId: template.id });

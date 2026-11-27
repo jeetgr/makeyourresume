@@ -1,41 +1,46 @@
 import Link from "next/link";
 
-import { templatesList } from "@/lib/templateList";
+import { templateCatalog } from "@/templates/catalog";
 
-import { LocalTemplate } from "@/components/local-template";
-import EditAccentColors from "@/components/edit-accent-colors";
+import { TemplateThumbnail } from "@/components/template-thumbnail";
 import { AddTemplate } from "./_component/add-template";
 
 const TemplatesPage = () => {
   return (
     <section className="py-20">
-      <div className="mb-4 flex flex-wrap items-center gap-4">
-        <div>
-          <h2 className="text-3xl/tight font-bold text-accent">
-            Select a Template
-          </h2>
-          <p className="text-base">
-            Please select a resume template to get started.
-          </p>
-        </div>
-        <EditAccentColors />
+      <div className="mb-6">
+        <h2 className="text-3xl/tight font-bold text-accent">
+          Select a Template
+        </h2>
+        <p className="text-base">
+          Pick a starting look. You can switch templates and adjust colors,
+          fonts and spacing anytime.
+        </p>
       </div>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {templatesList.map((template) => {
-          return (
-            <li
-              key={template.id}
-              className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {templateCatalog.map((template, i) => (
+          <li key={template.id}>
+            <Link
+              href="/resumes/local"
+              className="group block space-y-2 rounded focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
-              <Link href="/resumes/local">
-                <AddTemplate templateId={template.id}>
-                  <LocalTemplate templateId={template.id} sample />
-                </AddTemplate>
-                <span className="sr-only">{template.name}</span>
-              </Link>
-            </li>
-          );
-        })}
+              <AddTemplate templateId={template.id}>
+                <div className="overflow-hidden rounded border-2 shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+                  <TemplateThumbnail
+                    templateId={template.id}
+                    priority={i < 4}
+                  />
+                </div>
+              </AddTemplate>
+              <div>
+                <p className="font-semibold">{template.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {template.description}
+                </p>
+              </div>
+            </Link>
+          </li>
+        ))}
       </ul>
     </section>
   );

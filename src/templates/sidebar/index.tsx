@@ -19,14 +19,14 @@ import {
 import { paragraphs } from "@/pdf/markdown";
 import { useTokens } from "@/pdf/tokens";
 
-import type { TemplateDef, TemplateProps } from "../types";
+import type { TemplateProps } from "../types";
 import { nonEmpty, visibleOrder } from "../utils";
 
 const SIDEBAR_WIDTH = 122;
 
 type SectionProps = { data: ResumeData };
 
-function SidebarDocument({ data, theme }: TemplateProps) {
+export function SidebarDocument({ data, theme }: TemplateProps) {
   const order = visibleOrder(data);
 
   return (
@@ -522,11 +522,3 @@ function Entry({
     </>
   );
 }
-
-export const sidebar: TemplateDef = {
-  id: "sidebar",
-  name: "Sidebar",
-  description: "Photo and contacts in a left column, accent header.",
-  Document: SidebarDocument,
-  defaultTheme: { accent: "#cd6060", font: "inter", baseSize: 10 },
-};

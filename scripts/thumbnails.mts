@@ -6,7 +6,7 @@ import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { sampleResume } from "@/lib/resume/sample";
 import { renderResumeToBuffer } from "@/pdf/engine";
 import { registerFonts } from "@/pdf/fonts";
-import { templates, templateTheme } from "@/templates/registry";
+import { templateCatalog, templateTheme } from "@/templates/catalog";
 
 /** Renders page 1 of each template w/ sample data → `public/templates/<id>.png`. */
 const WIDTH = 600;
@@ -15,7 +15,7 @@ const outDir = process.argv[2] ?? "public/templates";
 registerFonts(path.resolve("public"));
 await fs.mkdir(outDir, { recursive: true });
 
-for (const template of templates) {
+for (const template of templateCatalog) {
   const buffer = await renderResumeToBuffer({
     data: sampleResume,
     theme: templateTheme(template),

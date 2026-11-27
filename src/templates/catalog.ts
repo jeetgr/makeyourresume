@@ -19,6 +19,31 @@ export const templateCatalog: TemplateMeta[] = [
     defaultTheme: { accent: "#2563eb", font: "inter", baseSize: 10 },
   },
   {
+    id: "minimal",
+    name: "Minimal",
+    description: "Airy single column with dates in a left gutter.",
+    tags: ["ATS-friendly", "Spacious"],
+    defaultTheme: {
+      accent: "#0e7490",
+      font: "lato",
+      baseSize: 10,
+      density: "relaxed",
+    },
+  },
+  {
+    id: "executive",
+    name: "Executive",
+    description:
+      "Dense and formal, competencies grid. Fits 2-page senior resumes.",
+    tags: ["ATS-friendly", "Compact"],
+    defaultTheme: {
+      accent: "#1e3a5f",
+      font: "roboto",
+      baseSize: 9.5,
+      density: "compact",
+    },
+  },
+  {
     id: "sidebar",
     name: "Sidebar",
     description: "Photo and contacts in a left column, accent header.",

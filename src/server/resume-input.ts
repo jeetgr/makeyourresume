@@ -1,10 +1,8 @@
 import { z } from "zod";
 
+import { MAX_RESUME_BYTES } from "@/lib/resume/limits";
 import { resumeDataSchema } from "@/lib/resume/schema";
 import { themeSchema } from "@/lib/resume/theme";
-
-/** Upper bound for a stored resume (data + theme JSON), photo data URL included. */
-export const MAX_RESUME_BYTES = 1_000_000;
 
 export const resumeIdSchema = z.uuid();
 

@@ -1,8 +1,8 @@
 import { emptyResume } from "./empty";
 import { resumeDataSchema, type ResumeData } from "./schema";
 
-/** Any stored/imported value → current `ResumeData`; unknown or invalid → empty. */
-export function migrate(input: unknown): ResumeData {
+/** Stored/imported value → current `ResumeData`; unknown version or invalid → `null`. */
+export function parseResumeData(input: unknown): ResumeData | null {
   const version = (input as { version?: unknown } | null)?.version;
 
   switch (version) {
@@ -13,5 +13,9 @@ export function migrate(input: unknown): ResumeData {
     }
   }
 
-  return emptyResume();
+  return null;
 }
+
+/** Like `parseResumeData`, but falls back to an empty resume. */
+export const migrate = (input: unknown): ResumeData =>
+  parseResumeData(input) ?? emptyResume();

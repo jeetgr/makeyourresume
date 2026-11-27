@@ -1,15 +1,17 @@
 "use client";
 
-import { ReactNode, useRef } from "react";
+import { ReactNode, useState } from "react";
 import { Provider } from "react-redux";
-import { makeStore, type AppStore } from "./store";
+import { makeStore } from "./store";
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
-  const storeRef = useRef<AppStore | null>(null);
+  const [store] = useState(makeStore);
+  /** Pre-rehydration state, so hydration matches the server-rendered empty store. */
+  const [serverState] = useState(store.getState);
 
-  if (!storeRef.current) {
-    storeRef.current = makeStore();
-  }
-
-  return <Provider store={storeRef.current}>{children}</Provider>;
+  return (
+    <Provider store={store} serverState={serverState}>
+      {children}
+    </Provider>
+  );
 };

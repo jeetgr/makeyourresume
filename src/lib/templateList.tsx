@@ -16,6 +16,6 @@ export const templatesList: TemplateList = [
   },
 ];
 
-export const getTemplateComponentById = (id: string) => {
-  return templatesList.find((template) => template.id === id)?.component;
-};
+export const templateComponents: Partial<
+  Record<string, TemplateList[number]["component"]>
+> = Object.fromEntries(templatesList.map((t) => [t.id, t.component]));

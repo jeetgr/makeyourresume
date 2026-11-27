@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import {
@@ -14,7 +12,7 @@ import { TextInput } from "@/components/form/form-input";
 
 type SkillEditorProps = Skill;
 
-export const SkillEditor = memo(({ id, name }: SkillEditorProps) => {
+export const SkillEditor = ({ id, name }: SkillEditorProps) => {
   const dispatch = useAppDispatch();
 
   const removeSkill = (id: string) => {
@@ -40,6 +38,4 @@ export const SkillEditor = memo(({ id, name }: SkillEditorProps) => {
       />
     </DraggableItemWrapper>
   );
-});
-
-SkillEditor.displayName = "SkillEditor";
+};

@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import {
@@ -14,7 +12,7 @@ import { TextInput } from "@/components/form/form-input";
 
 type EducationEditorProps = Education;
 
-export const EducationEditor = memo((education: EducationEditorProps) => {
+export const EducationEditor = (education: EducationEditorProps) => {
   const dispatch = useAppDispatch();
 
   const removeEducation = (id: string) => {
@@ -75,6 +73,4 @@ export const EducationEditor = memo((education: EducationEditorProps) => {
       </div>
     </DraggableItemWrapper>
   );
-});
-
-EducationEditor.displayName = "EducationEditor";
+};

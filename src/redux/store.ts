@@ -47,7 +47,7 @@ export const makeStore = () => {
   return store;
 };
 
-export type AppStore = ReturnType<typeof makeStore>;
+type AppStore = ReturnType<typeof makeStore>;
 
 export type RootState = ReturnType<AppStore["getState"]>;
 

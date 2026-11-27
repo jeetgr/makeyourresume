@@ -2,6 +2,5 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": ["src/app/**/*.{ts,tsx}"],
   "project": ["src/**"],
-  "ignore": ["src/components/ui/**"],
-  "ignoreDependencies": ["eslint-config-next"]
+  "ignore": ["src/components/ui/**"]
 }

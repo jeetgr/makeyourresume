@@ -1,11 +1,7 @@
 import { Children } from "react";
 import { Image, Text, View } from "@react-pdf/renderer";
 
-import { formatMonthYear } from "@/lib/resume/format";
-import type {
-  DateRange as DateRangeValue,
-  ResumeData,
-} from "@/lib/resume/schema";
+import type { ResumeData } from "@/lib/resume/schema";
 
 import { ResumeDocument, fullName } from "@/pdf/primitives/document";
 import { Icon } from "@/pdf/primitives/icon";
@@ -16,9 +12,9 @@ import {
   Markdown,
   displayUrl,
 } from "@/pdf/primitives/text";
-import { paragraphs } from "@/pdf/markdown";
 import { useTokens } from "@/pdf/tokens";
 
+import { type EntryData, sectionEntries, sectionTitle } from "../entries";
 import type { TemplateProps } from "../types";
 import { nonEmpty, visibleOrder } from "../utils";
 
@@ -281,24 +277,16 @@ function Header({
   );
 }
 
-const MAIN_TITLES: Record<string, string> = {
-  experience: "Work Experience",
-  projects: "Projects",
-  education: "Education",
-  certifications: "Certifications",
-  awards: "Awards",
-};
-
 function MainSections({ data, order }: SectionProps & { order: string[] }) {
   const t = useTokens();
 
   const sections = order.flatMap((key) => {
-    const entries = mainEntries(data, key);
+    const entries = sectionEntries(data, key, {
+      bullet: (b) => <Bullet key={b.id} text={b.text} />,
+      meta: (text) => <Meta>{text}</Meta>,
+    });
     if (!entries?.length) return [];
-    const title = key.startsWith("custom:")
-      ? data.customSections.find((s) => `custom:${s.id}` === key)?.title || ""
-      : MAIN_TITLES[key];
-    return [{ key, title, entries }];
+    return [{ key, title: sectionTitle(data, key), entries }];
   });
 
   return (
@@ -321,96 +309,6 @@ function MainSections({ data, order }: SectionProps & { order: string[] }) {
   );
 }
 
-type EntryData = Omit<EntryProps, "heading"> & { id: string };
-
-/** First paragraph stays w/ the entry head; later ones may move to the next page. */
-const splitText = (text: string) => {
-  const [first = "", ...rest] = paragraphs(text);
-  return {
-    lead: first ? <Markdown text={first} /> : null,
-    rest: rest.length ? <Markdown text={rest.join("\n")} /> : null,
-  };
-};
-
-/** Entries of a main-column section, or `undefined` if not a main section. */
-function mainEntries(data: ResumeData, key: string): EntryData[] | undefined {
-  switch (key) {
-    case "experience":
-      return nonEmpty(data.experience, (e) => e.role + e.company).map((e) => {
-        const [first, ...rest] = nonEmpty(e.bullets, (b) => b.text);
-        return {
-          id: e.id,
-          title: e.role,
-          subtitle: e.company,
-          dates: e.dates,
-          location: e.location,
-          lead: first ? <Bullet text={first.text} /> : null,
-          rest: rest.map((b) => <Bullet key={b.id} text={b.text} />),
-        };
-      });
-    case "projects":
-      return nonEmpty(data.projects, (p) => p.name).map((p) => {
-        const { lead, rest } = splitText(p.description);
-        return {
-          id: p.id,
-          title: p.name,
-          link: p.liveUrl,
-          lead,
-          rest: [
-            rest,
-            p.sourceUrl ? (
-              <Text key="source">
-                <Text style={{ fontWeight: 700 }}>Source: </Text>
-                <LinkText url={p.sourceUrl} />
-              </Text>
-            ) : null,
-            p.tags.length ? <Meta key="tags">{p.tags.join(", ")}</Meta> : null,
-          ],
-        };
-      });
-    case "education":
-      return nonEmpty(data.education, (e) => e.degree + e.institution).map(
-        (e) => ({
-          id: e.id,
-          title: e.degree,
-          subtitle: e.institution,
-          dates: e.dates,
-          location: e.location,
-          ...splitText(e.details),
-        }),
-      );
-    case "certifications":
-      return nonEmpty(data.certifications, (c) => c.name).map((c) => ({
-        id: c.id,
-        title: c.name,
-        subtitle: c.issuer,
-        meta: formatMonthYear(c.date),
-        link: c.url,
-      }));
-    case "awards":
-      return nonEmpty(data.awards, (a) => a.title).map((a) => ({
-        id: a.id,
-        title: a.title,
-        subtitle: a.issuer,
-        meta: formatMonthYear(a.date),
-        ...splitText(a.description),
-      }));
-    default: {
-      if (!key.startsWith("custom:")) return undefined;
-      const section = data.customSections.find((s) => `custom:${s.id}` === key);
-      return nonEmpty(section?.items ?? [], (i) => i.title + i.description).map(
-        (i) => ({
-          id: i.id,
-          title: i.title,
-          subtitle: i.subtitle,
-          dates: i.dates,
-          ...splitText(i.description),
-        }),
-      );
-    }
-  }
-}
-
 function Meta({ children }: { children: React.ReactNode }) {
   const t = useTokens();
   return (
@@ -420,19 +318,9 @@ function Meta({ children }: { children: React.ReactNode }) {
   );
 }
 
-type EntryProps = {
-  title: string;
-  subtitle?: string;
-  dates?: DateRangeValue;
-  location?: string;
-  meta?: string;
-  link?: string;
+type EntryProps = Omit<EntryData, "id"> & {
   /** Section title, for the first entry; kept on the same page as the entry. */
   heading?: React.ReactNode;
-  /** Body start; never separated from the head. */
-  lead?: React.ReactNode;
-  /** Body remainder; may continue on the next page. */
-  rest?: React.ReactNode;
   /** Space above (pt). */
   gap?: number;
 };

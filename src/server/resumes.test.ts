@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { emptyResume } from "@/lib/resume/empty";
 import { defaultTheme } from "@/lib/resume/theme";
+import { DEFAULT_TEMPLATE_ID } from "@/templates/catalog";
 
 import * as repo from "./resume-repo";
 import {
@@ -90,7 +91,10 @@ describe("createResume", () => {
     });
     expect(repo.insertForUser).toHaveBeenCalledWith(
       "user-a",
-      expect.objectContaining({ templateId: "sidebar", data: emptyResume() }),
+      expect.objectContaining({
+        templateId: DEFAULT_TEMPLATE_ID,
+        data: emptyResume(),
+      }),
     );
   });
 

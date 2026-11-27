@@ -30,6 +30,16 @@ const TemplatesPage = () => {
                 <p className="text-sm text-muted-foreground">
                   {template.description}
                 </p>
+                <ul className="mt-1.5 flex flex-wrap gap-1">
+                  {template.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </TemplateLink>
           </li>

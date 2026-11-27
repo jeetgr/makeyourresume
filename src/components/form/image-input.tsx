@@ -1,6 +1,8 @@
 import Dropzone from "react-dropzone";
+import { toast } from "react-toastify";
 
 import { cn } from "@/utils/cn";
+import { resizeImageToDataUrl } from "@/utils/resize-image";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
@@ -19,16 +21,23 @@ export default function ImageInput({ className }: { className?: string }) {
       <div className="flex items-end gap-4">
         <Dropzone
           accept={{
-            "image/*": [".jpeg", ".png", ".svg", ".jpg", ".webp"],
+            "image/*": [".jpeg", ".png", ".jpg", ".webp"],
           }}
           multiple={false}
-          onDrop={(acceptedFiles) => {
-            dispatch(
-              setProfile({
-                fieldName: "image",
-                value: URL.createObjectURL(acceptedFiles[0]),
-              }),
-            );
+          onDrop={async (acceptedFiles) => {
+            const file = acceptedFiles[0];
+            if (!file) return;
+
+            try {
+              dispatch(
+                setProfile({
+                  fieldName: "image",
+                  value: await resizeImageToDataUrl(file),
+                }),
+              );
+            } catch {
+              toast.error("Couldn't read that image. Try another file.");
+            }
           }}
         >
           {({ getRootProps, getInputProps, isDragActive, isDragReject }) => (

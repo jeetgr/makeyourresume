@@ -5,6 +5,38 @@
 /** Class-based so shadcn `dark:` styles never follow the OS; the site is light-only (Q46). */
 @custom-variant dark (&:is(.dark *));
 
+/** PDF fonts, for previews in the theme editor's font picker. */
+@font-face {
+  font-family: "pdf-inter";
+  src: url("/fonts/inter/400.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "pdf-lato";
+  src: url("/fonts/lato/400.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "pdf-ibm-plex-sans";
+  src: url("/fonts/ibm-plex-sans/400.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "pdf-roboto";
+  src: url("/fonts/roboto/400.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "pdf-source-serif-4";
+  src: url("/fonts/source-serif-4/400.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "pdf-eb-garamond";
+  src: url("/fonts/eb-garamond/400.ttf");
+  font-display: swap;
+}
+
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;

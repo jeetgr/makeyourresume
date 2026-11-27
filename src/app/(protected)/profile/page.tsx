@@ -2,7 +2,7 @@
 import { useUser } from "@/stores/auth-store";
 import { setTemplate } from "@/stores/resume-store";
 import { Separator } from "@/components/ui/separator";
-import { LocalTemplate } from "@/components/local-template";
+import { TemplateThumbnail } from "@/components/template-thumbnail";
 import Link from "next/link";
 
 export default function ProfilePage() {
@@ -33,7 +33,7 @@ export default function ProfilePage() {
                   href="/resumes/local"
                   onClick={() => setTemplate(templateId)}
                 >
-                  <LocalTemplate templateId={templateId} />
+                  <TemplateThumbnail templateId={templateId} />
                 </Link>
               </li>
             );

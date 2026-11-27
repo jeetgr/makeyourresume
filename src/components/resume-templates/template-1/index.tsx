@@ -41,14 +41,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
           ref={ref}
           className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/595.27584)] print:![--WIDTHPERCENTAGE:1pt]"
         >
-          <div
-            className="
-              flex aspect-[595.28/841.89] w-full 
-              gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
-              py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
-              text-black
-            "
-          >
+          <div className="flex aspect-[595.28/841.89] w-full gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)] text-black">
             {/* LEFT COLUMN */}
             <div className="w-[calc(var(--WIDTHPERCENTAGE)*122)] space-y-[calc(var(--WIDTHPERCENTAGE)*15)]">
               {/* IMAGE SECTION */}

@@ -30,7 +30,7 @@ export default function DraggableItemWrapper({
 
   return (
     <li ref={setNodeRef} style={style} className="space-y-2 rounded border p-3">
-      <div className="flex  gap-2">
+      <div className="flex gap-2">
         <button
           className="mb-auto cursor-grab touch-none overflow-hidden text-accent/80 transition-colors hover:text-accent active:cursor-grabbing"
           type="button"

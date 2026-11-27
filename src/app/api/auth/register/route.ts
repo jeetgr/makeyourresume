@@ -1,14 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { cookies } from "next/headers";
-
-export async function GET(req: NextRequest) {
-  cookies().set("hello", "world");
-
-  return NextResponse.json({ message: "Hello" });
-}
-
 import * as z from "zod";
 
 const createUserSchema = z.object({

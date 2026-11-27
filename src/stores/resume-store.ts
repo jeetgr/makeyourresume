@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { useShallow } from "zustand/react/shallow";
 
+import type { ResumeDoc } from "@/lib/resume/doc";
 import { emptyResume } from "@/lib/resume/empty";
 import { migrate } from "@/lib/resume/migrate";
 import * as ops from "@/lib/resume/ops";
@@ -78,11 +80,20 @@ export const updateItem = <K extends ListKey>(
 export const removeItem = (key: ListKey, id: string) =>
   setData((d) => ops.removeItem(d, key, id));
 
+export const duplicateItem = (key: ListKey, id: string) =>
+  setData((d) => ops.duplicateItem(d, key, id));
+
 export const moveItem = (key: ListKey, from: number, to: number) =>
   setData((d) => ops.moveItem(d, key, from, to));
 
 export const toggleSection = (section: string, hidden?: boolean) =>
   setData((d) => ops.toggleSection(d, section, hidden));
+
+export const moveSection = (from: number, to: number) =>
+  setData((d) => ops.moveSection(d, from, to));
+
+/** Clears content; theme and template are kept. */
+export const resetResume = () => setData(() => emptyResume());
 
 export const setTheme = (patch: Partial<Theme>) =>
   useResumeStore.setState((s) => {
@@ -91,3 +102,20 @@ export const setTheme = (patch: Partial<Theme>) =>
 
 export const setTemplate = (templateId: string) =>
   useResumeStore.setState({ templateId });
+
+export const localResumeDoc: ResumeDoc = {
+  useSelect: (selector) => useResumeStore(useShallow(selector)),
+  ops: {
+    setProfile,
+    addItem,
+    updateItem,
+    removeItem,
+    duplicateItem,
+    moveItem,
+    toggleSection,
+    moveSection,
+    setTheme,
+    setTemplate,
+    reset: resetResume,
+  },
+};

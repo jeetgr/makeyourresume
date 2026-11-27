@@ -96,3 +96,35 @@ export function moveSection(
     layout: { ...d.layout, order: move(d.layout.order, from, to) },
   };
 }
+
+/** Inserts a copy (fresh id) right after the original. */
+export function duplicateItem(
+  d: ResumeData,
+  key: ListKey,
+  id: string,
+): ResumeData {
+  const items = list(d, key);
+  const index = items.findIndex((item) => item.id === id);
+  if (index === -1) return d;
+
+  const copy = { ...structuredClone(items[index]), id: crypto.randomUUID() };
+  const next = {
+    ...d,
+    [key]: items.toSpliced(index + 1, 0, copy),
+  };
+  if (key !== "customSections") return next;
+
+  const order = d.layout.order;
+  const at = order.indexOf(customKey(id));
+  return {
+    ...next,
+    layout: {
+      ...d.layout,
+      order: order.toSpliced(
+        at === -1 ? order.length : at + 1,
+        0,
+        customKey(copy.id),
+      ),
+    },
+  };
+}

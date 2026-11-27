@@ -5,6 +5,7 @@ import { formatDateRange, formatMonthYear } from "./format";
 import { migrate } from "./migrate";
 import {
   addItem,
+  duplicateItem,
   move,
   moveItem,
   moveSection,
@@ -108,6 +109,23 @@ describe("ops", () => {
     expect(d1.layout.hidden).toEqual(["skills"]);
     expect(toggleSection(d1, "skills").layout.hidden).toEqual([]);
     expect(toggleSection(d1, "skills", true).layout.hidden).toEqual(["skills"]);
+  });
+
+  it("duplicateItem inserts copy after original", () => {
+    const d = ["a", "b"].reduce(
+      (acc, name) => addItem(acc, "interests", { id: name, name }),
+      emptyResume(),
+    );
+    const next = duplicateItem(d, "interests", "a").interests;
+    expect(next.map((i) => i.name)).toEqual(["a", "a", "b"]);
+    expect(next[1].id).not.toBe("a");
+
+    const c = duplicateItem(
+      addItem(emptyResume(), "customSections", { id: "x" }),
+      "customSections",
+      "x",
+    );
+    expect(c.layout.order.at(-1)).toBe(`custom:${c.customSections[1].id}`);
   });
 
   it("moveSection reorders layout", () => {

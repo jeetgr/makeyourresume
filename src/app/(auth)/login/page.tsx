@@ -6,8 +6,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,13 +18,14 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+import { api } from "@/lib/api";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/auth/authSlice";
+import { setUser, type User } from "@/redux/features/auth/authSlice";
 
 const loginFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email!" }),
+  email: z.email("Invalid email!"),
   password: z
-    .string({ required_error: "Password is required!" })
+    .string("Password is required!")
     .min(8, "Password length must be between 8 and 255 characters.")
     .max(255, "Password length must be between 8 and 255 characters."),
 });
@@ -44,17 +44,20 @@ export default function RegisterPage() {
   });
 
   const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-    startTransition(() => {
-      axios
-        .post("/api/auth/login", values)
-        .then(({ data }) => {
-          toast.success(data.message);
-          router.push("/");
-          dispatch(setUser(data.user));
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message || "An error occurred!");
-        });
+    startTransition(async () => {
+      try {
+        const data = await api<{ message: string; user: User }>(
+          "/api/auth/login",
+          {
+            body: values,
+          },
+        );
+        toast.success(data.message);
+        router.push("/");
+        dispatch(setUser(data.user));
+      } catch (error) {
+        toast.error((error as Error).message);
+      }
     });
   };
 

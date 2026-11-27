@@ -1,5 +1,5 @@
 import Dropzone from "react-dropzone";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import { cn } from "@/utils/cn";
 import { resizeImageToDataUrl } from "@/utils/resize-image";

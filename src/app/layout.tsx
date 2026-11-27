@@ -6,9 +6,7 @@ import "./globals.css";
 
 import Header from "@/components/header";
 import { StoreProvider } from "@/redux/store-provider";
-import { Bounce, ToastContainer } from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "@/components/ui/sonner";
 import { RefreshUser } from "@/components/refresh-user";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
@@ -39,11 +37,7 @@ export default function RootLayout({
           <Header />
           <main className="mx-auto max-w-310 px-4">
             {children}
-            <ToastContainer
-              autoClose={3000}
-              theme="colored"
-              transition={Bounce}
-            />
+            <Toaster richColors position="top-right" />
           </main>
           <RefreshUser />
         </StoreProvider>

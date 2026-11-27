@@ -6,9 +6,9 @@ import Link from "next/link";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,9 +25,9 @@ const registerFormSchema = z.object({
     .string()
     .min(3, "Name length must be between 3 and 255 characters.")
     .max(255, "Name length must be between 3 and 255 characters."),
-  email: z.string().email({ message: "Invalid email!" }),
+  email: z.email("Invalid email!"),
   password: z
-    .string({ required_error: "Password is required!" })
+    .string("Password is required!")
     .min(8, "Password length must be between 8 and 255 characters.")
     .max(255, "Password length must be between 8 and 255 characters."),
 });
@@ -46,17 +46,17 @@ export default function RegisterPage() {
   });
 
   const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
-    startTransition(() => {
-      axios
-        .post("/api/auth/register", values)
-        .then(({ data }) => {
-          toast.success(data.message);
-
-          router.push("/login");
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message || "An error occurred!");
+    startTransition(async () => {
+      try {
+        const data = await api("/api/auth/register", {
+          body: values,
         });
+        toast.success(data.message);
+
+        router.push("/login");
+      } catch (error) {
+        toast.error((error as Error).message);
+      }
     });
   };
 

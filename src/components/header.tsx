@@ -19,8 +19,8 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 const navLinks = [
   {
@@ -39,16 +39,14 @@ export default function Header() {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  function handleLogout() {
-    axios
-      .delete("/api/auth/logout")
-      .then(({ data }) => {
-        toast.success(data.message);
-        dispatch(setUser(null));
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message || "An error occurred!");
-      });
+  async function handleLogout() {
+    try {
+      const data = await api("/api/auth/logout", { method: "DELETE" });
+      toast.success(data.message);
+      dispatch(setUser(null));
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   }
 
   return (

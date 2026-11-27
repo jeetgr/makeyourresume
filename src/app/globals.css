@@ -60,6 +60,26 @@
   --text-4xl: clamp(2.4883rem, 2.2923rem + 0.9799vi, 3.0518rem);
   --text-5xl: clamp(2.986rem, 2.6977rem + 1.4412vi, 3.8147rem);
   --text-6xl: clamp(3.583rem, 3.1023rem + 2.4035vi, 4.7684rem);
+
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-dash: dash 1.4s linear infinite;
+  --animate-caret: caret 1s steps(1) infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
 }
 
 @theme inline {
@@ -158,6 +178,114 @@
   );
   padding-inline: 0.06em;
   box-decoration-break: clone;
+}
+
+/* fx (Q65): CSS-only effects. Static at rest; animation only w/o reduced motion. */
+
+/** Dot grid backdrop, faded toward the edges. */
+@utility bg-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 22%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(
+    ellipse 65% 60% at 50% 40%,
+    #000 30%,
+    transparent 75%
+  );
+}
+
+/** Light sweep across a button. */
+@utility sheen {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      oklch(1 0 0 / 0.28) 50%,
+      transparent 65%
+    );
+    transform: translateX(-100%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    &::after {
+      animation: sheen 3.5s ease-in-out infinite;
+    }
+  }
+}
+@keyframes sheen {
+  0%,
+  40% {
+    transform: translateX(-100%);
+  }
+  80%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/** Highlighter light travelling around the border. Parent needs a border-radius. */
+@utility border-beam {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0 70%,
+      var(--highlight) 85%,
+      transparent 100%
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    &::before {
+      animation: beam 7s linear infinite;
+    }
+  }
+}
+@keyframes beam {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+/** Smooth `<details>` open where `::details-content` is supported. */
+@utility details-animate {
+  interpolate-size: allow-keywords;
+  &::details-content {
+    block-size: 0;
+    overflow: clip;
+  }
+  &[open]::details-content {
+    block-size: auto;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    &::details-content {
+      transition:
+        block-size 0.3s ease,
+        content-visibility 0.3s allow-discrete;
+    }
+  }
 }
 
 /* HTML: <div class="loader"></div> */

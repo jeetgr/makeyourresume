@@ -24,6 +24,8 @@ type ResumeDocOps = {
   setTemplate: (templateId: string) => void;
   /** Replaces content (default: empty); theme and template are kept. */
   reset: (data?: ResumeData) => void;
+  /** Replaces content, theme and template at once (import). */
+  load: (state: ResumeDocState) => void;
 };
 
 /**

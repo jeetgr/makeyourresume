@@ -6,11 +6,14 @@ import { toast } from "sonner";
 import {
   Download,
   EllipsisVertical,
+  FileDown,
+  FileUp,
   LayoutTemplate,
   RotateCcw,
 } from "lucide-react";
 
 import { cn } from "@/utils/cn";
+import { downloadBlob, fileSlug } from "@/utils/download";
 import { renderPdf } from "@/pdf/use-pdf";
 import { getTemplateMeta, templateCatalog } from "@/templates/catalog";
 
@@ -29,6 +32,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -46,6 +50,7 @@ import { ProfilePanel } from "./profile-panel";
 import { useResumeDoc, useResumeOps } from "./resume-doc";
 import { SectionsList } from "./sections-list";
 import { ThemeEditor } from "./theme-editor";
+import { useImportExport } from "./use-import-export";
 
 type Tab = "edit" | "preview";
 
@@ -101,6 +106,7 @@ function TopBar({
 }) {
   const { reset } = useResumeOps();
   const [confirmReset, setConfirmReset] = useState(false);
+  const io = useImportExport();
 
   return (
     <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -121,10 +127,21 @@ function TopBar({
         >
           <EllipsisVertical />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuItem render={<Link href="/templates" />}>
             <LayoutTemplate /> Browse templates
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={io.openImport}>
+            <FileUp /> Import…
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={io.exportJson}>
+            <FileDown /> Export JSON
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={io.exportJsonResume}>
+            <FileDown /> Export JSON Resume
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
             onClick={() => setConfirmReset(true)}
@@ -134,6 +151,7 @@ function TopBar({
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {io.elements}
       <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -190,15 +208,6 @@ function TemplateSelect() {
   );
 }
 
-const fileName = (...parts: string[]) =>
-  ["resume", ...parts]
-    .join("-")
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "") + ".pdf";
-
 /** Saves the previewed PDF; renders a fresh one if the preview is behind. */
 function DownloadButton() {
   const { blob, loading } = usePdfState();
@@ -210,12 +219,7 @@ function DownloadButton() {
     try {
       const file = !loading && blob ? blob : await renderPdf(input);
       const { firstName, lastName } = input.data.profile;
-      const url = URL.createObjectURL(file);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = fileName(firstName, lastName);
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      downloadBlob(file, `${fileSlug("resume", firstName, lastName)}.pdf`);
     } catch {
       toast.error("Couldn't create the PDF. Try again.");
     } finally {

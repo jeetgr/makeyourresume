@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 
+import { ImportResumeButton } from "@/features/resumes/import-resume-button";
 import { MigrateGuestEffect } from "@/features/resumes/migrate-guest-effect";
 import { NewResumeButton } from "@/features/resumes/new-resume-button";
 import { ResumeCard } from "@/features/resumes/resume-card";
@@ -23,7 +24,10 @@ export default async function ResumesPage({
       {migrate === "1" && <MigrateGuestEffect />}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-accent">My resumes</h1>
-        <NewResumeButton />
+        <div className="flex gap-2">
+          <ImportResumeButton />
+          <NewResumeButton />
+        </div>
       </div>
 
       {resumes.length === 0 ? (
@@ -31,9 +35,12 @@ export default async function ResumesPage({
           <FileText className="size-10 text-muted-foreground" />
           <p className="font-semibold">No resumes yet</p>
           <p className="text-sm text-muted-foreground">
-            Create one from a template to get started.
+            Create one from a template or import a JSON file.
           </p>
-          <NewResumeButton />
+          <div className="flex gap-2">
+            <ImportResumeButton />
+            <NewResumeButton />
+          </div>
         </div>
       ) : (
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -30,6 +30,12 @@ export function createDocOps(store: DraftSetter): ResumeDoc["ops"] {
       store.setState((s) => {
         Object.assign(s.theme, patch);
       }),
+    load: ({ data, theme, templateId }) =>
+      store.setState((s) => {
+        s.data = structuredClone(data);
+        s.theme = structuredClone(theme);
+        s.templateId = templateId;
+      }),
     setTemplate: (templateId) =>
       store.setState((s) => {
         s.templateId = templateId;

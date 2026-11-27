@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { emptyResume } from "@/lib/resume/empty";
+import { MAX_RESUME_BYTES } from "@/lib/resume/limits";
 import { defaultTheme } from "@/lib/resume/theme";
 
 import {
-  MAX_RESUME_BYTES,
   parseResumeInput,
   resumeContentSchema,
   saveInputSchema,

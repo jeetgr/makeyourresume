@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import {
@@ -14,7 +12,7 @@ import { TextInput } from "@/components/form/form-input";
 
 type InterestEditorProps = Interest;
 
-export const InterestEditor = memo(({ id, name }: InterestEditorProps) => {
+export const InterestEditor = ({ id, name }: InterestEditorProps) => {
   const dispatch = useAppDispatch();
 
   const removeInterest = (id: string) => {
@@ -42,6 +40,4 @@ export const InterestEditor = memo(({ id, name }: InterestEditorProps) => {
       </div>
     </DraggableItemWrapper>
   );
-});
-
-InterestEditor.displayName = "InterestEditor";
+};

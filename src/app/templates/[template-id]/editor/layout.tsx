@@ -1,5 +1,5 @@
 import PreviewTemplate from "@/components/preview-template";
-import { getTemplateComponentById } from "@/lib/templateList";
+import { templateComponents } from "@/lib/templateList";
 
 type ResumeFormLayoutProps = {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ const ResumeFormLayout = async ({
 }: ResumeFormLayoutProps) => {
   const { "template-id": templateId } = await params;
 
-  const Component = getTemplateComponentById(templateId);
+  const Component = templateComponents[templateId];
   return (
     <section className="relative min-h-[100svh] py-20">
       <h1 className="text-4xl font-bold leading-[1.1]">

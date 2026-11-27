@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import {
@@ -14,54 +12,51 @@ import { TextInput } from "@/components/form/form-input";
 
 type PersonalProfileEditorProps = PersonalProfile;
 
-export const PersonalProfileEditor = memo(
-  ({ id, fieldName, fieldValue }: PersonalProfileEditorProps) => {
-    const dispatch = useAppDispatch();
+export const PersonalProfileEditor = ({
+  id,
+  fieldName,
+  fieldValue,
+}: PersonalProfileEditorProps) => {
+  const dispatch = useAppDispatch();
 
-    const setPersonalProfile = (personalProfile: PersonalProfile) => {
-      dispatch(
-        setField({ fieldName: "personalProfiles", value: personalProfile }),
-      );
-    };
-
-    const removePersonalProfile = (id: string) => {
-      dispatch(removeField({ fieldName: "personalProfiles", id }));
-    };
-
-    return (
-      <DraggableItemWrapper
-        id={id}
-        preview={
-          <PersonalProfilePreview
-            fieldName={fieldName}
-            fieldValue={fieldValue}
-          />
-        }
-        onRemoveClick={() => removePersonalProfile(id)}
-        removeSrOnlyLabel={`Remove field ${fieldName} with value ${fieldValue}`}
-      >
-        <div className="flex flex-wrap items-end gap-2">
-          <TextInput
-            label="Field Name"
-            placeholder="Enter the field name"
-            value={fieldName}
-            setValue={(value) =>
-              setPersonalProfile({ id, fieldValue, fieldName: value })
-            }
-          />
-
-          <TextInput
-            label="Field Value"
-            placeholder="Enter the field value"
-            value={fieldValue}
-            setValue={(value) =>
-              setPersonalProfile({ id, fieldName, fieldValue: value })
-            }
-          />
-        </div>
-      </DraggableItemWrapper>
+  const setPersonalProfile = (personalProfile: PersonalProfile) => {
+    dispatch(
+      setField({ fieldName: "personalProfiles", value: personalProfile }),
     );
-  },
-);
+  };
 
-PersonalProfileEditor.displayName = "PersonalProfileEditor";
+  const removePersonalProfile = (id: string) => {
+    dispatch(removeField({ fieldName: "personalProfiles", id }));
+  };
+
+  return (
+    <DraggableItemWrapper
+      id={id}
+      preview={
+        <PersonalProfilePreview fieldName={fieldName} fieldValue={fieldValue} />
+      }
+      onRemoveClick={() => removePersonalProfile(id)}
+      removeSrOnlyLabel={`Remove field ${fieldName} with value ${fieldValue}`}
+    >
+      <div className="flex flex-wrap items-end gap-2">
+        <TextInput
+          label="Field Name"
+          placeholder="Enter the field name"
+          value={fieldName}
+          setValue={(value) =>
+            setPersonalProfile({ id, fieldValue, fieldName: value })
+          }
+        />
+
+        <TextInput
+          label="Field Value"
+          placeholder="Enter the field value"
+          value={fieldValue}
+          setValue={(value) =>
+            setPersonalProfile({ id, fieldName, fieldValue: value })
+          }
+        />
+      </div>
+    </DraggableItemWrapper>
+  );
+};

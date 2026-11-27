@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import {
@@ -15,7 +13,7 @@ import { TextArea } from "@/components/form/form-textarea";
 
 type ProjectEditorProps = Project;
 
-export const ProjectEditor = memo((project: ProjectEditorProps) => {
+export const ProjectEditor = (project: ProjectEditorProps) => {
   const dispatch = useAppDispatch();
 
   const setProject = (project: Project) => {
@@ -92,6 +90,4 @@ export const ProjectEditor = memo((project: ProjectEditorProps) => {
       </div>
     </DraggableItemWrapper>
   );
-});
-
-ProjectEditor.displayName = "ProjectEditor";
+};

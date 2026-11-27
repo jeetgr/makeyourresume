@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useAppDispatch } from "@/redux/hooks";
 
 import { TextInput } from "@/components/form/form-input";
@@ -15,7 +13,7 @@ import { SocialPreview } from "./social-preview";
 
 type SocialEditorProps = Social;
 
-export const SocialEditor = memo(({ id, name, url }: SocialEditorProps) => {
+export const SocialEditor = ({ id, name, url }: SocialEditorProps) => {
   const dispatch = useAppDispatch();
 
   const removeSocial = (id: string) => {
@@ -50,6 +48,4 @@ export const SocialEditor = memo(({ id, name, url }: SocialEditorProps) => {
       </div>
     </DraggableItemWrapper>
   );
-});
-
-SocialEditor.displayName = "SocialEditor";
+};

@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { Download, Pencil } from "lucide-react";
 import Link from "next/link";
 
-import { getTemplateComponentById } from "@/lib/templateList";
+import { templateComponents } from "@/lib/templateList";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
@@ -35,7 +35,7 @@ const ResumeOutputPage = () => {
     `,
   });
 
-  const Template = getTemplateComponentById(templateId);
+  const Template = templateComponents[templateId];
 
   return (
     <div className="flex flex-col gap-4 py-20 md:py-24 lg:flex-row">

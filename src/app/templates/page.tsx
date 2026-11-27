@@ -1,9 +1,7 @@
-import Link from "next/link";
-
 import { templateCatalog } from "@/templates/catalog";
 
 import { TemplateThumbnail } from "@/components/template-thumbnail";
-import { AddTemplate } from "./_component/add-template";
+import { TemplateLink } from "./template-link";
 
 const TemplatesPage = () => {
   return (
@@ -20,25 +18,20 @@ const TemplatesPage = () => {
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {templateCatalog.map((template, i) => (
           <li key={template.id}>
-            <Link
-              href="/resumes/local"
+            <TemplateLink
+              templateId={template.id}
               className="group block space-y-2 rounded focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
-              <AddTemplate templateId={template.id}>
-                <div className="overflow-hidden rounded border-2 shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md">
-                  <TemplateThumbnail
-                    templateId={template.id}
-                    priority={i < 4}
-                  />
-                </div>
-              </AddTemplate>
+              <div className="overflow-hidden rounded border-2 shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+                <TemplateThumbnail templateId={template.id} priority={i < 4} />
+              </div>
               <div>
                 <p className="font-semibold">{template.name}</p>
                 <p className="text-sm text-muted-foreground">
                   {template.description}
                 </p>
               </div>
-            </Link>
+            </TemplateLink>
           </li>
         ))}
       </ul>

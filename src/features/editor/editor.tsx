@@ -49,13 +49,20 @@ import { ThemeEditor } from "./theme-editor";
 
 type Tab = "edit" | "preview";
 
-export function Editor() {
+/** `title`/`status` slots let the saved-resume page add rename + save state. */
+export function Editor({
+  title = <h1 className="text-2xl font-bold">My Resume</h1>,
+  status,
+}: {
+  title?: React.ReactNode;
+  status?: React.ReactNode;
+}) {
   const [tab, setTab] = useState<Tab>("edit");
 
   return (
     <PdfProvider>
       <section className="py-20">
-        <TopBar />
+        <TopBar title={title} status={status} />
 
         <Tabs
           value={tab}
@@ -85,13 +92,22 @@ export function Editor() {
   );
 }
 
-function TopBar() {
+function TopBar({
+  title,
+  status,
+}: {
+  title: React.ReactNode;
+  status?: React.ReactNode;
+}) {
   const { reset } = useResumeOps();
   const [confirmReset, setConfirmReset] = useState(false);
 
   return (
     <div className="mb-6 flex flex-wrap items-center gap-3">
-      <h1 className="mr-auto text-2xl font-bold">My Resume</h1>
+      <div className="mr-auto flex min-w-0 items-center gap-3">
+        {title}
+        {status}
+      </div>
 
       <TemplateSelect />
       <ThemeEditor />

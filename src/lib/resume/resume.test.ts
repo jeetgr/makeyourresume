@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { emptyItem, emptyResume } from "./empty";
+import { emptyItem, emptyResume, isEmptyResume } from "./empty";
 import { formatDateRange, formatMonthYear } from "./format";
 import { migrate } from "./migrate";
 import {
@@ -17,6 +17,20 @@ import {
 import { sampleResume } from "./sample";
 import { SECTION_KEYS, resumeDataSchema } from "./schema";
 import { defaultTheme, themeSchema } from "./theme";
+
+describe("isEmptyResume", () => {
+  it("ignores generated ids", () => {
+    expect(isEmptyResume(emptyResume())).toBe(true);
+  });
+
+  it("detects content, items and layout changes", () => {
+    const d = emptyResume();
+    expect(isEmptyResume(setProfile(d, { firstName: "A" }))).toBe(false);
+    expect(isEmptyResume(addItem(d, "experience"))).toBe(false);
+    expect(isEmptyResume(moveSection(d, 0, 1))).toBe(false);
+    expect(isEmptyResume(sampleResume)).toBe(false);
+  });
+});
 
 describe("schema", () => {
   it("parses empty resume with defaults", () => {

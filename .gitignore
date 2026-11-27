@@ -38,3 +38,7 @@ next-env.d.ts
 todo.md
 .env
 __temp__
+
+# playwright
+/test-results/
+/playwright-report/

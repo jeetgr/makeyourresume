@@ -24,6 +24,7 @@ export const RefreshUser = () => {
 
         dispatch(setUser(res.data.user));
       } catch (error) {
+        if (axios.isCancel(error)) return;
         dispatch(setUser(null));
         console.log(error);
       }

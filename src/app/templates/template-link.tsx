@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { authClient } from "@/lib/auth-client";
 import { createResume } from "@/server/resumes";
-import { setTemplate } from "@/stores/resume-store";
+import { startLocalResume } from "@/stores/resume-store";
 
 /** Signed in → new saved resume with this template; guest → local editor. */
 export function TemplateLink({
@@ -22,7 +22,7 @@ export function TemplateLink({
   const { data: session } = authClient.useSession();
 
   async function onClick(e: React.MouseEvent) {
-    if (!session) return setTemplate(templateId);
+    if (!session) return startLocalResume(templateId);
     e.preventDefault();
     const res = await createResume({ templateId });
     if (res.ok) router.push(`/resumes/${res.id}`);

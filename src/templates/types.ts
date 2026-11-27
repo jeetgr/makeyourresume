@@ -10,6 +10,7 @@ export type TemplateMeta = {
   id: string;
   name: string;
   description: string;
+  tags: string[];
   defaultTheme: Partial<Theme>;
 };
 

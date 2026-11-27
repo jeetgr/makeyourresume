@@ -5,18 +5,21 @@ import { useShallow } from "zustand/react/shallow";
 
 import type { ResumeDoc, ResumeDocState } from "@/lib/resume/doc";
 import { createDocOps } from "@/lib/resume/doc-ops";
-import { emptyResume } from "@/lib/resume/empty";
+import { emptyResume, isEmptyResume } from "@/lib/resume/empty";
 import { migrate } from "@/lib/resume/migrate";
-import { defaultTheme, themeSchema } from "@/lib/resume/theme";
+import { themeSchema } from "@/lib/resume/theme";
+import { getTemplateMeta, templateTheme } from "@/templates/catalog";
 
 type ResumeState = ResumeDocState;
+
+const initialTheme = templateTheme(getTemplateMeta(null));
 
 /** Local (signed-out) resume. Hydrated client-side by `ResumeStoreHydrator`. */
 const useResumeStore = create<ResumeState>()(
   persist(
     immer(() => ({
       data: emptyResume(),
-      theme: defaultTheme,
+      theme: initialTheme,
       templateId: null,
     })),
     {
@@ -30,7 +33,7 @@ const useResumeStore = create<ResumeState>()(
         return {
           ...current,
           data: migrate(state.data),
-          theme: themeSchema.catch(defaultTheme).parse(state.theme),
+          theme: themeSchema.catch(initialTheme).parse(state.theme),
           templateId: state.templateId ?? null,
         };
       },
@@ -40,8 +43,13 @@ const useResumeStore = create<ResumeState>()(
 
 export const rehydrateResumeStore = () => useResumeStore.persist.rehydrate();
 
-export const setTemplate = (templateId: string) =>
-  useResumeStore.setState({ templateId });
+/** Gallery pick: sets the template; a still-empty resume also takes its default theme. */
+export const startLocalResume = (templateId: string) =>
+  useResumeStore.setState((s) => {
+    s.templateId = templateId;
+    if (isEmptyResume(s.data))
+      s.theme = templateTheme(getTemplateMeta(templateId));
+  });
 
 /** Persisted guest resume (after `rehydrateResumeStore`). */
 export const getLocalResume = (): ResumeDocState => {
@@ -52,7 +60,7 @@ export const getLocalResume = (): ResumeDocState => {
 export const clearLocalResume = () =>
   useResumeStore.setState({
     data: emptyResume(),
-    theme: defaultTheme,
+    theme: initialTheme,
     templateId: null,
   });
 

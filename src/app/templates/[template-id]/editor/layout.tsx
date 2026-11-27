@@ -3,13 +3,15 @@ import { getTemplateComponentById } from "@/lib/templateList";
 
 type ResumeFormLayoutProps = {
   children: React.ReactNode;
-  params: { "template-id": string };
+  params: Promise<{ "template-id": string }>;
 };
 
-const ResumeFormLayout = ({
+const ResumeFormLayout = async ({
   children,
-  params: { "template-id": templateId },
+  params,
 }: ResumeFormLayoutProps) => {
+  const { "template-id": templateId } = await params;
+
   const Component = getTemplateComponentById(templateId);
   return (
     <section className="relative min-h-[100svh] py-20">

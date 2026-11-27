@@ -23,7 +23,7 @@ export const RefreshUser = () => {
         );
 
         dispatch(setUser(res.data.user));
-      } catch (error: any) {
+      } catch (error) {
         dispatch(setUser(null));
         console.log(error);
       }

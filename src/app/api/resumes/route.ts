@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 export async function POST(req: NextRequest) {
   const templateId = (await req.json()).templateId as string;
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken");
 
   if (!accessToken) {

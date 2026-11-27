@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest) {
-  const cookieStore = cookies();
+export async function DELETE() {
+  const cookieStore = await cookies();
 
   cookieStore.set("accessToken", "", {
     expires: new Date(0),

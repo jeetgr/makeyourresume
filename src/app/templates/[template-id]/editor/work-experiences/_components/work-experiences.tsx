@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectWorkExperiences,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { WorkExperienceEditor } from "./work-experience-editor";
 import { Button } from "@/components/ui/button";
 
 export const WorkExperiences = () => {
-  const dispatch = useAppDispatch();
-  const workExperiences = useAppSelector(selectWorkExperiences);
+  const workExperiences = useList("experience");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "workExperiences",
-        value: arrayMove(workExperiences, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("experience", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -43,7 +28,11 @@ export const WorkExperiences = () => {
       <Button
         type="button"
         variant="accent"
-        onClick={() => dispatch(addField("workExperiences"))}
+        onClick={() =>
+          addItem("experience", {
+            bullets: [{ id: crypto.randomUUID(), text: "" }],
+          })
+        }
       >
         Add Work Experience
       </Button>

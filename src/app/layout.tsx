@@ -5,9 +5,9 @@ import NextJSTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 import Header from "@/components/header";
-import { StoreProvider } from "@/redux/store-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { RefreshUser } from "@/components/refresh-user";
+import { ResumeStoreHydrator } from "@/components/resume-store-hydrator";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -32,15 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.variable}>
       <body className="relative">
-        <StoreProvider>
-          <NextJSTopLoader color="#ffb300" showSpinner={false} />
-          <Header />
-          <main className="mx-auto max-w-310 px-4">
-            {children}
-            <Toaster richColors position="top-right" />
-          </main>
-          <RefreshUser />
-        </StoreProvider>
+        <NextJSTopLoader color="#ffb300" showSpinner={false} />
+        <Header />
+        <main className="mx-auto max-w-310 px-4">
+          {children}
+          <Toaster richColors position="top-right" />
+        </main>
+        <RefreshUser />
+        <ResumeStoreHydrator />
       </body>
     </html>
   );

@@ -1,48 +1,31 @@
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
-
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectProfile } from "@/redux/features/resume-data/resumeDataSlice";
-
-import { dummyData } from "../../dummy-data";
+import { useTemplate } from "../../components/template-context";
 
 export default function AboutSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-
-  const { firstName, lastName, professionalTitle, about } =
-    useAppSelector(selectProfile);
+  const { data, theme } = useTemplate();
+  const { firstName, lastName, headline, summary } = data.profile;
+  const name = [firstName, lastName].filter(Boolean).join(" ");
+  const showSummary = summary && !data.layout.hidden.includes("summary");
 
   return (
     <div
       className="px-[calc(var(--WIDTHPERCENTAGE)*15)] py-[calc(var(--WIDTHPERCENTAGE)*8)] text-white"
-      style={{ backgroundColor: accentColor }}
+      style={{ backgroundColor: theme.accent }}
     >
-      {/* NAME */}
-      {(!isDoubleHyphens(firstName) || !isDoubleHyphens(lastName)) && (
+      {name && (
         <h1 className="text-[calc(var(--WIDTHPERCENTAGE)*22)] leading-none font-medium">
-          {!isDoubleHyphens(firstName) && (
-            <span>{firstName || dummyData.profile.firstName}</span>
-          )}{" "}
-          {!isDoubleHyphens(lastName) && (
-            <span>{lastName || dummyData.profile.lastName}</span>
-          )}
+          {name}
         </h1>
       )}
 
-      {/* PROFESSIONAL TITLE */}
-      {!isDoubleHyphens(professionalTitle) && (
+      {headline && (
         <p className="relative mb-[calc(var(--WIDTHPERCENTAGE)*3)] w-fit pr-[calc(var(--WIDTHPERCENTAGE)*6)] text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-tight after:absolute after:top-[105%] after:left-0 after:h-[calc(var(--WIDTHPERCENTAGE)*0.789)] after:w-full after:bg-white">
-          {professionalTitle || dummyData.profile.professionalTitle}
+          {headline}
         </p>
       )}
 
-      {/* ABOUT */}
-      {!isDoubleHyphens(about) && (
+      {showSummary && (
         <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-          {about || dummyData.profile.about}
+          {summary}
         </p>
       )}
     </div>

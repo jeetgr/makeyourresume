@@ -1,5 +1,5 @@
 import PreviewTemplate from "@/components/preview-template";
-import { templateComponents } from "@/lib/templateList";
+import { LocalTemplate } from "@/components/local-template";
 
 type ResumeFormLayoutProps = {
   children: React.ReactNode;
@@ -12,25 +12,20 @@ const ResumeFormLayout = async ({
 }: ResumeFormLayoutProps) => {
   const { "template-id": templateId } = await params;
 
-  const Component = templateComponents[templateId];
   return (
     <section className="relative min-h-svh py-20">
       <h1 className="text-4xl leading-[1.1] font-bold">
         Let<span className="text-primary">&apos;</span>s Start
       </h1>
-      <p className="pb-3 text-sm">
-        <span className="font-bold">Tip:</span> Just type double hyphens (
-        <span className="font-bold text-primary">--</span>) to skip a field.
-      </p>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2 lg:col-span-1">{children}</div>
         <div className="hidden aspect-[595.28/841.89] overflow-hidden rounded border lg:block">
-          {Component ? <Component /> : "Template not found"}
+          <LocalTemplate templateId={templateId} />
         </div>
         <PreviewTemplate
           className="fixed right-4 bottom-4 space-x-1 px-4 py-2.5 lg:hidden"
-          templateComponent={Component ? <Component /> : "Template not found"}
+          templateComponent=<LocalTemplate templateId={templateId} />
         />
       </div>
     </section>

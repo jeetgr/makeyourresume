@@ -3,12 +3,7 @@
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  setProfile,
-  selectProfile,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { setProfile, useProfile } from "@/stores/resume-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
@@ -18,38 +13,8 @@ import { TextArea } from "@/components/form/form-textarea";
 
 const ProfilePage = () => {
   const templateId = useTemplateIdParam();
-  const dispatch = useAppDispatch();
-
-  const {
-    firstName,
-    lastName,
-    professionalTitle,
-    phone,
-    email,
-    address,
-    about,
-  } = useAppSelector(selectProfile);
-
-  const setFirstName = (value: string) =>
-    dispatch(setProfile({ fieldName: "firstName", value }));
-
-  const setLastName = (value: string) =>
-    dispatch(setProfile({ fieldName: "lastName", value }));
-
-  const setProfessionalTitle = (value: string) =>
-    dispatch(setProfile({ fieldName: "professionalTitle", value }));
-
-  const setPhone = (value: string) =>
-    dispatch(setProfile({ fieldName: "phone", value }));
-
-  const setEmail = (value: string) =>
-    dispatch(setProfile({ fieldName: "email", value }));
-
-  const setAddress = (value: string) =>
-    dispatch(setProfile({ fieldName: "address", value }));
-
-  const setAbout = (value: string) =>
-    dispatch(setProfile({ fieldName: "about", value }));
+  const { firstName, lastName, headline, phone, email, location, summary } =
+    useProfile();
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -84,7 +49,7 @@ const ProfilePage = () => {
           placeholder="Enter your first name"
           value={firstName}
           className="col-span-2 sm:col-span-1"
-          setValue={setFirstName}
+          setValue={(value) => setProfile({ firstName: value })}
         />
 
         <TextInput
@@ -92,22 +57,22 @@ const ProfilePage = () => {
           placeholder="Enter your last name"
           value={lastName}
           className="col-span-2 sm:col-span-1"
-          setValue={setLastName}
+          setValue={(value) => setProfile({ lastName: value })}
         />
 
         <TextInput
           label="Profession Title"
           placeholder="Enter your profession title"
           className="col-span-2 sm:col-span-1"
-          value={professionalTitle}
-          setValue={setProfessionalTitle}
+          value={headline}
+          setValue={(value) => setProfile({ headline: value })}
         />
 
         <TextInput
           label="Phone Number"
           placeholder="Enter your phone number"
           value={phone}
-          setValue={setPhone}
+          setValue={(value) => setProfile({ phone: value })}
         />
 
         <TextInput
@@ -115,23 +80,23 @@ const ProfilePage = () => {
           placeholder="Enter your email address"
           className="col-span-2"
           value={email}
-          setValue={setEmail}
+          setValue={(value) => setProfile({ email: value })}
         />
 
         <TextInput
           label="Address"
           placeholder="Enter your address"
           className="col-span-2"
-          value={address}
-          setValue={setAddress}
+          value={location}
+          setValue={(value) => setProfile({ location: value })}
         />
 
         <TextArea
           label="About You"
           placeholder="Write a brief about yourself"
           className="col-span-2"
-          value={about}
-          setValue={setAbout}
+          value={summary}
+          setValue={(value) => setProfile({ summary: value })}
         />
       </div>
     </div>

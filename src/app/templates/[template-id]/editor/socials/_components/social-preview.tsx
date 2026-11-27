@@ -1,11 +1,11 @@
-import { Social } from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
 
-type SocialPreviewProps = Omit<Social, "id">;
+type SocialPreviewProps = Pick<ListItem<"links">, "network" | "url">;
 
-export const SocialPreview = ({ name, url }: SocialPreviewProps) => {
+export const SocialPreview = ({ network, url }: SocialPreviewProps) => {
   return (
     <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
-      <p className="capitalize">{name}</p>
+      <p className="capitalize">{network}</p>
       {url && <span>|</span>}
       <p className="break-all">{url}</p>
     </div>

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import { useList } from "@/stores/resume-store";
 
-import { selectEducations } from "@/redux/features/resume-data/resumeDataSlice";
+import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
@@ -14,6 +14,7 @@ import { Educations } from "./_components/educations";
 
 const EducationsPage = () => {
   const templateId = useTemplateIdParam();
+  const isEmpty = useList("education").length === 0;
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -28,15 +29,15 @@ const EducationsPage = () => {
 
         <div className="ml-auto flex flex-wrap justify-end gap-2">
           <SkipButton
-            sectionName="educations"
+            sectionName="education"
             href={`/templates/${templateId}/editor/projects`}
           />
 
           <NextButton
             label="Next (Projects)"
             href={`/templates/${templateId}/editor/projects`}
-            selectFunction={selectEducations}
-            sectionName="educations"
+            isEmpty={isEmpty}
+            sectionName="education"
           />
         </div>
       </div>

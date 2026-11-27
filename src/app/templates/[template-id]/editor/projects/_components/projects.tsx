@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectProjects,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { ProjectEditor } from "./project-editor";
 import { Button } from "@/components/ui/button";
 
 export const Projects = () => {
-  const dispatch = useAppDispatch();
-  const projects = useAppSelector(selectProjects);
+  const projects = useList("projects");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "projects",
-        value: arrayMove(projects, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("projects", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -41,7 +26,7 @@ export const Projects = () => {
       <Button
         type="button"
         variant="accent"
-        onClick={() => dispatch(addField("projects"))}
+        onClick={() => addItem("projects")}
       >
         Add Project
       </Button>

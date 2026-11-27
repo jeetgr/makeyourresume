@@ -2,14 +2,13 @@ import Link from "next/link";
 
 import { templatesList } from "@/lib/templateList";
 
+import { LocalTemplate } from "@/components/local-template";
 import EditAccentColors from "@/components/edit-accent-colors";
-import Reset from "@/components/reset";
 import { AddTemplate } from "./_component/add-template";
 
 const TemplatesPage = () => {
   return (
     <section className="py-20">
-      <Reset />
       <div className="mb-4 flex flex-wrap items-center gap-4">
         <div>
           <h2 className="text-3xl/tight font-bold text-accent">
@@ -30,7 +29,7 @@ const TemplatesPage = () => {
             >
               <Link href={`/templates/${template.id}/editor/profile`}>
                 <AddTemplate templateId={template.id}>
-                  <template.component />
+                  <LocalTemplate templateId={template.id} sample />
                 </AddTemplate>
                 <span className="sr-only">{template.name}</span>
               </Link>

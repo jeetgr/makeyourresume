@@ -1,30 +1,23 @@
-import { WorkExperience } from "@/redux/features/resume-data/resumeDataSlice";
+import { formatDateRange } from "@/lib/resume/format";
+import type { Experience } from "@/lib/resume/schema";
 
-type WorkExperiencePreviewProps = Omit<
-  WorkExperience,
-  "id" | "workResponsibilities"
->;
+type WorkExperiencePreviewProps = Omit<Experience, "id" | "bullets">;
 
 export const WorkExperiencePreview = ({
-  companyName,
-  jobTitle,
+  company,
+  role,
   location,
-  joiningDate,
-  leavingDate,
+  dates,
 }: WorkExperiencePreviewProps) => {
   return (
     <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
       <div className="flex gap-2">
-        <p>{companyName}</p>
-        {jobTitle && <span>|</span>}
-        <p>{jobTitle}</p>
+        <p>{company}</p>
+        {role && <span>|</span>}
+        <p>{role}</p>
       </div>
       <p>{location}</p>
-      <div className="flex gap-2">
-        <p>{joiningDate}</p>
-        {leavingDate && <span>-</span>}
-        <p>{leavingDate}</p>
-      </div>
+      <p>{formatDateRange(dates)}</p>
     </div>
   );
 };

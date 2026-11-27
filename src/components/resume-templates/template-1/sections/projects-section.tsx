@@ -1,28 +1,13 @@
 import { Circle } from "lucide-react";
 
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
-
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import { selectProjects } from "@/redux/features/resume-data/resumeDataSlice";
-
+import { useShowSection, useTemplate } from "../../components/template-context";
 import Heading from "../components/heading";
 
-import { dummyData } from "../../dummy-data";
-
 export default function ProjectsSection() {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-  const projects = useAppSelector(selectProjects);
+  const { data, theme } = useTemplate();
+  const accent = theme.accent;
 
-  const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "projects"),
-  );
-
-  if (shouldSkip) return null;
+  if (!useShowSection("projects", data.projects.length)) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -31,70 +16,63 @@ export default function ProjectsSection() {
       </Heading>
 
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*9)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(projects.length === 0 ? dummyData.projects : projects).map(
-          ({
-            id,
-            projectName,
-            projectDescription,
-            liveLink,
-            sourceLink,
-            tags,
-          }) => (
-            <li
-              key={id}
-              className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
-            >
-              <Circle
-                fill={accentColor}
-                color={accentColor}
-                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
-              />
-              <div className="grid flex-1">
-                <div
-                  className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*1.5)] leading-[1.1]"
-                  style={{
-                    color: accentColor,
-                  }}
-                >
-                  {!isDoubleHyphens(projectName) && (
-                    <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
-                      {projectName}
-                    </h3>
+        {data.projects.map(
+          ({ id, name, description, liveUrl, sourceUrl, tags: rawTags }) => {
+            const tags = rawTags.map((t) => t.trim()).filter(Boolean);
+
+            return (
+              <li
+                key={id}
+                className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
+              >
+                <Circle
+                  fill={accent}
+                  color={accent}
+                  className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
+                />
+                <div className="grid flex-1">
+                  <div
+                    className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*1.5)] leading-[1.1]"
+                    style={{ color: accent }}
+                  >
+                    {name && (
+                      <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
+                        {name}
+                      </h3>
+                    )}
+
+                    {liveUrl && (
+                      <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
+                        ({liveUrl})
+                      </p>
+                    )}
+                  </div>
+
+                  {description && (
+                    <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+                      {description}
+                    </p>
                   )}
 
-                  {!isDoubleHyphens(liveLink) && (
-                    <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                      ({liveLink})
+                  {sourceUrl && (
+                    <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+                      <span className="font-semibold">Source Code: </span>
+                      <span className="text-blue-500">{sourceUrl}</span>
+                    </p>
+                  )}
+
+                  {tags.length > 0 && (
+                    <p
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-snug italic"
+                      style={{ color: accent }}
+                    >
+                      {tags.join(", ")}
                     </p>
                   )}
                 </div>
-
-                {!isDoubleHyphens(projectDescription) && (
-                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-                    {projectDescription}
-                  </p>
-                )}
-
-                {!isDoubleHyphens(sourceLink) && (
-                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-                    <span className="font-semibold">Source Code: </span>
-                    <span className="text-blue-500">{sourceLink}</span>
-                  </p>
-                )}
-
-                {!isDoubleHyphens(tags) && (
-                  <p
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-snug italic"
-                    style={{
-                      color: accentColor,
-                    }}
-                  >
-                    {tags}
-                  </p>
-                )}
-              </div>
-            </li>
-          ),
+              </li>
+            );
+          },
         )}
       </ul>
     </div>

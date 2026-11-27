@@ -2,9 +2,7 @@ import { ReactNode } from "react";
 
 import { cn } from "@/utils/cn";
 
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
+import { useTemplate } from "../../components/template-context";
 
 export default function Heading({
   children,
@@ -17,9 +15,7 @@ export default function Heading({
   mb?: number;
   className?: string;
 }) {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
+  const accentColor = useTemplate().theme.accent;
 
   return (
     <h2

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import { useList } from "@/stores/resume-store";
 
-import { selectSkills } from "@/redux/features/resume-data/resumeDataSlice";
+import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
@@ -14,6 +14,7 @@ import { Skills } from "./_components/skills";
 
 const SkillsPage = () => {
   const templateId = useTemplateIdParam();
+  const isEmpty = useList("skills").length === 0;
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -35,7 +36,7 @@ const SkillsPage = () => {
           <NextButton
             label="Next (Interests)"
             href={`/templates/${templateId}/editor/interests`}
-            selectFunction={selectSkills}
+            isEmpty={isEmpty}
             sectionName="skills"
           />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@/stores/auth-store";
 import { Separator } from "@/components/ui/separator";
-import { templatesList } from "@/lib/templateList";
+import { LocalTemplate } from "@/components/local-template";
 import Link from "next/link";
 
 export default function ProfilePage() {
@@ -23,21 +23,13 @@ export default function ProfilePage() {
 
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {user?.resumes?.map((templateId) => {
-            const Template = templatesList.find(
-              (t) => t.id === templateId,
-            )?.component;
-
-            if (!Template) {
-              return null;
-            }
-
             return (
               <li
                 key={templateId}
                 className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
               >
                 <Link href={`/templates/${templateId}/editor/profile`}>
-                  <Template />
+                  <LocalTemplate templateId={templateId} />
                 </Link>
               </li>
             );

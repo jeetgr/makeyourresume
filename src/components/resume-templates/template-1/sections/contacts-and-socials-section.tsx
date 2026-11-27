@@ -1,91 +1,42 @@
-import { LucideIcon } from "lucide-react";
-
-import { isDoubleHyphens } from "@/utils/is-double-hyphens";
-
-import { useAppSelector } from "@/redux/hooks";
-
-import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
-import {
-  selectProfile,
-  selectSocials,
-} from "@/redux/features/resume-data/resumeDataSlice";
-
 import { icons } from "@/lib/data";
-import { dummyData } from "../../dummy-data";
+
+import { useShowSection, useTemplate } from "../../components/template-context";
 
 export default function ContactAndSocialSection() {
+  const { data } = useTemplate();
+  const { email, phone, location } = data.profile;
+  const links = data.links.filter((l) => l.url);
+  const showLinks = useShowSection("links", links.length);
+
   return (
     <div className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      <Contacts />
-      <Socials />
+      {email && <ContactAndSocialText icon="mail" text={email} />}
+      {phone && <ContactAndSocialText icon="phone" text={phone} />}
+      {location && <ContactAndSocialText icon="mapPin" text={location} />}
+
+      {showLinks && (
+        <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
+          {links.map(({ id, network, url }) => (
+            <li key={id}>
+              <ContactAndSocialText icon={network} text={url} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
 
-function Contacts() {
-  const { email, phone, address } = useAppSelector(selectProfile);
-
-  return (
-    <>
-      {!isDoubleHyphens(email) && (
-        <ContactAndSocialText
-          icon="mail"
-          text={email || dummyData.profile.email}
-        />
-      )}
-      {!isDoubleHyphens(phone) && (
-        <ContactAndSocialText
-          icon="phone"
-          text={phone || dummyData.profile.phone}
-        />
-      )}
-      {!isDoubleHyphens(address) && (
-        <ContactAndSocialText
-          icon="mapPin"
-          text={address || dummyData.profile.address}
-        />
-      )}
-    </>
-  );
-}
-
-function Socials() {
-  const socials = useAppSelector(selectSocials);
-
-  const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
-  );
-
-  if (shouldSkip) return null;
-
-  return (
-    <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      {(socials.length === 0 ? dummyData.socials : socials).map(
-        ({ id, name, url }) =>
-          !isDoubleHyphens(url) && (
-            <li key={id}>
-              <ContactAndSocialText icon={name} text={url} />
-            </li>
-          ),
-      )}
-    </ul>
-  );
-}
-
 function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
-  const accentColor = useAppSelector((state) =>
-    selectAccentColor(state, "template-1"),
-  );
-
-  const Icon: LucideIcon = icons[icon] || icons.other;
+  const { theme } = useTemplate();
+  const Icon = icons[icon] || icons.other;
 
   return (
     <p className="flex flex-col gap-(--WIDTHPERCENTAGE)">
       <span>
         <Icon
           className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)]"
-          color={accentColor}
+          color={theme.accent}
         />
       </span>
       <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug break-all">

@@ -1,33 +1,16 @@
-import { useAppDispatch } from "@/redux/hooks";
-
-import {
-  Interest,
-  removeField,
-  setField,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
+import { removeItem, updateItem } from "@/stores/resume-store";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { InterestPreview } from "./interest-preview";
 import { TextInput } from "@/components/form/form-input";
+import { InterestPreview } from "./interest-preview";
 
-type InterestEditorProps = Interest;
-
-export const InterestEditor = ({ id, name }: InterestEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeInterest = (id: string) => {
-    dispatch(removeField({ fieldName: "interests", id }));
-  };
-
-  const setInterest = (social: Interest) => {
-    dispatch(setField({ fieldName: "interests", value: social }));
-  };
-
+export const InterestEditor = ({ id, name }: ListItem<"interests">) => {
   return (
     <DraggableItemWrapper
       id={id}
       preview={<InterestPreview name={name} />}
-      onRemoveClick={() => removeInterest(id)}
+      onRemoveClick={() => removeItem("interests", id)}
       removeSrOnlyLabel={`Remove ${name} interest`}
     >
       <div className="flex flex-wrap items-end gap-2">
@@ -35,7 +18,7 @@ export const InterestEditor = ({ id, name }: InterestEditorProps) => {
           label="Interest Name"
           placeholder="Enter your interest"
           value={name}
-          setValue={(value) => setInterest({ id, name: value })}
+          setValue={(value) => updateItem("interests", id, { name: value })}
         />
       </div>
     </DraggableItemWrapper>

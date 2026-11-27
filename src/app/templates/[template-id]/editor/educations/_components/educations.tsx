@@ -1,29 +1,14 @@
-import { arrayMove } from "@dnd-kit/sortable";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import {
-  addField,
-  selectEducations,
-  setFields,
-} from "@/redux/features/resume-data/resumeDataSlice";
+import { addItem, moveItem, useList } from "@/stores/resume-store";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { EducationEditor } from "./education-editor";
 import { Button } from "@/components/ui/button";
 
 export const Educations = () => {
-  const dispatch = useAppDispatch();
-  const educations = useAppSelector(selectEducations);
+  const educations = useList("education");
 
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "educations",
-        value: arrayMove(educations, oldIndex, newIndex),
-      }),
-    );
-  };
+  const setItems = (oldIndex: number, newIndex: number) =>
+    moveItem("education", oldIndex, newIndex);
 
   return (
     <div className="space-y-4">
@@ -41,7 +26,7 @@ export const Educations = () => {
       <Button
         type="button"
         variant="accent"
-        onClick={() => dispatch(addField("educations"))}
+        onClick={() => addItem("education")}
       >
         Add Education
       </Button>

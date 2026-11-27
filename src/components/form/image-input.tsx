@@ -4,16 +4,13 @@ import { toast } from "sonner";
 import { cn } from "@/utils/cn";
 import { resizeImageToDataUrl } from "@/utils/resize-image";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-import { setProfile } from "@/redux/features/resume-data/resumeDataSlice";
+import { setProfile, useProfile } from "@/stores/resume-store";
 
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
 export default function ImageInput({ className }: { className?: string }) {
-  const image = useAppSelector((state) => state.resumeData.profile.image);
-  const dispatch = useAppDispatch();
+  const image = useProfile().photo;
 
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -29,12 +26,7 @@ export default function ImageInput({ className }: { className?: string }) {
             if (!file) return;
 
             try {
-              dispatch(
-                setProfile({
-                  fieldName: "image",
-                  value: await resizeImageToDataUrl(file),
-                }),
-              );
+              setProfile({ photo: await resizeImageToDataUrl(file) });
             } catch {
               toast.error("Couldn't read that image. Try another file.");
             }
@@ -78,14 +70,7 @@ export default function ImageInput({ className }: { className?: string }) {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() =>
-                dispatch(
-                  setProfile({
-                    fieldName: "image",
-                    value: "",
-                  }),
-                )
-              }
+              onClick={() => setProfile({ photo: "" })}
             >
               Remove Image
             </Button>

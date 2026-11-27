@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { emptyItem, emptyResume } from "./empty";
+import { formatDateRange, formatMonthYear } from "./format";
 import { migrate } from "./migrate";
 import {
   addItem,
@@ -128,5 +129,23 @@ describe("migrate", () => {
 
   it("invalid v1 → empty", () => {
     expect(migrate({ version: 1, skills: "nope" })).toEqual(emptyResume());
+  });
+});
+
+describe("format", () => {
+  it("formats month/year and ranges", () => {
+    expect(formatMonthYear({ year: 2020, month: 3 })).toBe("Mar 2020");
+    expect(formatMonthYear({ year: 2020 })).toBe("2020");
+    expect(formatDateRange({ present: false })).toBe("");
+    expect(
+      formatDateRange({
+        start: { year: 2020 },
+        end: { year: 2021 },
+        present: false,
+      }),
+    ).toBe("2020 - 2021");
+    expect(
+      formatDateRange({ start: { year: 2020, month: 1 }, present: true }),
+    ).toBe("Jan 2020 - Present");
   });
 });

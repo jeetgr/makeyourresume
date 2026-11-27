@@ -6,18 +6,18 @@ const id = z
   .default(() => crypto.randomUUID());
 const text = z.string().default("");
 
-export const monthYearSchema = z.object({
+const monthYearSchema = z.object({
   year: z.number().int(),
   month: z.number().int().min(1).max(12).optional(),
 });
 
-export const dateRangeSchema = z.object({
+const dateRangeSchema = z.object({
   start: monthYearSchema.optional(),
   end: monthYearSchema.optional(),
   present: z.boolean().default(false),
 });
 
-export const profileSchema = z.object({
+const profileSchema = z.object({
   /** Data URL. */
   photo: text,
   firstName: text,
@@ -164,7 +164,6 @@ export type MonthYear = z.infer<typeof monthYearSchema>;
 export type DateRange = z.infer<typeof dateRangeSchema>;
 export type Profile = z.infer<typeof profileSchema>;
 export type Network = (typeof NETWORKS)[number];
-export type SectionKey = (typeof SECTION_KEYS)[number];
 export type ResumeData = z.infer<typeof resumeDataSchema>;
 export type ListKey = keyof typeof listItemSchemas;
 export type ListItem<K extends ListKey> = z.infer<(typeof listItemSchemas)[K]>;

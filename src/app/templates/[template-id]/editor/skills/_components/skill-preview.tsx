@@ -1,6 +1,6 @@
-import { Skill } from "@/redux/features/resume-data/resumeDataSlice";
+import type { ListItem } from "@/lib/resume/schema";
 
-type SkillPreviewProps = Omit<Skill, "id">;
+type SkillPreviewProps = Omit<ListItem<"skills">, "id">;
 
 export const SkillPreview = ({ name }: SkillPreviewProps) => {
   return (

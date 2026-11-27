@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const FONTS = [
+const FONTS = [
   "inter",
   "lato",
   "ibm-plex-sans",

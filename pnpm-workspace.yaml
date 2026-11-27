@@ -3,3 +3,5 @@ allowBuilds:
   "@prisma/engines": true
   bcrypt: true
   prisma: true
+minimumReleaseAgeExclude:
+  - lucide-react@1.82.0

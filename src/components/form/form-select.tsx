@@ -14,6 +14,11 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 
+const items = socialNames.map((name) => ({
+  value: name,
+  label: capitalize(name),
+}));
+
 type FromSelectProps = {
   label: string;
   placeholder: string;
@@ -32,7 +37,11 @@ export default function FormSelect({
   return (
     <div className={cn("space-y-1", className)}>
       <Label>{label}</Label>
-      <Select defaultValue={defaultValue} onValueChange={onValueChange}>
+      <Select
+        items={items}
+        defaultValue={defaultValue}
+        onValueChange={(value) => value && onValueChange(value)}
+      >
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

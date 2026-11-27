@@ -20,8 +20,8 @@ export default function NotFound() {
       </a>
 
       <div className="mt-4">
-        <Button asChild>
-          <Link href="/">Go to Homepage</Link>
+        <Button nativeButton={false} render={<Link href="/" />}>
+          Go to Homepage
         </Button>
       </div>
     </section>

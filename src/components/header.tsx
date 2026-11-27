@@ -115,14 +115,12 @@ export default function Header() {
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 -translate-x-20">
+              <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
+                <DropdownMenuItem render={<Link href="/profile" />}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
@@ -143,29 +141,36 @@ export default function Header() {
             <SheetContent>
               <nav className="grid gap-4 py-10 pl-4">
                 {navLinks.map(({ href, label }) => (
-                  <SheetClose key={href} asChild>
-                    <Link
-                      href={href}
-                      className={cn(
-                        "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
-                        {
-                          "text-secondary": path === href,
-                        },
-                      )}
-                    >
-                      {label}
-                    </Link>
+                  <SheetClose
+                    key={href}
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href={href}
+                        className={cn(
+                          "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                          {
+                            "text-secondary": path === href,
+                          },
+                        )}
+                      />
+                    }
+                  >
+                    {label}
                   </SheetClose>
                 ))}
 
                 {user === null && (
-                  <SheetClose asChild>
-                    <Link
-                      href="/register"
-                      className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
-                    >
-                      Register
-                    </Link>
+                  <SheetClose
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href="/register"
+                        className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                      />
+                    }
+                  >
+                    Register
                   </SheetClose>
                 )}
               </nav>
@@ -180,11 +185,16 @@ export default function Header() {
 function LoginAndSignUp() {
   return (
     <div className="space-x-5">
-      <Button variant="outline" asChild className="hidden md:inline-block">
-        <Link href="/register">Register</Link>
+      <Button
+        variant="outline"
+        className="hidden md:inline-flex"
+        nativeButton={false}
+        render={<Link href="/register" />}
+      >
+        Register
       </Button>
-      <Button asChild>
-        <Link href="/login">Login</Link>
+      <Button nativeButton={false} render={<Link href="/login" />}>
+        Login
       </Button>
     </div>
   );

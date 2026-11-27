@@ -11,7 +11,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RefreshUser } from "@/components/refresh-user";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://myr.jeetgr.dev"),
@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${montserrat.className} relative`}>
+    <html lang="en" className={montserrat.variable}>
+      <body className="relative">
         <StoreProvider>
           <NextJSTopLoader color="#ffb300" showSpinner={false} />
           <Header />

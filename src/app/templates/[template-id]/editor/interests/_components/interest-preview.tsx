@@ -1,4 +1,4 @@
-import { Interest } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Interest } from "@/redux/features/resume-data/resumeDataSlice";
 
 type InterestPreviewProps = Omit<Interest, "id">;
 

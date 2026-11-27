@@ -6,7 +6,7 @@ import {
   Skill,
   removeField,
   setField,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { SkillPreview } from "./skill-preview";

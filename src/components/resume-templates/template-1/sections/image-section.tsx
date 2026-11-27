@@ -4,8 +4,8 @@ import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 
 import { useAppSelector } from "@/redux/hooks";
 
-import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-import { selectProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
+import { selectProfile } from "@/redux/features/resume-data/resumeDataSlice";
 
 import { Show } from "@/components/control-flow/show";
 

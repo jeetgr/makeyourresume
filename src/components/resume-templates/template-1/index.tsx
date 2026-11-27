@@ -8,7 +8,7 @@ import { useAppSelector } from "@/redux/hooks";
 import {
   selectLeftColumnGap,
   selectRightColumnGap,
-} from "@/redux/features/Custom Styles/customStyleSlice";
+} from "@/redux/features/custom-styles/customStyleSlice";
 
 import TemplateWrapper from "@/components/resume-templates/components/template-wrapper";
 import ImageSection from "./sections/image-section";

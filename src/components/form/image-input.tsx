@@ -6,7 +6,7 @@ import { resizeImageToDataUrl } from "@/utils/resize-image";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-import { setProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+import { setProfile } from "@/redux/features/resume-data/resumeDataSlice";
 
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";

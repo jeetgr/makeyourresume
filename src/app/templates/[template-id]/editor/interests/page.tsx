@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
-import { selectInterests } from "@/redux/features/Resume Data/resumeDataSlice";
+import { selectInterests } from "@/redux/features/resume-data/resumeDataSlice";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";

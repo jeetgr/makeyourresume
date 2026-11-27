@@ -2,9 +2,9 @@ import { Circle } from "lucide-react";
 
 import { useAppSelector } from "@/redux/hooks";
 
-import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-import { selectPersonalProfiles } from "@/redux/features/Resume Data/resumeDataSlice";
+import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
+import { selectPersonalProfiles } from "@/redux/features/resume-data/resumeDataSlice";
 
 import Heading from "../components/heading";
 import { For } from "@/components/control-flow/for";

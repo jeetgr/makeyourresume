@@ -1,4 +1,4 @@
-import { Social } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Social } from "@/redux/features/resume-data/resumeDataSlice";
 
 type SocialPreviewProps = Omit<Social, "id">;
 

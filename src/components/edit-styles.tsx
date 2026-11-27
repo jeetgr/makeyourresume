@@ -13,7 +13,7 @@ import {
   selectRightColumnGap,
   setLeftColumnGap,
   setRightColumnGap,
-} from "@/redux/features/Custom Styles/customStyleSlice";
+} from "@/redux/features/custom-styles/customStyleSlice";
 
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";

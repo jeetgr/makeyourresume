@@ -10,7 +10,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import {
   resetAccentColors,
   setAccentColors,
-} from "@/redux/features/Custom Styles/customStyleSlice";
+} from "@/redux/features/custom-styles/customStyleSlice";
 
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 

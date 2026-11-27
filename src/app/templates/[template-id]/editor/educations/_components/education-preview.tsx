@@ -1,4 +1,4 @@
-import { Education } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Education } from "@/redux/features/resume-data/resumeDataSlice";
 
 type EducationPreviewProps = Omit<Education, "id">;
 

@@ -6,7 +6,6 @@ import "./globals.css";
 
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
-import { RefreshUser } from "@/components/refresh-user";
 import { ResumeStoreHydrator } from "@/components/resume-store-hydrator";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
@@ -38,7 +37,6 @@ export default function RootLayout({
           {children}
           <Toaster richColors position="top-right" />
         </main>
-        <RefreshUser />
         <ResumeStoreHydrator />
       </body>
     </html>

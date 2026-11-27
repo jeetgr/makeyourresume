@@ -1,25 +1,15 @@
 "use client";
 
-import { useUser, setUser } from "@/stores/auth-store";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOut, User, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/utils/cn";
 
 import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import { toast } from "sonner";
-import { api } from "@/lib/api";
+import { signOut, UserMenu } from "./user-menu";
 
 const navLinks = [
   {
@@ -32,20 +22,20 @@ const navLinks = [
   },
 ];
 
+const accountLinks = [
+  { href: "/resumes", label: "My resumes" },
+  { href: "/profile", label: "Profile" },
+];
+
+const mobileLink =
+  "text-[0.93rem] font-medium text-neutral-400 hover:text-secondary";
+
 export default function Header() {
   const path = usePathname();
 
-  const user = useUser();
-
-  async function handleLogout() {
-    try {
-      const data = await api("/api/auth/logout", { method: "DELETE" });
-      toast.success(data.message);
-      setUser(null);
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  }
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
 
   return (
     <header className="fixed top-0 right-0 left-0 z-50 border-b bg-background/30 backdrop-blur-sm">
@@ -98,33 +88,10 @@ export default function Header() {
             ))}
           </nav>
 
-          {user !== null ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage />
-                  <AvatarFallback className="font-medium">
-                    {user?.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem render={<Link href="/profile" />}>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {isPending ? (
+            <div className="size-8" />
+          ) : user ? (
+            <UserMenu user={user} />
           ) : (
             <LoginAndSignUp />
           )}
@@ -156,18 +123,38 @@ export default function Header() {
                   </SheetClose>
                 ))}
 
-                {user === null && (
-                  <SheetClose
-                    nativeButton={false}
-                    render={
-                      <Link
-                        href="/register"
-                        className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
-                      />
-                    }
-                  >
-                    Register
-                  </SheetClose>
+                {user ? (
+                  <>
+                    {accountLinks.map(({ href, label }) => (
+                      <SheetClose
+                        key={href}
+                        nativeButton={false}
+                        render={<Link href={href} className={mobileLink} />}
+                      >
+                        {label}
+                      </SheetClose>
+                    ))}
+                    <SheetClose
+                      className={cn(mobileLink, "text-left")}
+                      onClick={() => signOut(router)}
+                    >
+                      Log out
+                    </SheetClose>
+                  </>
+                ) : (
+                  !isPending && (
+                    <SheetClose
+                      nativeButton={false}
+                      render={
+                        <Link
+                          href="/register"
+                          className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                        />
+                      }
+                    >
+                      Register
+                    </SheetClose>
+                  )
                 )}
               </nav>
             </SheetContent>

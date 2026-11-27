@@ -1,30 +1,12 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useUser } from "@/stores/auth-store";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { getSession } from "@/server/session";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.push("/profile");
-    }
-  }, [user, router]);
-
-  return (
-    <>
-      {user ? (
-        <div className="loader fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-      ) : (
-        children
-      )}
-    </>
-  );
+  if (await getSession()) redirect("/resumes");
+  return children;
 }

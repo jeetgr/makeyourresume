@@ -5,12 +5,9 @@ import type { CustomSection as CustomSectionData } from "@/lib/resume/schema";
 import { useShowSection, useTemplate } from "../../components/template-context";
 import Heading from "../components/heading";
 
-export default function CustomSections() {
-  const { data } = useTemplate();
-
-  return data.customSections.map((section) => (
-    <CustomSection key={section.id} {...section} />
-  ));
+export default function CustomSectionById({ id }: { id: string }) {
+  const section = useTemplate().data.customSections.find((c) => c.id === id);
+  return section ? <CustomSection {...section} /> : null;
 }
 
 function CustomSection({ id, title, items }: CustomSectionData) {

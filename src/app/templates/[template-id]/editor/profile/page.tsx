@@ -42,7 +42,11 @@ const ProfilePage = () => {
         className="grid grid-cols-2 gap-4"
         onSubmit={(e) => e.preventDefault()}
       >
-        <ImageInput className="col-span-2 row-span-2" />
+        <ImageInput
+          className="col-span-2 row-span-2"
+          value={useProfile().photo}
+          onChange={(photo) => setProfile({ photo })}
+        />
 
         <TextInput
           label="First Name"

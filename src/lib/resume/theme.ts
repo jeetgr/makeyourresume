@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const FONTS = [
+export const FONTS = [
   "inter",
   "lato",
   "ibm-plex-sans",
@@ -22,5 +22,6 @@ export const themeSchema = z.object({
 
 export type Theme = z.infer<typeof themeSchema>;
 export type Density = Theme["density"];
+export type FontId = Theme["font"];
 
 export const defaultTheme: Theme = themeSchema.parse({});

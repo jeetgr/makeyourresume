@@ -3,23 +3,13 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { useShallow } from "zustand/react/shallow";
 
-import type { ResumeDoc } from "@/lib/resume/doc";
+import type { ResumeDoc, ResumeDocState } from "@/lib/resume/doc";
+import { createDocOps } from "@/lib/resume/doc-ops";
 import { emptyResume } from "@/lib/resume/empty";
 import { migrate } from "@/lib/resume/migrate";
-import * as ops from "@/lib/resume/ops";
-import type {
-  ListItem,
-  ListKey,
-  Profile,
-  ResumeData,
-} from "@/lib/resume/schema";
-import { defaultTheme, themeSchema, type Theme } from "@/lib/resume/theme";
+import { defaultTheme, themeSchema } from "@/lib/resume/theme";
 
-type ResumeState = {
-  data: ResumeData;
-  theme: Theme;
-  templateId: string | null;
-};
+type ResumeState = ResumeDocState;
 
 /** Local (signed-out) resume. Hydrated client-side by `ResumeStoreHydrator`. */
 const useResumeStore = create<ResumeState>()(
@@ -50,62 +40,23 @@ const useResumeStore = create<ResumeState>()(
 
 export const rehydrateResumeStore = () => useResumeStore.persist.rehydrate();
 
-const setData = (fn: (d: ResumeData) => ResumeData) =>
-  useResumeStore.setState((s) => {
-    s.data = fn(s.data);
-  });
-
-const setProfile = (patch: Partial<Profile>) =>
-  setData((d) => ops.setProfile(d, patch));
-
-const addItem = <K extends ListKey>(key: K, item?: Partial<ListItem<K>>) =>
-  setData((d) => ops.addItem(d, key, item));
-
-const updateItem = <K extends ListKey>(
-  key: K,
-  id: string,
-  patch: Partial<ListItem<K>>,
-) => setData((d) => ops.updateItem(d, key, id, patch));
-
-const removeItem = (key: ListKey, id: string) =>
-  setData((d) => ops.removeItem(d, key, id));
-
-const duplicateItem = (key: ListKey, id: string) =>
-  setData((d) => ops.duplicateItem(d, key, id));
-
-const moveItem = (key: ListKey, from: number, to: number) =>
-  setData((d) => ops.moveItem(d, key, from, to));
-
-const toggleSection = (section: string, hidden?: boolean) =>
-  setData((d) => ops.toggleSection(d, section, hidden));
-
-const moveSection = (from: number, to: number) =>
-  setData((d) => ops.moveSection(d, from, to));
-
-const resetResume = (data = emptyResume()) =>
-  setData(() => structuredClone(data));
-
-const setTheme = (patch: Partial<Theme>) =>
-  useResumeStore.setState((s) => {
-    Object.assign(s.theme, patch);
-  });
-
 export const setTemplate = (templateId: string) =>
   useResumeStore.setState({ templateId });
 
+/** Persisted guest resume (after `rehydrateResumeStore`). */
+export const getLocalResume = (): ResumeDocState => {
+  const { data, theme, templateId } = useResumeStore.getState();
+  return { data, theme, templateId };
+};
+
+export const clearLocalResume = () =>
+  useResumeStore.setState({
+    data: emptyResume(),
+    theme: defaultTheme,
+    templateId: null,
+  });
+
 export const localResumeDoc: ResumeDoc = {
   useSelect: (selector) => useResumeStore(useShallow(selector)),
-  ops: {
-    setProfile,
-    addItem,
-    updateItem,
-    removeItem,
-    duplicateItem,
-    moveItem,
-    toggleSection,
-    moveSection,
-    setTheme,
-    setTemplate,
-    reset: resetResume,
-  },
+  ops: createDocOps(useResumeStore),
 };

@@ -43,14 +43,14 @@ export function ItemCard<T>({
     <Collapsible
       open={open}
       onOpenChange={setOpen}
-      className="rounded-md border bg-background"
+      className="rounded-lg border bg-background transition-colors hover:border-foreground/20"
     >
       <div className="flex items-center gap-1.5 py-1 pr-1 pl-2">
         {handle}
-        <CollapsibleTrigger className="flex flex-1 items-center gap-1.5 text-left text-sm">
+        <CollapsibleTrigger className="flex flex-1 items-center gap-1.5 rounded-md text-left text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
           <ChevronDown
             className={cn(
-              "size-4 text-muted-foreground transition-transform",
+              "size-4 text-muted-foreground transition-transform duration-200",
               !open && "-rotate-90",
             )}
           />
@@ -78,17 +78,19 @@ export function ItemCard<T>({
           <Trash2 />
         </Button>
       </div>
-      <CollapsibleContent className="grid gap-3 border-t p-3 sm:grid-cols-2">
-        {fields.map((field) => (
-          <FieldRenderer
-            key={field.name}
-            field={field}
-            value={item[field.name]}
-            onChange={(value) =>
-              onChange({ [field.name]: value } as Partial<T>)
-            }
-          />
-        ))}
+      <CollapsibleContent>
+        <div className="grid gap-3 border-t p-3 sm:grid-cols-2">
+          {fields.map((field) => (
+            <FieldRenderer
+              key={field.name}
+              field={field}
+              value={item[field.name]}
+              onChange={(value) =>
+                onChange({ [field.name]: value } as Partial<T>)
+              }
+            />
+          ))}
+        </div>
       </CollapsibleContent>
     </Collapsible>
   );

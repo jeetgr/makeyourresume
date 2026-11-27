@@ -35,7 +35,7 @@ export function ResumeTitle({ id, initial }: { id: string; initial: string }) {
           requestAnimationFrame(() => e.currentTarget?.blur());
         }
       }}
-      className="field-sizing-content max-w-full min-w-24 truncate rounded-md border border-transparent bg-transparent px-1 text-2xl font-bold outline-none hover:border-input focus:border-input focus:ring-2 focus:ring-ring/30"
+      className="field-sizing-content max-w-full min-w-24 truncate rounded-md border border-transparent bg-transparent px-1 font-display text-3xl tracking-tight outline-none hover:border-input focus:border-input focus:ring-2 focus:ring-ring/30"
     />
   );
 }

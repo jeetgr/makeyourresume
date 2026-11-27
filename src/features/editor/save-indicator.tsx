@@ -1,6 +1,6 @@
 "use client";
 
-import { Cloud, CloudAlert, CloudUpload, RefreshCw } from "lucide-react";
+import { CloudAlert, CloudCheck, CloudUpload, RefreshCw } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 
@@ -36,17 +36,21 @@ export function SaveIndicator({ handle }: { handle: ServerResumeHandle }) {
   }
 
   const saving = status !== "saved";
-  const Icon = saving ? CloudUpload : Cloud;
+  const Icon = saving ? CloudUpload : CloudCheck;
 
   return (
     <span
       role="status"
-      className={cn(
-        "flex items-center gap-1.5 text-sm text-muted-foreground",
-        saving && "animate-pulse",
-      )}
+      className="flex items-center gap-1.5 text-sm text-muted-foreground"
     >
-      <Icon className="size-4" />
+      {/* keyed so the icon pops on each state change */}
+      <Icon
+        key={String(saving)}
+        className={cn(
+          "size-4 motion-safe:animate-pop",
+          saving && "motion-safe:animate-pulse",
+        )}
+      />
       {saving ? "Saving…" : "Saved"}
     </span>
   );

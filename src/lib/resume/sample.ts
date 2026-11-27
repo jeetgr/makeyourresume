@@ -11,7 +11,7 @@ export const sampleResume: ResumeData = resumeDataSchema.parse({
     phone: "+1 123-456-7890",
     location: "123 Main Street, Cityville, State, 12345",
     summary:
-      "I am a passionate and dedicated web developer with experience in front-end and back-end technologies.",
+      "Passionate **full-stack developer** with 3+ years building *fast, accessible* web apps. Open-source contributor at [github.com/johndoe](https://github.com/johndoe).",
   },
   links: [
     {
@@ -103,6 +103,28 @@ export const sampleResume: ResumeData = resumeDataSchema.parse({
         "Conducting code reviews",
         "Participating in agile development cycles",
       ].map((text, i) => ({ id: `bullet-2-${i + 1}`, text })),
+    },
+  ],
+  languages: [
+    { id: "language-1", name: "English", proficiency: "Native" },
+    { id: "language-2", name: "Spanish", proficiency: "B2" },
+  ],
+  certifications: [
+    {
+      id: "certification-1",
+      name: "AWS Certified Developer",
+      issuer: "Amazon Web Services",
+      date: { year: 2023, month: 4 },
+      url: "https://aws.amazon.com/certification",
+    },
+  ],
+  awards: [
+    {
+      id: "award-1",
+      title: "Hackathon Winner",
+      issuer: "City Tech Fest",
+      date: { year: 2022, month: 11 },
+      description: "Built a *real-time* transit tracker in 24 hours.",
     },
   ],
   customSections: [

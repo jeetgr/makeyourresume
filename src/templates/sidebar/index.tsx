@@ -1,3 +1,4 @@
+import { Children } from "react";
 import { Image, Text, View } from "@react-pdf/renderer";
 
 import { formatMonthYear } from "@/lib/resume/format";
@@ -8,13 +9,14 @@ import type {
 
 import { ResumeDocument, fullName } from "@/pdf/primitives/document";
 import { Icon } from "@/pdf/primitives/icon";
-import { Bullets, SectionTitle } from "@/pdf/primitives/layout";
+import { Bullet, SectionTitle } from "@/pdf/primitives/layout";
 import {
   DateRange,
   LinkText,
   Markdown,
   displayUrl,
 } from "@/pdf/primitives/text";
+import { paragraphs } from "@/pdf/markdown";
 import { useTokens } from "@/pdf/tokens";
 
 import type { TemplateDef, TemplateProps } from "../types";
@@ -116,7 +118,14 @@ function Photo({ data }: SectionProps) {
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       ) : (
-        <Text style={{ color: t.accent, fontSize: 56, lineHeight: 1 }}>
+        <Text
+          style={{
+            color: t.accent,
+            fontSize: 56,
+            lineHeight: 1,
+            marginTop: -2 * t.capShift(56),
+          }}
+        >
           {initials.toUpperCase()}
         </Text>
       )}
@@ -159,7 +168,7 @@ function Skills({ data }: SectionProps) {
         style={{ flexDirection: "row", flexWrap: "wrap", gap: t.space(1.25) }}
       >
         {skills.map(({ id, name }) => (
-          <Text
+          <View
             key={id}
             style={{
               borderWidth: 0.9,
@@ -167,13 +176,20 @@ function Skills({ data }: SectionProps) {
               backgroundColor: t.tint(0.06),
               borderRadius: 3,
               paddingHorizontal: 5,
-              paddingVertical: 1,
-              fontSize: t.size.xs,
-              textTransform: "uppercase",
+              paddingVertical: 1.75,
             }}
           >
-            {name}
-          </Text>
+            <Text
+              style={{
+                fontSize: t.size.xs,
+                lineHeight: 1,
+                marginTop: -t.capShift(t.size.xs),
+                marginBottom: t.capShift(t.size.xs),
+              }}
+            >
+              {name.toUpperCase()}
+            </Text>
+          </View>
         ))}
       </View>
     </View>
@@ -247,7 +263,6 @@ function Header({
           style={{
             alignSelf: "flex-start",
             fontSize: t.size.md,
-            paddingRight: 6,
             borderBottomWidth: 0.8,
             borderBottomColor: "#ffffff",
           }}
@@ -255,7 +270,13 @@ function Header({
           {headline}
         </Text>
       )}
-      {showSummary && <Markdown text={summary} style={{ color: "#ffffff" }} />}
+      {showSummary && (
+        <Markdown
+          text={summary}
+          style={{ color: "#ffffff" }}
+          linkStyle={{ color: "#ffffff", textDecoration: "underline" }}
+        />
+      )}
     </View>
   );
 }
@@ -281,94 +302,110 @@ function MainSections({ data, order }: SectionProps & { order: string[] }) {
   });
 
   return (
-    <View style={{ paddingLeft: 24, paddingRight: 25, gap: t.space(4) }}>
-      {sections.map(({ key, title, entries }) => (
-        <View key={key}>
-          {title && <SectionTitle rule>{title}</SectionTitle>}
-          <View style={{ gap: t.space(2.25) }}>{entries}</View>
-        </View>
-      ))}
+    <View style={{ paddingLeft: 24, paddingRight: 25 }}>
+      {sections.flatMap(({ key, title, entries }, s) =>
+        entries.map(({ id, ...entry }, i) => (
+          <Entry
+            key={`${key}-${id}`}
+            {...entry}
+            gap={i ? t.space(2.25) : s ? t.space(4) : 0}
+            heading={
+              i === 0 && title ? (
+                <SectionTitle rule>{title}</SectionTitle>
+              ) : undefined
+            }
+          />
+        )),
+      )}
     </View>
   );
 }
 
-/** Entry elements of a main-column section, or `undefined` if not a main section. */
-function mainEntries(data: ResumeData, key: string) {
+type EntryData = Omit<EntryProps, "heading"> & { id: string };
+
+/** First paragraph stays w/ the entry head; later ones may move to the next page. */
+const splitText = (text: string) => {
+  const [first = "", ...rest] = paragraphs(text);
+  return {
+    lead: first ? <Markdown text={first} /> : null,
+    rest: rest.length ? <Markdown text={rest.join("\n")} /> : null,
+  };
+};
+
+/** Entries of a main-column section, or `undefined` if not a main section. */
+function mainEntries(data: ResumeData, key: string): EntryData[] | undefined {
   switch (key) {
     case "experience":
-      return nonEmpty(data.experience, (e) => e.role + e.company).map((e) => (
-        <Entry
-          key={e.id}
-          title={e.role}
-          subtitle={e.company}
-          dates={e.dates}
-          location={e.location}
-        >
-          <Bullets items={e.bullets} />
-        </Entry>
-      ));
+      return nonEmpty(data.experience, (e) => e.role + e.company).map((e) => {
+        const [first, ...rest] = nonEmpty(e.bullets, (b) => b.text);
+        return {
+          id: e.id,
+          title: e.role,
+          subtitle: e.company,
+          dates: e.dates,
+          location: e.location,
+          lead: first ? <Bullet text={first.text} /> : null,
+          rest: rest.map((b) => <Bullet key={b.id} text={b.text} />),
+        };
+      });
     case "projects":
-      return nonEmpty(data.projects, (p) => p.name).map((p) => (
-        <Entry key={p.id} title={p.name} link={p.liveUrl}>
-          {p.description && <Markdown text={p.description} />}
-          {p.sourceUrl && (
-            <Text>
-              <Text style={{ fontWeight: 700 }}>Source: </Text>
-              <LinkText url={p.sourceUrl} />
-            </Text>
-          )}
-          {p.tags.length > 0 && <Meta>{p.tags.join(", ")}</Meta>}
-        </Entry>
-      ));
+      return nonEmpty(data.projects, (p) => p.name).map((p) => {
+        const { lead, rest } = splitText(p.description);
+        return {
+          id: p.id,
+          title: p.name,
+          link: p.liveUrl,
+          lead,
+          rest: [
+            rest,
+            p.sourceUrl ? (
+              <Text key="source">
+                <Text style={{ fontWeight: 700 }}>Source: </Text>
+                <LinkText url={p.sourceUrl} />
+              </Text>
+            ) : null,
+            p.tags.length ? <Meta key="tags">{p.tags.join(", ")}</Meta> : null,
+          ],
+        };
+      });
     case "education":
       return nonEmpty(data.education, (e) => e.degree + e.institution).map(
-        (e) => (
-          <Entry
-            key={e.id}
-            title={e.degree}
-            subtitle={e.institution}
-            dates={e.dates}
-            location={e.location}
-          >
-            {e.details && <Markdown text={e.details} />}
-          </Entry>
-        ),
+        (e) => ({
+          id: e.id,
+          title: e.degree,
+          subtitle: e.institution,
+          dates: e.dates,
+          location: e.location,
+          ...splitText(e.details),
+        }),
       );
     case "certifications":
-      return nonEmpty(data.certifications, (c) => c.name).map((c) => (
-        <Entry
-          key={c.id}
-          title={c.name}
-          subtitle={c.issuer}
-          meta={formatMonthYear(c.date)}
-          link={c.url}
-        />
-      ));
+      return nonEmpty(data.certifications, (c) => c.name).map((c) => ({
+        id: c.id,
+        title: c.name,
+        subtitle: c.issuer,
+        meta: formatMonthYear(c.date),
+        link: c.url,
+      }));
     case "awards":
-      return nonEmpty(data.awards, (a) => a.title).map((a) => (
-        <Entry
-          key={a.id}
-          title={a.title}
-          subtitle={a.issuer}
-          meta={formatMonthYear(a.date)}
-        >
-          {a.description && <Markdown text={a.description} />}
-        </Entry>
-      ));
+      return nonEmpty(data.awards, (a) => a.title).map((a) => ({
+        id: a.id,
+        title: a.title,
+        subtitle: a.issuer,
+        meta: formatMonthYear(a.date),
+        ...splitText(a.description),
+      }));
     default: {
       if (!key.startsWith("custom:")) return undefined;
       const section = data.customSections.find((s) => `custom:${s.id}` === key);
       return nonEmpty(section?.items ?? [], (i) => i.title + i.description).map(
-        (i) => (
-          <Entry
-            key={i.id}
-            title={i.title}
-            subtitle={i.subtitle}
-            dates={i.dates}
-          >
-            {i.description && <Markdown text={i.description} />}
-          </Entry>
-        ),
+        (i) => ({
+          id: i.id,
+          title: i.title,
+          subtitle: i.subtitle,
+          dates: i.dates,
+          ...splitText(i.description),
+        }),
       );
     }
   }
@@ -383,7 +420,28 @@ function Meta({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** Dot + title head (unbreakable, kept with the first body lines) + indented body. */
+type EntryProps = {
+  title: string;
+  subtitle?: string;
+  dates?: DateRangeValue;
+  location?: string;
+  meta?: string;
+  link?: string;
+  /** Section title, for the first entry; kept on the same page as the entry. */
+  heading?: React.ReactNode;
+  /** Body start; never separated from the head. */
+  lead?: React.ReactNode;
+  /** Body remainder; may continue on the next page. */
+  rest?: React.ReactNode;
+  /** Space above (pt). */
+  gap?: number;
+};
+
+/**
+ * `heading` + dot/title head + `lead` form one unbreakable block; `rest` follows.
+ * Returns siblings, not a wrapper: react-pdf keeps a parent whose first child
+ * doesn't fit on the page instead of moving it, so blocks must stay flat.
+ */
 function Entry({
   title,
   subtitle,
@@ -391,18 +449,14 @@ function Entry({
   location,
   meta,
   link,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  dates?: DateRangeValue;
-  location?: string;
-  meta?: string;
-  link?: string;
-  children?: React.ReactNode;
-}) {
+  heading,
+  lead,
+  rest,
+  gap = 0,
+}: EntryProps) {
   const t = useTokens();
   const dot = t.size.base * 0.55;
+  const indent = { paddingLeft: 9 + dot + 10, gap: t.space(0.5) };
   const metaStyle = {
     color: t.accent,
     fontSize: t.size.xs,
@@ -410,57 +464,62 @@ function Entry({
   } as const;
 
   return (
-    <View style={{ paddingLeft: 9, gap: t.space(0.5) }}>
-      <View
-        wrap={false}
-        minPresenceAhead={24}
-        style={{ flexDirection: "row", gap: 10 }}
-      >
-        <View
-          style={{
-            width: dot,
-            height: dot,
-            borderRadius: dot / 2,
-            backgroundColor: t.accent,
-            marginTop: t.size.md * 0.35,
-          }}
-        />
-        <View style={{ flex: 1 }}>
-          {title && (
-            <Text
-              style={{ color: t.accent, fontSize: t.size.md, fontWeight: 700 }}
-            >
-              {title}
-              {link && (
-                <Text style={{ fontSize: t.size.sm, fontWeight: 400 }}>
-                  {"  "}
-                  <LinkText url={link} style={{ color: t.accent }} />
-                </Text>
-              )}
-            </Text>
-          )}
-          {subtitle && (
-            <Text style={{ fontSize: t.size.base, fontWeight: 700 }}>
-              {subtitle}
-            </Text>
-          )}
-          {(dates || location || meta) && (
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <DateRange dates={dates} style={metaStyle} />
-              {meta && <Text style={metaStyle}>{meta}</Text>}
-              {location && <Text style={metaStyle}>{location}</Text>}
-            </View>
-          )}
+    <>
+      <View wrap={false} style={{ gap: t.space(0.5), marginTop: gap }}>
+        {heading}
+        <View style={{ flexDirection: "row", gap: 10, paddingLeft: 9 }}>
+          <View
+            style={{
+              width: dot,
+              height: dot,
+              borderRadius: dot / 2,
+              backgroundColor: t.accent,
+              marginTop: t.size.md * 0.35,
+            }}
+          />
+          <View style={{ flex: 1 }}>
+            {title && (
+              <Text
+                style={{
+                  color: t.accent,
+                  fontSize: t.size.md,
+                  fontWeight: 700,
+                }}
+              >
+                {title}
+                {link && (
+                  <Text style={{ fontSize: t.size.sm, fontWeight: 400 }}>
+                    {"  "}
+                    <LinkText url={link} style={{ color: t.accent }} />
+                  </Text>
+                )}
+              </Text>
+            )}
+            {subtitle && (
+              <Text style={{ fontSize: t.size.base, fontWeight: 700 }}>
+                {subtitle}
+              </Text>
+            )}
+            {(dates || location || meta) && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <DateRange dates={dates} style={metaStyle} />
+                {meta && <Text style={metaStyle}>{meta}</Text>}
+                {location && <Text style={metaStyle}>{location}</Text>}
+              </View>
+            )}
+          </View>
         </View>
+        {lead && <View style={indent}>{lead}</View>}
       </View>
-      {children && (
-        <View style={{ paddingLeft: dot + 10, gap: t.space(0.5) }}>
-          {children}
-        </View>
+      {Children.toArray(rest).length > 0 && (
+        <View style={{ ...indent, marginTop: t.space(0.5) }}>{rest}</View>
       )}
-    </View>
+    </>
   );
 }
 

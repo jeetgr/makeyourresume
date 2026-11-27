@@ -251,9 +251,6 @@ importers:
       react-resize-detector:
         specifier: ^12.3.0
         version: 12.3.0(react@19.3.1)
-      react-to-print:
-        specifier: ^3.3.0
-        version: 3.3.0(react@19.3.1)
       sonner:
         specifier: ^2.0.8
         version: 2.0.8(@types/react@19.3.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -3746,11 +3743,6 @@ packages:
     resolution: {integrity: sha512-mIDOVrTHKGnKe6qEUWi8dFdfHM5CPyTOpqoHctdMQf89Ljm/0qqDIzkP3vTRZZJi9/raaMiRxDEOqO4you5x+A==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
-
-  react-to-print@3.3.0:
-    resolution: {integrity: sha512-7j9GIeNZA9glZlbv9mIbIHDOOx+WYfRMbJzh04NiSKjdaeGkxJuKjJQrtRuNKtt5AvEVVjrLCPokZ9yJX51Fvg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
 
   react@19.3.1:
     resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
@@ -7746,10 +7738,6 @@ snapshots:
   react-resize-detector@12.3.0(react@19.3.1):
     dependencies:
       es-toolkit: 1.53.2
-      react: 19.3.1
-
-  react-to-print@3.3.0(react@19.3.1):
-    dependencies:
       react: 19.3.1
 
   react@19.3.1: {}

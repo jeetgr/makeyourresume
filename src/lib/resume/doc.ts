@@ -22,7 +22,8 @@ type ResumeDocOps = {
   moveSection: (from: number, to: number) => void;
   setTheme: (patch: Partial<Theme>) => void;
   setTemplate: (templateId: string) => void;
-  reset: () => void;
+  /** Replaces content (default: empty); theme and template are kept. */
+  reset: (data?: ResumeData) => void;
 };
 
 /**

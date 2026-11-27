@@ -8,8 +8,16 @@ import { useTokens } from "../tokens";
 
 type Style = Styles[string];
 
-/** Markdown subset; one `<Text>` per non-empty line. */
-export function Markdown({ text, style }: { text: string; style?: Style }) {
+/** Markdown subset; one `<Text>` per non-empty line. Links default to accent. */
+export function Markdown({
+  text,
+  style,
+  linkStyle,
+}: {
+  text: string;
+  style?: Style;
+  linkStyle?: Style;
+}) {
   const { accent } = useTokens();
 
   return paragraphs(text).map((line, i) => (
@@ -23,7 +31,12 @@ export function Markdown({ text, style }: { text: string; style?: Style }) {
           <Link
             key={j}
             src={s.href}
-            style={{ ...marks, color: accent, textDecoration: "none" }}
+            style={{
+              ...marks,
+              color: accent,
+              textDecoration: "none",
+              ...linkStyle,
+            }}
           >
             {s.text}
           </Link>

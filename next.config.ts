@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
     },
     {
       source: "/templates/:id/resume",
-      destination: "/resumes/local/print",
+      destination: "/resumes/local",
+      permanent: true,
+    },
+    {
+      source: "/resumes/local/print",
+      destination: "/resumes/local",
       permanent: true,
     },
   ],

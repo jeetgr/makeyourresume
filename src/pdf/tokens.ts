@@ -2,6 +2,8 @@ import { createContext, use } from "react";
 
 import type { Density, Theme } from "@/lib/resume/theme";
 
+import { FONT_FAMILIES } from "./fonts";
+
 const densityScale: Record<Density, number> = {
   compact: 0.8,
   normal: 1,
@@ -12,6 +14,7 @@ const densityScale: Record<Density, number> = {
 export function makeTokens(theme: Theme) {
   const b = theme.baseSize;
   const d = densityScale[theme.density];
+  const { ascent, capHeight } = FONT_FAMILIES[theme.font];
 
   return {
     fontFamily: theme.font,
@@ -26,6 +29,11 @@ export function makeTokens(theme: Theme) {
     },
     /** Spacing in pt: `space(n)` = n × 4pt × density. */
     space: (n: number) => n * 4 * d,
+    /**
+     * How far caps sit below center in a `lineHeight: 1` box (baseline ≈ ascent);
+     * shift text up by this (pt) to center uppercase text optically.
+     */
+    capShift: (fontSize: number) => (ascent - capHeight / 2 - 0.5) * fontSize,
     accent: theme.accent,
     /** Accent with alpha (0–1); expects `#rrggbb`. */
     tint: (alpha: number) =>

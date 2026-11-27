@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import { constants } from "@/constants";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { cookies } from "next/headers";
 
 export const createAndSetTokens = ({
   id,
   cookieStore,
 }: {
   id: string;
-  cookieStore: ReadonlyRequestCookies;
+  cookieStore: Awaited<ReturnType<typeof cookies>>;
 }) => {
   const accessToken = signAccessToken({ id });
   const refreshToken = signRefreshToken({ id });

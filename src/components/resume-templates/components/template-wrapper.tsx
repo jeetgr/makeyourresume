@@ -1,18 +1,19 @@
 "use client";
-import { withResizeDetector } from "react-resize-detector";
+import { useResizeDetector } from "react-resize-detector";
 
-function Wrapper({
-  width,
+export default function TemplateWrapper({
   children,
 }: {
-  width: number;
   children: React.ReactNode;
 }) {
+  const { width, ref } = useResizeDetector<HTMLDivElement>();
+
   return (
     <div
+      ref={ref}
       style={
         {
-          "--WIDTH": width! * 0.75 + "pt",
+          "--WIDTH": (width ?? 0) * 0.75 + "pt",
         } as React.CSSProperties
       }
     >
@@ -20,7 +21,3 @@ function Wrapper({
     </div>
   );
 }
-
-const TemplateWrapper = withResizeDetector(Wrapper);
-
-export default TemplateWrapper;

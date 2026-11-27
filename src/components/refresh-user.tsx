@@ -23,7 +23,8 @@ export const RefreshUser = () => {
         );
 
         dispatch(setUser(res.data.user));
-      } catch (error: any) {
+      } catch (error) {
+        if (axios.isCancel(error)) return;
         dispatch(setUser(null));
         console.log(error);
       }

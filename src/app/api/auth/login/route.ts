@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   createAndSetTokens({ id: user.id, cookieStore });
 

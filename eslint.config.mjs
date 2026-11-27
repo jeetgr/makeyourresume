@@ -1,4 +1,3 @@
-import { fixupConfigRules } from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
@@ -13,7 +12,7 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-  ...fixupConfigRules(compat.extends("next/core-web-vitals")),
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 
 export default eslintConfig;

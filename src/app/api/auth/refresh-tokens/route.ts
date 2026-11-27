@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/db";
 import { createAndSetTokens } from "../_utils/create-and-set-tokens";
 
 // ROUTE: POST /api/auth/refresh-token - [Authenticated User]
-export async function POST(req: NextRequest) {
-  const cookieStore = cookies();
+export async function POST() {
+  const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken");
 
   if (!refreshToken) {

@@ -78,7 +78,7 @@ function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
     selectAccentColor(state, "template-1"),
   );
 
-  let Icon: LucideIcon = icons[icon] || icons.other;
+  const Icon: LucideIcon = icons[icon] || icons.other;
 
   return (
     <p className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*1)]">

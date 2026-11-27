@@ -3,6 +3,3 @@ allowBuilds:
   "@prisma/engines": true
   bcrypt: true
   prisma: true
-
-overrides:
-  "@rushstack/eslint-patch": ^1.16.1

@@ -275,7 +275,7 @@ const resumeDataSlice = createSlice({
 
     setFields: (state, action: PayloadAction<SetFieldsPayload>) => {
       const { fieldName, value } = action.payload;
-      state[fieldName] = value as any;
+      Object.assign(state, { [fieldName]: value });
     },
     addWorkResponsibility: (state, action: PayloadAction<string>) => {
       const index = state.workExperiences.findIndex(
@@ -337,7 +337,7 @@ const resumeDataSlice = createSlice({
       state.workExperiences[index].workResponsibilities =
         action.payload.workResponsibilities;
     },
-    resetResumeData: (state) => {
+    resetResumeData: () => {
       return initialResumeDataState;
     },
   },

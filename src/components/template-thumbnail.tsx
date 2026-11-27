@@ -5,10 +5,11 @@ import { getTemplateMeta, thumbnailSrc } from "@/templates/catalog";
 /** Static page-1 render of a template w/ sample data (`pnpm thumbnails`). */
 export function TemplateThumbnail({
   templateId,
-  priority,
+  eager,
 }: {
   templateId: string;
-  priority?: boolean;
+  /** Above the fold. Several candidates for LCP, so `loading` not `preload`. */
+  eager?: boolean;
 }) {
   const { id, name } = getTemplateMeta(templateId);
 
@@ -18,7 +19,7 @@ export function TemplateThumbnail({
       alt={`${name} template preview`}
       width={600}
       height={849}
-      priority={priority}
+      loading={eager ? "eager" : undefined}
       className="h-auto w-full bg-white"
     />
   );

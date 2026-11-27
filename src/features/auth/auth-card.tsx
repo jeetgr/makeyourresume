@@ -1,12 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 export function AuthCard({
   title,
   description,
@@ -19,21 +10,19 @@ export function AuthCard({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="py-20">
-      <Card className="mx-auto mt-8 max-w-110">
-        <CardHeader className="text-center">
-          <CardTitle className="font-display text-3xl font-normal tracking-tight">
-            {title}
-          </CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
-        </CardHeader>
-        {children && (
-          <CardContent className="space-y-6">{children}</CardContent>
+    <section className="mx-auto w-full max-w-100 space-y-8 motion-safe:animate-blur-fade">
+      <header className="space-y-2 text-center">
+        <h1 className="font-display text-4xl tracking-tight">{title}</h1>
+        {description && (
+          <p className="text-sm text-muted-foreground">{description}</p>
         )}
-        {footer && (
-          <CardFooter className="justify-center text-sm">{footer}</CardFooter>
-        )}
-      </Card>
+      </header>
+      {children && <div className="space-y-6">{children}</div>}
+      {footer && (
+        <footer className="text-center text-sm text-muted-foreground">
+          {footer}
+        </footer>
+      )}
     </section>
   );
 }

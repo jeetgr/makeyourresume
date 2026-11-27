@@ -73,7 +73,7 @@ export function SessionsSection({
                 <p className="text-sm font-medium">
                   {describe(s.userAgent)}
                   {current && (
-                    <span className="ml-2 rounded bg-highlight/40 px-1.5 py-0.5 text-xs">
+                    <span className="ml-2 rounded bg-highlight/40 px-1.5 py-0.5 font-mono text-[0.7rem]">
                       This device
                     </span>
                   )}

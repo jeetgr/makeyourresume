@@ -1,5 +1,12 @@
 /** Brand mark: folded page, top line highlighted (Q64). Ink follows `currentColor`. */
-export function LogoMark({ className }: { className?: string }) {
+export function LogoMark({
+  animated,
+  className,
+}: {
+  /** Highlighter bar draws in on a loop (motion-safe). */
+  animated?: boolean;
+  className?: string;
+}) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden className={className}>
       <path
@@ -21,6 +28,11 @@ export function LogoMark({ className }: { className?: string }) {
         height="3.6"
         rx="1.2"
         fill="var(--highlight)"
+        className={
+          animated
+            ? "origin-left [transform-box:fill-box] motion-safe:animate-mark-draw"
+            : undefined
+        }
       />
       <path
         d="M10.5 20.5h10M10.5 24.5h6.5"

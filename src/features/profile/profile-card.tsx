@@ -20,7 +20,9 @@ export function ProfileCard({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold tracking-tight">
+          {title}
+        </CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>{children}</CardContent>

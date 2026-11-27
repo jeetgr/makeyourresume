@@ -9,6 +9,7 @@ import { ConnectedAccounts } from "@/features/profile/connected-accounts";
 import { DeleteAccount } from "@/features/profile/delete-account";
 import { PasswordSection } from "@/features/profile/password-section";
 import { SessionsSection } from "@/features/profile/sessions-section";
+import { PageHeading } from "@/components/page-heading";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -27,8 +28,8 @@ export default async function ProfilePage() {
   const hasPassword = providers.includes("credential");
 
   return (
-    <section className="mx-auto max-w-2xl space-y-6 py-20">
-      <h1 className="font-display text-4xl tracking-tight">Profile</h1>
+    <section className="mx-auto max-w-2xl space-y-6 pt-28 pb-20">
+      <PageHeading title="Profile" className="pb-2" />
       <AccountSection user={user} />
       <PasswordSection hasPassword={hasPassword} email={user.email} />
       {googleEnabled && (

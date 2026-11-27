@@ -44,10 +44,10 @@ type Resume = {
 
 export function ResumeCard({
   resume,
-  priority,
+  index,
 }: {
   resume: Resume;
-  priority?: boolean;
+  index: number;
 }) {
   const router = useRouter();
   const [dialog, setDialog] = useState<"rename" | "delete" | null>(null);
@@ -61,16 +61,16 @@ export function ResumeCard({
   }
 
   return (
-    <li className="group relative">
+    <li
+      className="group relative motion-safe:animate-blur-fade"
+      style={{ animationDelay: `${Math.min(index, 10) * 60}ms` }}
+    >
       <Link
         href={`/resumes/${resume.id}`}
         className="block space-y-2 rounded focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
-        <div className="overflow-hidden rounded border-2 shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md">
-          <TemplateThumbnail
-            templateId={resume.templateId}
-            priority={priority}
-          />
+        <div className="overflow-hidden rounded-xl border bg-white shadow-sm transition duration-300 group-hover:-translate-y-0.5 group-hover:border-highlight group-hover:shadow-[0_10px_30px_-8px_color-mix(in_oklab,var(--highlight)_70%,transparent)]">
+          <TemplateThumbnail templateId={resume.templateId} eager={index < 4} />
         </div>
         <div className="pr-9">
           <p className="truncate font-semibold">{resume.title}</p>

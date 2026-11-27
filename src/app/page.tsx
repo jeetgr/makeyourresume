@@ -35,18 +35,21 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { title: "Pick a template", text: "Start from any look; switch anytime." },
+  {
+    title: "Choose a template",
+    text: "You can switch later without retyping.",
+  },
   {
     title: "Fill in your sections",
-    text: "Experience, skills, projects, and your own custom sections.",
+    text: "Experience, education, skills, projects and custom sections.",
   },
-  { title: "Download the PDF", text: "One click, ready to send." },
+  { title: "Download the PDF", text: "A4 or US Letter, with selectable text." },
 ];
 
 const faqs = [
   {
-    q: "Is it really free?",
-    a: "Yes. Every template, theme option and PDF download is free, with no watermark.",
+    q: "Is it free?",
+    a: "Yes. All templates, theme options and PDF downloads are free, and the PDF has no watermark.",
   },
   {
     q: "Do I need an account?",
@@ -88,15 +91,15 @@ export default function Home() {
             Free · No sign-up required
           </p>
           <h1 className="font-display text-5xl leading-[1.02] tracking-tight sm:text-6xl">
-            Make a resume that <br className="hidden sm:inline" />
+            A resume written for <br className="hidden sm:inline" />
             <RotatingWord
-              words={["gets read.", "gets interviews.", "gets you hired."]}
+              words={["recruiters.", "hiring managers.", "ATS software."]}
               className="mark italic"
             />
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
-            ATS-friendly templates, a live PDF preview and export anytime. Start
-            in seconds, right in your browser.
+            Fill in a form and the PDF updates as you type. Download it when
+            it&apos;s ready, no account required.
           </p>
           <div className="flex flex-wrap gap-3">
             <StartLink className="sheen">
@@ -121,7 +124,7 @@ export default function Home() {
 
       <section aria-labelledby="editor" className="space-y-12">
         <SectionHeading id="editor" eyebrow="The editor">
-          Type on the left, see the PDF on the right
+          Form on the left, PDF on the right
         </SectionHeading>
         <ContainerScroll className="mx-auto max-w-5xl">
           <div className="rounded-2xl border bg-card p-1.5 shadow-2xl shadow-foreground/10 sm:p-2.5">
@@ -138,14 +141,14 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="features" className="space-y-12">
-        <SectionHeading id="features" eyebrow="Why MYR">
-          Everything you need, nothing in the way
+        <SectionHeading id="features" eyebrow="Features">
+          What&apos;s included
         </SectionHeading>
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Feature
             icon={Eye}
             title="Live PDF preview"
-            text="See the exact PDF you'll download, updated as you type."
+            text="The preview is the PDF you download, re-rendered as you type."
             className="md:col-span-2"
           >
             <div
@@ -157,8 +160,8 @@ export default function Home() {
           </Feature>
           <Feature
             icon={ScanText}
-            title="ATS-friendly"
-            text="Real, selectable text in a clean reading order that parsers understand."
+            title="ATS-readable"
+            text="Selectable text in a single reading order, with standard section headings."
           >
             <div
               aria-hidden
@@ -176,7 +179,7 @@ export default function Home() {
           <Feature
             icon={Palette}
             title="Templates & theming"
-            text={`${templateCatalog.length} templates. Tune the font, accent color, size and spacing.`}
+            text={`${templateCatalog.length} templates. Adjust font, accent color, text size and spacing.`}
           >
             <div aria-hidden className="mt-5 flex items-center gap-1.5">
               {templateCatalog.map(({ id, defaultTheme }) => (
@@ -192,7 +195,7 @@ export default function Home() {
           <Feature
             icon={FileJson}
             title="Import & export"
-            text="Your data stays portable: own JSON or the JSON Resume standard."
+            text="Export to JSON or the JSON Resume format, and import either."
             className="md:col-span-2"
           >
             <IoBeam />
@@ -200,7 +203,7 @@ export default function Home() {
           <Feature
             icon={Files}
             title="Multiple resumes"
-            text="Sign in to keep a resume per role, saved and synced."
+            text="With an account, keep a version per role, synced across devices."
           >
             <div aria-hidden className="mt-6 space-y-1.5">
               {["Frontend role", "Design role", "Startup role"].map((r, i) => (
@@ -218,7 +221,7 @@ export default function Home() {
           <Feature
             icon={BadgeCheck}
             title="Free, no watermark"
-            text="No paywall on downloads. No account needed to start."
+            text="Every template and download is free. No watermark on the PDF."
           >
             <p aria-hidden className="mt-6 font-display text-6xl leading-none">
               <span className="mark">$0</span>
@@ -229,7 +232,7 @@ export default function Home() {
 
       <section aria-labelledby="templates" className="space-y-12">
         <SectionHeading id="templates" eyebrow="Templates">
-          Pick a look, change it anytime
+          Switch layouts without retyping
         </SectionHeading>
         <Marquee className="-mx-4 py-3">
           {templateCatalog.map(({ id, name }) => (
@@ -250,7 +253,7 @@ export default function Home() {
 
       <section aria-labelledby="how" className="space-y-12">
         <SectionHeading id="how" eyebrow="How it works">
-          Three steps to a finished PDF
+          Three steps
         </SectionHeading>
         <TracingBeam className="mx-auto max-w-xl">
           <ol className="space-y-12">
@@ -271,7 +274,7 @@ export default function Home() {
 
       <section aria-labelledby="faq" className="mx-auto max-w-3xl space-y-12">
         <SectionHeading id="faq" eyebrow="FAQ">
-          Questions, answered
+          Common questions
         </SectionHeading>
         <div className="divide-y rounded-2xl border bg-card">
           {faqs.map(({ q, a }) => (
@@ -293,10 +296,11 @@ export default function Home() {
         />
         <div className="relative">
           <h2 className="font-display text-5xl tracking-tight text-balance">
-            Your next resume is a few minutes away
+            Start your resume
           </h2>
           <p className="mt-3 text-primary-foreground/75">
-            Free, private by default, and yours to export.
+            No account needed. Drafts are saved in this browser until you sign
+            in.
           </p>
           <StartLink variant="highlight" className="sheen mt-8">
             Start building <ArrowRight />

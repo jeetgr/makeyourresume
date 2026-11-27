@@ -54,14 +54,20 @@ const ProfilePage = () => {
   return (
     <div className="space-y-2 rounded border p-4">
       <div className="flex flex-wrap gap-2">
-        <Button asChild variant="secondary">
-          <Link href={`/templates`}>Go Back</Link>
+        <Button
+          variant="secondary"
+          nativeButton={false}
+          render={<Link href={`/templates`} />}
+        >
+          Go Back
         </Button>
 
-        <Button asChild className="ml-auto">
-          <Link href={`/templates/${templateId}/editor/socials`}>
-            Next (Socials)
-          </Link>
+        <Button
+          className="ml-auto"
+          nativeButton={false}
+          render={<Link href={`/templates/${templateId}/editor/socials`} />}
+        >
+          Next (Socials)
         </Button>
       </div>
 

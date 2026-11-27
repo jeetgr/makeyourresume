@@ -18,10 +18,12 @@ const SocialsPage = () => {
   return (
     <div className="space-y-2 rounded border p-4">
       <div className="flex flex-wrap gap-2">
-        <Button asChild variant="secondary">
-          <Link href={`/templates/${templateId}/editor/profile`}>
-            Previous (Profile)
-          </Link>
+        <Button
+          variant="secondary"
+          nativeButton={false}
+          render={<Link href={`/templates/${templateId}/editor/profile`} />}
+        >
+          Previous (Profile)
         </Button>
 
         <div className="ml-auto flex flex-wrap justify-end gap-2">

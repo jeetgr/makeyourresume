@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/auth/authSlice";
-import axios from "axios";
+import { api } from "@/lib/api";
+import type { User } from "@/redux/features/auth/authSlice";
 
 export const RefreshUser = () => {
   const dispatch = useAppDispatch();
@@ -13,18 +14,13 @@ export const RefreshUser = () => {
 
     (async () => {
       try {
-        const res = await axios.post(
-          "/api/auth/refresh-tokens",
-          {},
-          {
-            withCredentials: true,
-            signal: abortController.signal,
-          },
-        );
+        const data = await api<{ user: User }>("/api/auth/refresh-tokens", {
+          signal: abortController.signal,
+        });
 
-        dispatch(setUser(res.data.user));
+        dispatch(setUser(data.user));
       } catch (error) {
-        if (axios.isCancel(error)) return;
+        if (abortController.signal.aborted) return;
         dispatch(setUser(null));
         console.log(error);
       }

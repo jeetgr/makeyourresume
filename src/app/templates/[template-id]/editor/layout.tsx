@@ -14,8 +14,8 @@ const ResumeFormLayout = async ({
 
   const Component = templateComponents[templateId];
   return (
-    <section className="relative min-h-[100svh] py-20">
-      <h1 className="text-4xl font-bold leading-[1.1]">
+    <section className="relative min-h-svh py-20">
+      <h1 className="text-4xl leading-[1.1] font-bold">
         Let<span className="text-primary">&apos;</span>s Start
       </h1>
       <p className="pb-3 text-sm">
@@ -29,7 +29,7 @@ const ResumeFormLayout = async ({
           {Component ? <Component /> : "Template not found"}
         </div>
         <PreviewTemplate
-          className="fixed bottom-4 right-4 space-x-1 px-4 py-2.5 lg:hidden"
+          className="fixed right-4 bottom-4 space-x-1 px-4 py-2.5 lg:hidden"
           templateComponent={Component ? <Component /> : "Template not found"}
         />
       </div>

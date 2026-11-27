@@ -42,16 +42,17 @@ const ResumeOutputPage = () => {
       <div className="flex-1 space-y-4 rounded border p-4 sm:space-y-6">
         <div className="flex flex-wrap gap-2">
           <Button
-            asChild
             variant="secondary"
             className="flex items-center gap-2"
+            nativeButton={false}
+            render={
+              <Link
+                href={`/templates/${templateId}/editor/profile`}
+                className="space-x-2 border"
+              />
+            }
           >
-            <Link
-              href={`/templates/${templateId}/editor/profile`}
-              className="space-x-2 border"
-            >
-              <span>Edit Data</span> <Pencil size={17} />
-            </Link>
+            <span>Edit Data</span> <Pencil size={17} />
           </Button>
 
           <Button

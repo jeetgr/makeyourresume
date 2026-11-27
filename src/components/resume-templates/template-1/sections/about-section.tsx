@@ -22,7 +22,7 @@ export default function AboutSection() {
     >
       {/* NAME */}
       {(!isDoubleHyphens(firstName) || !isDoubleHyphens(lastName)) && (
-        <h1 className="text-[calc(var(--WIDTHPERCENTAGE)*22)] font-medium leading-none">
+        <h1 className="text-[calc(var(--WIDTHPERCENTAGE)*22)] leading-none font-medium">
           {!isDoubleHyphens(firstName) && (
             <span>{firstName || dummyData.profile.firstName}</span>
           )}{" "}
@@ -34,7 +34,7 @@ export default function AboutSection() {
 
       {/* PROFESSIONAL TITLE */}
       {!isDoubleHyphens(professionalTitle) && (
-        <p className="relative mb-[calc(var(--WIDTHPERCENTAGE)*3)] w-fit pr-[calc(var(--WIDTHPERCENTAGE)*6)] text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-tight after:absolute after:left-0 after:top-[105%] after:h-[calc(var(--WIDTHPERCENTAGE)*0.789)] after:w-full after:bg-white">
+        <p className="relative mb-[calc(var(--WIDTHPERCENTAGE)*3)] w-fit pr-[calc(var(--WIDTHPERCENTAGE)*6)] text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-tight after:absolute after:top-[105%] after:left-0 after:h-[calc(var(--WIDTHPERCENTAGE)*0.789)] after:w-full after:bg-white">
           {professionalTitle || dummyData.profile.professionalTitle}
         </p>
       )}

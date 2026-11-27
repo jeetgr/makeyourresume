@@ -41,8 +41,8 @@ export default function NextButton({
   }
 
   return (
-    <Button asChild>
-      <Link href={href}>{label}</Link>
+    <Button nativeButton={false} render={<Link href={href} />}>
+      {label}
     </Button>
   );
 }

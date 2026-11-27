@@ -37,7 +37,7 @@ export default function EditAccentColors({
             onClick={() => dispatch(resetAccentColors({ templateId }))}
           >
             <span className="sr-only">Reset Colors</span>
-            <span className="absolute -left-[25%] inline-block h-[2px] w-14 rotate-45 bg-accent/30"></span>
+            <span className="absolute left-[-25%] inline-block h-[2px] w-14 rotate-45 bg-accent/30"></span>
           </button>
         </li>
         {predefinedColors.map((color) => (
@@ -58,16 +58,13 @@ export default function EditAccentColors({
         <p className="text-base font-medium">Custom:</p>
         <div className="flex items-center gap-2 rounded border-2 border-accent/30 p-1">
           <Popover>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                className="h-8 w-8 rounded"
-                style={{ backgroundColor: customColor }}
-              >
-                <span className="sr-only">Select custom color</span>
-              </button>
+            <PopoverTrigger
+              className="h-8 w-8 rounded"
+              style={{ backgroundColor: customColor }}
+            >
+              <span className="sr-only">Select custom color</span>
             </PopoverTrigger>
-            <PopoverContent asChild className="p-0">
+            <PopoverContent className="w-auto p-0">
               <HexColorPicker
                 color={customColor}
                 onChange={(color) => {

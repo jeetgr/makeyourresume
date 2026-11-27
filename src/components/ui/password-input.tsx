@@ -1,43 +1,36 @@
-import * as React from "react";
+"use client";
 
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@/utils/cn";
+import { Input } from "@/components/ui/input";
 
-export type PasswordInputProps = React.InputHTMLAttributes<HTMLInputElement>;
+export type PasswordInputProps = Omit<
+  React.ComponentProps<typeof Input>,
+  "type"
+>;
 
-const PasswordInput = React.forwardRef<
-  HTMLInputElement,
-  Omit<PasswordInputProps, "type">
->(({ className, ...props }, ref) => {
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  function toggleShowPassword() {
-    setShowPassword((prev) => !prev);
-  }
+function PasswordInput({ className, ...props }: PasswordInputProps) {
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="relative">
-      <input
+      <Input
         type={showPassword ? "text" : "password"}
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 pr-8 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-          className,
-        )}
-        ref={ref}
+        className={cn("pr-9", className)}
         {...props}
       />
-
       <button
         type="button"
-        className="absolute right-2 top-[22%]"
-        onClick={toggleShowPassword}
+        aria-label={showPassword ? "Hide password" : "Show password"}
+        className="absolute inset-y-0 right-2 flex items-center text-muted-foreground hover:text-foreground"
+        onClick={() => setShowPassword((prev) => !prev)}
       >
-        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
       </button>
     </div>
   );
-});
-PasswordInput.displayName = "PasswordInput";
+}
 
 export { PasswordInput };

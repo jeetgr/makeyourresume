@@ -7,7 +7,7 @@ import * as z from "zod";
 import { createAndSetTokens } from "../_utils/create-and-set-tokens";
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(8).max(255),
 });
 

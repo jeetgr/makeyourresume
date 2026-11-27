@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-[100svh] w-full flex-col items-center justify-center">
+    <section className="flex min-h-svh w-full flex-col items-center justify-center">
       <Image
         src="/illustrations/404.svg"
         width={500}
@@ -20,8 +20,8 @@ export default function NotFound() {
       </a>
 
       <div className="mt-4">
-        <Button asChild>
-          <Link href="/">Go to Homepage</Link>
+        <Button nativeButton={false} render={<Link href="/" />}>
+          Go to Homepage
         </Button>
       </div>
     </section>

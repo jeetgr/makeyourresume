@@ -1,43 +1,106 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 42 100% 50%;
-    --primary-dark: 42 100% 45%;
-    --primary-foreground: 0 0% 7%;
-    --secondary: 0 0% 7%;
-    --secondary-dark: 0 0% 18%;
-    --secondary-foreground: 0 0% 100%;
-    --accent: 210 100% 14%;
-    --accent-dark: 210 100% 11.7%;
-    --accent-foreground: 0 0% 100%;
-    --muted: 218.6 14.3% 80%;
-    --muted-dark: 218.6 14.3% 75%;
-    --muted-foreground: 0 0% 20%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-dark: 0 84.2% 50.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 89%;
-    --input: 220 13% 89%;
-    --ring: 42 100% 50%;
-    --radius: 0.5rem;
+/** Class-based so shadcn `dark:` styles never follow the OS; the site is light-only (Q46). */
+@custom-variant dark (&:is(.dark *));
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
   }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme {
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.2rem, 1.1826rem + 0.087vi, 1.25rem);
+  --text-xl: clamp(1.44rem, 1.3974rem + 0.213vi, 1.5625rem);
+  --text-2xl: clamp(1.728rem, 1.6497rem + 0.3915vi, 1.9531rem);
+  --text-3xl: clamp(2.0736rem, 1.9457rem + 0.6397vi, 2.4414rem);
+  --text-4xl: clamp(2.4883rem, 2.2923rem + 0.9799vi, 3.0518rem);
+  --text-5xl: clamp(2.986rem, 2.6977rem + 1.4412vi, 3.8147rem);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-dark: var(--muted-dark);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-dark: var(--destructive-dark);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.182 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.182 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.182 0 0);
+  --primary: oklch(0.817 0.17 77.69);
+  --primary-dark: oklch(0.755 0.157 77.92);
+  --primary-foreground: oklch(0.182 0 0);
+  --secondary: oklch(0.182 0 0);
+  --secondary-dark: oklch(0.301 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --accent: oklch(0.258 0.078 252.21);
+  --accent-dark: oklch(0.232 0.068 251.13);
+  --accent-foreground: oklch(1 0 0);
+  --muted: oklch(0.837 0.014 262.42);
+  --muted-dark: oklch(0.796 0.018 262.4);
+  --muted-foreground: oklch(0.321 0 0);
+  --destructive: oklch(0.637 0.208 25.33);
+  --destructive-dark: oklch(0.596 0.237 28.53);
+  --destructive-foreground: oklch(0.984 0.002 247.84);
+  --border: oklch(0.912 0.007 264.53);
+  --input: oklch(0.912 0.007 264.53);
+  --ring: oklch(0.817 0.17 77.69);
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   html {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
@@ -46,7 +109,7 @@
   width: 60px;
   aspect-ratio: 2;
   --_g: no-repeat
-    radial-gradient(circle closest-side, hsl(var(--secondary)) 90%, #0000);
+    radial-gradient(circle closest-side, var(--secondary) 90%, #0000);
   background:
     var(--_g) 0% 50%,
     var(--_g) 50% 50%,

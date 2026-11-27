@@ -57,7 +57,7 @@ export const EducationEditor = (education: EducationEditorProps) => {
             setValue={(value) => {
               setEducation({ ...education, from: value });
             }}
-            className="min-w-[10rem] flex-1"
+            className="min-w-40 flex-1"
           />
 
           <TextInput
@@ -67,7 +67,7 @@ export const EducationEditor = (education: EducationEditorProps) => {
             setValue={(value) => {
               setEducation({ ...education, to: value });
             }}
-            className="min-w-[10rem] flex-1"
+            className="min-w-40 flex-1"
           />
         </div>
       </div>

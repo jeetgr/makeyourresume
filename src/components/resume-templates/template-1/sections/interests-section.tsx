@@ -47,7 +47,7 @@ function InterestText({ text }: { Icon?: LucideIcon; text: string }) {
         className="h-[calc(var(--WIDTHPERCENTAGE)*15)] w-[calc(var(--WIDTHPERCENTAGE)*15)]"
         color={accentColor}
       />
-      <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] capitalize leading-snug">
+      <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug capitalize">
         {text}
       </span>
     </p>

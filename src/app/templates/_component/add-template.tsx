@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useAppSelector } from "@/redux/hooks";
 import { selectUser } from "@/redux/features/auth/authSlice";
 
@@ -17,17 +17,9 @@ export const AddTemplate = ({
       return;
     }
 
-    axios
-      .post(
-        "/api/resumes",
-        {
-          templateId,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-      .catch((err) => console.error(err));
+    api("/api/resumes", { body: { templateId } }).catch((err) =>
+      console.error(err),
+    );
   };
 
   return (

@@ -36,7 +36,7 @@ export default function Heading({
       {children}
       {bottomLine && (
         <span
-          className="absolute left-0 top-[105%] block h-[max(calc(var(--WIDTHPERCENTAGE)*1.1),.6pt)] w-full"
+          className="absolute top-[105%] left-0 block h-[max(calc(var(--WIDTHPERCENTAGE)*1.1),.6pt)] w-full"
           style={{
             backgroundColor: accentColor,
           }}

@@ -4,30 +4,28 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import Link from "next/link";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { api } from "@/lib/api";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/auth/authSlice";
+import { setUser, type User } from "@/redux/features/auth/authSlice";
 
 const loginFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email!" }),
+  email: z.email("Invalid email!"),
   password: z
-    .string({ required_error: "Password is required!" })
+    .string("Password is required!")
     .min(8, "Password length must be between 8 and 255 characters.")
     .max(255, "Password length must be between 8 and 255 characters."),
 });
@@ -46,64 +44,77 @@ export default function RegisterPage() {
   });
 
   const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-    startTransition(() => {
-      axios
-        .post("/api/auth/login", values)
-        .then(({ data }) => {
-          toast.success(data.message);
-          router.push("/");
-          dispatch(setUser(data.user));
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message || "An error occurred!");
-        });
+    startTransition(async () => {
+      try {
+        const data = await api<{ message: string; user: User }>(
+          "/api/auth/login",
+          {
+            body: values,
+          },
+        );
+        toast.success(data.message);
+        router.push("/");
+        dispatch(setUser(data.user));
+      } catch (error) {
+        toast.error((error as Error).message);
+      }
     });
   };
 
   return (
     <section className="py-20">
-      <Card className="mx-auto mt-8 max-w-[30rem]">
+      <Card className="mx-auto mt-8 max-w-120">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold text-secondary">
             Login
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
                 control={form.control}
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="john@doe.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      placeholder="john@doe.com"
+                      aria-invalid={fieldState.invalid}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
 
-              <FormField
+              <Controller
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder="********" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <PasswordInput
+                      id="password"
+                      placeholder="********"
+                      aria-invalid={fieldState.invalid}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
 
               <Button disabled={isLoading} type="submit" className="w-full">
                 Login
               </Button>
-            </form>
-          </Form>
+            </FieldGroup>
+          </form>
 
           <div className="flex items-center gap-2">
             <div className="h-px flex-1 rounded-full bg-primary/60"></div>

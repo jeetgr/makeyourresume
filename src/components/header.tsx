@@ -19,8 +19,8 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 const navLinks = [
   {
@@ -39,24 +39,22 @@ export default function Header() {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  function handleLogout() {
-    axios
-      .delete("/api/auth/logout")
-      .then(({ data }) => {
-        toast.success(data.message);
-        dispatch(setUser(null));
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message || "An error occurred!");
-      });
+  async function handleLogout() {
+    try {
+      const data = await api("/api/auth/logout", { method: "DELETE" });
+      toast.success(data.message);
+      dispatch(setUser(null));
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-[50] border-b bg-background/30 backdrop-blur">
-      <div className="mx-auto flex max-w-[77.5rem] items-center justify-between px-4 py-2 pr-6">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b bg-background/30 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-310 items-center justify-between px-4 py-2 pr-6">
         <Link
           href="/"
-          className="-ml-1 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="-ml-1 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-hidden"
         >
           <svg
             width="50"
@@ -79,7 +77,7 @@ export default function Header() {
             />
           </svg>
 
-          <span className="inline-block text-lg font-bold uppercase leading-tight text-accent">
+          <span className="inline-block text-lg leading-tight font-bold text-accent uppercase">
             Make Your Resume
           </span>
         </Link>
@@ -115,14 +113,12 @@ export default function Header() {
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 -translate-x-[5rem]">
+              <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
+                <DropdownMenuItem render={<Link href="/profile" />}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
@@ -143,29 +139,36 @@ export default function Header() {
             <SheetContent>
               <nav className="grid gap-4 py-10 pl-4">
                 {navLinks.map(({ href, label }) => (
-                  <SheetClose key={href} asChild>
-                    <Link
-                      href={href}
-                      className={cn(
-                        "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
-                        {
-                          "text-secondary": path === href,
-                        },
-                      )}
-                    >
-                      {label}
-                    </Link>
+                  <SheetClose
+                    key={href}
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href={href}
+                        className={cn(
+                          "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                          {
+                            "text-secondary": path === href,
+                          },
+                        )}
+                      />
+                    }
+                  >
+                    {label}
                   </SheetClose>
                 ))}
 
                 {user === null && (
-                  <SheetClose asChild>
-                    <Link
-                      href="/register"
-                      className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
-                    >
-                      Register
-                    </Link>
+                  <SheetClose
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href="/register"
+                        className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                      />
+                    }
+                  >
+                    Register
                   </SheetClose>
                 )}
               </nav>
@@ -180,11 +183,16 @@ export default function Header() {
 function LoginAndSignUp() {
   return (
     <div className="space-x-5">
-      <Button variant="outline" asChild className="hidden md:inline-block">
-        <Link href="/register">Register</Link>
+      <Button
+        variant="outline"
+        className="hidden md:inline-flex"
+        nativeButton={false}
+        render={<Link href="/register" />}
+      >
+        Register
       </Button>
-      <Button asChild>
-        <Link href="/login">Login</Link>
+      <Button nativeButton={false} render={<Link href="/login" />}>
+        Login
       </Button>
     </div>
   );

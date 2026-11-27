@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
-import { nanoid } from "nanoid";
 
 type Profile = {
   image: string;
@@ -193,20 +192,20 @@ const resumeDataSlice = createSlice({
 
       switch (fieldName) {
         case "socials":
-          state[fieldName].push({ id: nanoid(), ...emptySocial });
+          state[fieldName].push({ id: crypto.randomUUID(), ...emptySocial });
           break;
 
         case "skills":
-          state[fieldName].push({ id: nanoid(), ...emptySkill });
+          state[fieldName].push({ id: crypto.randomUUID(), ...emptySkill });
           break;
 
         case "interests":
-          state[fieldName].push({ id: nanoid(), ...emptyInterest });
+          state[fieldName].push({ id: crypto.randomUUID(), ...emptyInterest });
           break;
 
         case "educations":
           state[fieldName].push({
-            id: nanoid(),
+            id: crypto.randomUUID(),
             courseName: "",
             collegeName: "",
             from: "",
@@ -216,7 +215,7 @@ const resumeDataSlice = createSlice({
 
         case "workExperiences":
           state[fieldName].push({
-            id: nanoid(),
+            id: crypto.randomUUID(),
             companyName: "",
             jobTitle: "",
             location: "",
@@ -224,7 +223,7 @@ const resumeDataSlice = createSlice({
             leavingDate: "",
             workResponsibilities: [
               {
-                id: nanoid(),
+                id: crypto.randomUUID(),
                 responsibility: "",
               },
             ],
@@ -233,7 +232,7 @@ const resumeDataSlice = createSlice({
 
         case "projects":
           state[fieldName].push({
-            id: nanoid(),
+            id: crypto.randomUUID(),
             projectName: "",
             projectDescription: "",
             liveLink: "",
@@ -244,7 +243,7 @@ const resumeDataSlice = createSlice({
 
         case "personalProfiles":
           state[fieldName].push({
-            id: nanoid(),
+            id: crypto.randomUUID(),
             fieldName: "",
             fieldValue: "",
           });
@@ -282,7 +281,7 @@ const resumeDataSlice = createSlice({
         (workExperience) => workExperience.id === action.payload,
       );
       state.workExperiences[index].workResponsibilities.push({
-        id: nanoid(),
+        id: crypto.randomUUID(),
         responsibility: "",
       });
     },

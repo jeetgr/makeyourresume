@@ -48,7 +48,7 @@ function ImagePlaceholder({
 }) {
   return (
     <p
-      className="text-[calc(var(--WIDTHPERCENTAGE)*62)] font-semibold leading-none"
+      className="text-[calc(var(--WIDTHPERCENTAGE)*62)] leading-none font-semibold"
       style={{
         color: accentColor,
       }}

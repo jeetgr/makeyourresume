@@ -47,8 +47,13 @@ export default function EditStyles({ className }: EditStylesProps) {
           value={[leftColumnGap]}
           max={100}
           min={5}
-          onValueChange={(values) =>
-            dispatch(setLeftColumnGap({ templateId, gap: values[0] }))
+          onValueChange={(value) =>
+            dispatch(
+              setLeftColumnGap({
+                templateId,
+                gap: Array.isArray(value) ? value[0] : value,
+              }),
+            )
           }
         />
       </div>
@@ -60,14 +65,19 @@ export default function EditStyles({ className }: EditStylesProps) {
           value={[rightColumnGap]}
           max={100}
           min={5}
-          onValueChange={(values) =>
-            dispatch(setRightColumnGap({ templateId, gap: values[0] }))
+          onValueChange={(value) =>
+            dispatch(
+              setRightColumnGap({
+                templateId,
+                gap: Array.isArray(value) ? value[0] : value,
+              }),
+            )
           }
         />
       </div>
 
       <Button
-        className="ml-auto mt-2 sm:mt-4"
+        className="mt-2 ml-auto sm:mt-4"
         variant="accent"
         onClick={() => dispatch(resetStyles({ templateId }))}
       >

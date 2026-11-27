@@ -1,16 +1,19 @@
 import {
-  Facebook,
-  Github,
-  Instagram,
-  Linkedin,
   LucideIcon,
   Mail,
   MapPin,
   Paperclip,
   Phone,
-  User2,
-  Twitter,
+  UserRound,
 } from "lucide-react";
+
+import {
+  Facebook,
+  Github,
+  Instagram,
+  Linkedin,
+  Twitter,
+} from "@/components/icons/brand-icons";
 
 export type TemplateId = "template-1";
 
@@ -62,7 +65,7 @@ export const icons: Record<string, LucideIcon> = {
   phone: Phone,
   linkedin: Linkedin,
   github: Github,
-  portfolio: User2,
+  portfolio: UserRound,
   facebook: Facebook,
   instagram: Instagram,
   twitter: Twitter,

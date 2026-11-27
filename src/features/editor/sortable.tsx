@@ -9,6 +9,7 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type Modifier,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -20,6 +21,18 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 import { cn } from "@/utils/cn";
+
+/** Vertical only, kept inside the list (collapsible panels clip overflow). */
+const restrictToList: Modifier = ({
+  transform,
+  draggingNodeRect,
+  containerNodeRect,
+}) => {
+  if (!draggingNodeRect || !containerNodeRect) return { ...transform, x: 0 };
+  const minY = containerNodeRect.top - draggingNodeRect.top;
+  const maxY = containerNodeRect.bottom - draggingNodeRect.bottom;
+  return { ...transform, x: 0, y: Math.min(Math.max(transform.y, minY), maxY) };
+};
 
 type SortableListProps = {
   ids: string[];
@@ -53,6 +66,7 @@ export function SortableList({
       id={id}
       sensors={sensors}
       collisionDetection={closestCenter}
+      modifiers={[restrictToList]}
       onDragEnd={onDragEnd}
     >
       <SortableContext items={ids} strategy={verticalListSortingStrategy}>
@@ -85,7 +99,7 @@ export function SortableItem({ id, className, children }: SortableItemProps) {
       type="button"
       ref={setActivatorNodeRef}
       aria-label="Drag to reorder"
-      className="cursor-grab touch-none rounded text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing"
+      className="cursor-grab touch-none rounded text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing"
       {...attributes}
       {...listeners}
     >
@@ -97,7 +111,12 @@ export function SortableItem({ id, className, children }: SortableItemProps) {
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Translate.toString(transform), transition }}
-      className={cn(isDragging && "relative z-10 opacity-80", className)}
+      className={cn(
+        isDragging &&
+          "relative z-10 scale-[1.015] rounded-xl shadow-xl ring-2 ring-highlight [&_*]:cursor-grabbing",
+        "transition-[scale,box-shadow] duration-150 motion-reduce:transition-none",
+        className,
+      )}
     >
       {children(handle)}
     </li>

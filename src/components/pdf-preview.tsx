@@ -5,6 +5,8 @@ import { LoaderCircle, TriangleAlert } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 
+import { LogoLoader } from "./logo-loader";
+
 let pdfjs: Promise<typeof import("pdfjs-dist")> | null = null;
 
 /** pdf.js touches browser globals on import, so load it lazily on the client. */
@@ -91,10 +93,13 @@ export function PdfPreview({
         aria-label="Resume preview"
       />
       {!blob && (
-        <div className="aspect-[1/1.414] w-full animate-pulse bg-muted" />
+        <LogoLoader
+          label="Rendering preview"
+          className="aspect-[1/1.414] w-full bg-card shadow-md"
+        />
       )}
 
-      {(loading || error) && (
+      {blob && (loading || error) && (
         <div
           className="absolute top-2 right-2 flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 text-xs shadow"
           role="status"

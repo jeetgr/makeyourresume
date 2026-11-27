@@ -37,28 +37,28 @@ export function SectionPanel({
     <Collapsible
       open={open}
       onOpenChange={setOpen}
-      className="rounded-lg border bg-card"
+      className="rounded-xl border bg-card transition-shadow data-open:shadow-sm"
     >
-      <div className="flex items-center gap-2 px-3 py-2">
+      <div className="flex items-center gap-2 px-3 py-2.5">
         {handle}
-        <CollapsibleTrigger className="flex flex-1 items-center gap-2 text-left font-semibold">
+        <CollapsibleTrigger className="flex flex-1 items-center gap-2 rounded-md text-left font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
           <ChevronDown
             className={cn(
-              "size-4 text-muted-foreground transition-transform",
+              "size-4 text-muted-foreground transition-transform duration-200",
               !open && "-rotate-90",
             )}
           />
           <span className="line-clamp-1">{title}</span>
           {count !== undefined && (
-            <span className="rounded-full bg-muted px-2 text-xs font-medium text-muted-foreground">
+            <span className="rounded-full bg-muted px-2 font-mono text-xs text-muted-foreground tabular-nums">
               {count}
             </span>
           )}
         </CollapsibleTrigger>
         {section && <VisibilitySwitch section={section} title={title} />}
       </div>
-      <CollapsibleContent className="border-t p-3">
-        {children}
+      <CollapsibleContent>
+        <div className="border-t p-3">{children}</div>
       </CollapsibleContent>
     </Collapsible>
   );

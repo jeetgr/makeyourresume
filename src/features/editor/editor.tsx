@@ -56,7 +56,7 @@ type Tab = "edit" | "preview";
 
 /** `title`/`status` slots let the saved-resume page add rename + save state. */
 export function Editor({
-  title = <h1 className="text-2xl font-bold">My Resume</h1>,
+  title = <h1 className="font-display text-3xl tracking-tight">My resume</h1>,
   status,
 }: {
   title?: React.ReactNode;
@@ -66,7 +66,7 @@ export function Editor({
 
   return (
     <PdfProvider>
-      <section className="py-20">
+      <section className="pt-24 pb-20">
         <TopBar title={title} status={status} />
 
         <Tabs

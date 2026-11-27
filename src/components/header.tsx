@@ -3,34 +3,36 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import {
+  FileText,
+  House,
+  LayoutTemplate,
+  LogOut,
+  Menu,
+  UserRound,
+  X,
+} from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/utils/cn";
 
 import { LogoMark } from "./logo-mark";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { signOut, UserMenu } from "./user-menu";
 
 const navLinks = [
-  {
-    href: "/",
-    label: "Home",
-  },
-  {
-    href: "/templates",
-    label: "Templates",
-  },
+  { href: "/", label: "Home", icon: House },
+  { href: "/templates", label: "Templates", icon: LayoutTemplate },
 ];
 
 const accountLinks = [
-  { href: "/resumes", label: "My resumes" },
-  { href: "/profile", label: "Profile" },
+  { href: "/resumes", label: "My resumes", icon: FileText },
+  { href: "/profile", label: "Profile", icon: UserRound },
 ];
 
-const mobileLink =
-  "text-[0.93rem] font-medium text-muted-foreground hover:text-foreground";
+const menuRow =
+  "flex items-center gap-3 rounded-xl px-2.5 py-2 text-[0.95rem] font-medium transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none";
 
 export default function Header() {
   const path = usePathname();
@@ -90,72 +92,12 @@ export default function Header() {
             <LoginAndSignUp />
           )}
 
-          {/* Hamburger Menu */}
-          <Sheet>
-            <SheetTrigger
-              aria-label="Menu"
-              className="grid size-9 place-items-center rounded-full hover:bg-muted md:hidden"
-            >
-              <Menu className="size-5" />
-            </SheetTrigger>
-            <SheetContent>
-              <nav className="grid gap-4 py-10 pl-4">
-                {navLinks.map(({ href, label }) => (
-                  <SheetClose
-                    key={href}
-                    nativeButton={false}
-                    render={
-                      <Link
-                        href={href}
-                        className={cn(
-                          "relative text-[0.93rem] font-medium text-muted-foreground hover:text-foreground",
-                          {
-                            "text-foreground": path === href,
-                          },
-                        )}
-                      />
-                    }
-                  >
-                    {label}
-                  </SheetClose>
-                ))}
-
-                {user ? (
-                  <>
-                    {accountLinks.map(({ href, label }) => (
-                      <SheetClose
-                        key={href}
-                        nativeButton={false}
-                        render={<Link href={href} className={mobileLink} />}
-                      >
-                        {label}
-                      </SheetClose>
-                    ))}
-                    <SheetClose
-                      className={cn(mobileLink, "text-left")}
-                      onClick={() => signOut(router)}
-                    >
-                      Log out
-                    </SheetClose>
-                  </>
-                ) : (
-                  !isPending && (
-                    <SheetClose
-                      nativeButton={false}
-                      render={
-                        <Link
-                          href="/register"
-                          className="text-[0.93rem] font-medium text-foreground/80 hover:text-foreground"
-                        />
-                      }
-                    >
-                      Register
-                    </SheetClose>
-                  )
-                )}
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <MobileMenu
+            path={path}
+            user={!!user}
+            pending={isPending}
+            onSignOut={() => signOut(router)}
+          />
         </div>
       </div>
     </header>
@@ -195,5 +137,91 @@ function LoginAndSignUp() {
         Login
       </Button>
     </div>
+  );
+}
+
+/** Phone nav: compact card under the pill (few links, so no full-height sheet). */
+function MobileMenu({
+  path,
+  user,
+  pending,
+  onSignOut,
+}: {
+  path: string;
+  user: boolean;
+  pending: boolean;
+  onSignOut: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const links = user ? [...navLinks, ...accountLinks] : navLinks;
+  const close = () => setOpen(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        aria-label={open ? "Close menu" : "Menu"}
+        className="grid size-9 place-items-center rounded-full hover:bg-muted md:hidden"
+      >
+        {open ? <X className="size-5" /> : <Menu className="size-5" />}
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        sideOffset={14}
+        alignOffset={-9}
+        className="w-[calc(100vw-1.5rem)] max-w-sm gap-1 rounded-2xl p-2 shadow-xl md:hidden"
+      >
+        <nav className="grid gap-0.5">
+          {links.map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={close}
+              aria-current={path === href ? "page" : undefined}
+              className={cn(menuRow, path === href && "bg-muted")}
+            >
+              <span className="grid size-8 place-items-center rounded-lg border bg-background">
+                <Icon className="size-4" />
+              </span>
+              {label}
+              {path === href && (
+                <span
+                  aria-hidden
+                  className="ml-auto size-1.5 rounded-full bg-highlight"
+                />
+              )}
+            </Link>
+          ))}
+        </nav>
+
+        {!pending && (
+          <div className="mt-1 border-t px-0.5 pt-2">
+            {user ? (
+              <button
+                type="button"
+                onClick={() => {
+                  close();
+                  onSignOut();
+                }}
+                className={cn(menuRow, "w-full text-muted-foreground")}
+              >
+                <span className="grid size-8 place-items-center">
+                  <LogOut className="size-4" />
+                </span>
+                Log out
+              </button>
+            ) : (
+              <Button
+                variant="outline"
+                className="w-full rounded-xl"
+                nativeButton={false}
+                render={<Link href="/register" onClick={close} />}
+              >
+                Create an account
+              </Button>
+            )}
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
   );
 }

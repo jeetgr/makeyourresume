@@ -1,4 +1,4 @@
-import { Skill } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Skill } from "@/redux/features/resume-data/resumeDataSlice";
 
 type SkillPreviewProps = Omit<Skill, "id">;
 

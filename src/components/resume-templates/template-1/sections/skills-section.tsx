@@ -2,13 +2,11 @@ import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 
 import { useAppSelector } from "@/redux/hooks";
 
-import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-import { selectSkills } from "@/redux/features/Resume Data/resumeDataSlice";
+import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
+import { selectSkills } from "@/redux/features/resume-data/resumeDataSlice";
 
 import Heading from "../components/heading";
-import { For } from "@/components/control-flow/for";
-import { Show } from "@/components/control-flow/show";
 
 import { dummyData } from "../../dummy-data";
 
@@ -28,10 +26,11 @@ export default function SkillsSection() {
     <div>
       <Heading>Skills</Heading>
       <ul className="flex flex-wrap gap-[calc(var(--WIDTHPERCENTAGE)*6.5)]">
-        <For each={skills.length === 0 ? dummyData.skills : skills}>
-          {({ id, name }) => (
-            <Show key={id} when={!isDoubleHyphens(name)}>
+        {(skills.length === 0 ? dummyData.skills : skills).map(
+          ({ id, name }) =>
+            !isDoubleHyphens(name) && (
               <li
+                key={id}
                 className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border-[calc(var(--WIDTHPERCENTAGE)*.9562)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
                 style={{
                   borderColor: accentColor + "80",
@@ -40,9 +39,8 @@ export default function SkillsSection() {
               >
                 {name}
               </li>
-            </Show>
-          )}
-        </For>
+            ),
+        )}
       </ul>
     </div>
   );

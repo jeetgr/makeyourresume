@@ -1,4 +1,4 @@
-import { PersonalProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+import { PersonalProfile } from "@/redux/features/resume-data/resumeDataSlice";
 
 type PersonalProfilePreviewProps = Omit<PersonalProfile, "id">;
 

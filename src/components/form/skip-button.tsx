@@ -6,7 +6,7 @@ import {
   selectSkippedSection,
   toggleSkippedSection,
   type Section,
-} from "@/redux/features/Skipped Sections/skippedSectionSlice";
+} from "@/redux/features/skipped-sections/skippedSectionSlice";
 
 import {
   AlertDialog,

@@ -1,4 +1,4 @@
-import { Project } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Project } from "@/redux/features/resume-data/resumeDataSlice";
 
 type ProjectPreviewProps = Omit<Project, "id">;
 

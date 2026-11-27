@@ -2,9 +2,9 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import SkippedSectionsReducer from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import CustomStyleReducer from "@/redux/features/Custom Styles/customStyleSlice";
-import ResumeDataReducer from "@/redux/features/Resume Data/resumeDataSlice";
+import SkippedSectionsReducer from "@/redux/features/skipped-sections/skippedSectionSlice";
+import CustomStyleReducer from "@/redux/features/custom-styles/customStyleSlice";
+import ResumeDataReducer from "@/redux/features/resume-data/resumeDataSlice";
 import AuthReducer from "@/redux/features/auth/authSlice";
 
 const persistConfig = {

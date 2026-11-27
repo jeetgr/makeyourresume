@@ -1,4 +1,4 @@
-import { WorkExperience } from "@/redux/features/Resume Data/resumeDataSlice";
+import { WorkExperience } from "@/redux/features/resume-data/resumeDataSlice";
 
 type WorkExperiencePreviewProps = Omit<
   WorkExperience,

@@ -23,7 +23,7 @@ const ResumeFormLayout = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2 lg:col-span-1">{children}</div>
-        <div className="hidden aspect-[596/842] overflow-hidden rounded border lg:block">
+        <div className="hidden aspect-[595.28/841.89] overflow-hidden rounded border lg:block">
           {Component ? <Component /> : "Template not found"}
         </div>
         <PreviewTemplate

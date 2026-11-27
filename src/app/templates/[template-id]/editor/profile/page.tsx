@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   setProfile,
   selectProfile,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";

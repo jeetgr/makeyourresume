@@ -1,49 +1,64 @@
 # Make Your Resume
 
-A resume builder which build with [Next.js](https://nextjs.org/), [React](https://reactjs.org/), and [TypeScript](https://www.typescriptlang.org/).
+Free resume builder built with [Next.js](https://nextjs.org/), [React](https://react.dev/), and [TypeScript](https://www.typescriptlang.org/).
 
-Visit the [Resume Builder](https://makeyourresume.vercel.app/) website.
+Live: https://myr.jeetgr.dev
 
-## How to use locally
+## Local setup
 
 ### Prerequisites
 
-- Node.js
-- npm / pnpm / yarn
+- Node.js 24 (see `.node-version`; Node 26 currently breaks the build)
+- [pnpm](https://pnpm.io/) (version pinned in `package.json` → `packageManager`)
+- A PostgreSQL database (e.g. [Neon](https://neon.tech/))
 
-### Installation
+### Steps
 
-1. Clone the repo
-
-   ```bash
-     git clone https://github.com/i-amWin/makeyourresume.git
-   ```
-
-2. Install All packages
+1. Clone and install
 
    ```bash
-     npm install
-     # or
-     yarn add
-     # or
-     pnpm install
+   git clone https://github.com/jeetgr/makeyourresume.git
+   cd makeyourresume
+   pnpm install
    ```
 
-3. Usage
-   To start the development server:
+2. Configure env
 
    ```bash
-     npm run dev
-     # or
-     yarn dev
-     # or
-     pnpm dev
+   cp .env.example .env
    ```
 
-   Then open http://localhost:3000 with your browser to see the result.
+   Fill in `DATABASE_URL`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`.
+
+3. Set up the database
+
+   ```bash
+   pnpm exec prisma migrate deploy
+   ```
+
+4. Run
+
+   ```bash
+   pnpm dev
+   ```
+
+   Open http://localhost:3000.
+
+## Scripts
+
+| Command      | What                   |
+| ------------ | ---------------------- |
+| `pnpm dev`   | Dev server             |
+| `pnpm build` | Production build       |
+| `pnpm start` | Serve production build |
+| `pnpm lint`  | ESLint                 |
+
+## Roadmap
+
+Being modernized: Next 16, single-page editor, real PDF export, more templates, saved resumes with accounts.
 
 ## Contact
 
-Your Name - jeetgangwar625@gmail.com
+Jeet Gangwar - jeetgangwar625@gmail.com
 
-Project Link: https://github.com/i-amWin/makeyourresume
+Project link: https://github.com/jeetgr/makeyourresume

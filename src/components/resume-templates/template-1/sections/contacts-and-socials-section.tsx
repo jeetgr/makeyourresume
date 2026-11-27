@@ -4,15 +4,12 @@ import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 
 import { useAppSelector } from "@/redux/hooks";
 
-import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
+import { selectSkippedSection } from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/custom-styles/customStyleSlice";
 import {
   selectProfile,
   selectSocials,
-} from "@/redux/features/Resume Data/resumeDataSlice";
-
-import { Show } from "@/components/control-flow/show";
-import { For } from "@/components/control-flow/for";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import { icons } from "@/lib/data";
 import { dummyData } from "../../dummy-data";
@@ -31,24 +28,24 @@ function Contacts() {
 
   return (
     <>
-      <Show when={!isDoubleHyphens(email)}>
+      {!isDoubleHyphens(email) && (
         <ContactAndSocialText
           icon="mail"
           text={email || dummyData.profile.email}
         />
-      </Show>
-      <Show when={!isDoubleHyphens(phone)}>
+      )}
+      {!isDoubleHyphens(phone) && (
         <ContactAndSocialText
           icon="phone"
           text={phone || dummyData.profile.phone}
         />
-      </Show>
-      <Show when={!isDoubleHyphens(address)}>
+      )}
+      {!isDoubleHyphens(address) && (
         <ContactAndSocialText
           icon="mapPin"
           text={address || dummyData.profile.address}
         />
-      </Show>
+      )}
     </>
   );
 }
@@ -64,15 +61,14 @@ function Socials() {
 
   return (
     <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      <For each={socials.length === 0 ? dummyData.socials : socials}>
-        {({ id, name, url }) => (
-          <Show key={id} when={!isDoubleHyphens(url)}>
-            <li>
+      {(socials.length === 0 ? dummyData.socials : socials).map(
+        ({ id, name, url }) =>
+          !isDoubleHyphens(url) && (
+            <li key={id}>
               <ContactAndSocialText icon={name} text={url} />
             </li>
-          </Show>
-        )}
-      </For>
+          ),
+      )}
     </ul>
   );
 }

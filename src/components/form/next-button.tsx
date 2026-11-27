@@ -6,7 +6,7 @@ import { type RootState } from "@/redux/store";
 import {
   selectSkippedSection,
   type Section,
-} from "@/redux/features/Skipped Sections/skippedSectionSlice";
+} from "@/redux/features/skipped-sections/skippedSectionSlice";
 
 import { Button } from "../ui/button";
 import SkipButton from "./skip-button";

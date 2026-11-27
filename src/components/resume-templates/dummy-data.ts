@@ -1,4 +1,4 @@
-import { ResumeDataType } from "@/redux/features/Resume Data/resumeDataSlice";
+import { ResumeDataType } from "@/redux/features/resume-data/resumeDataSlice";
 
 export const dummyData: ResumeDataType = {
   profile: {

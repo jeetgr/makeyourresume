@@ -14,8 +14,16 @@ import { RefreshUser } from "@/components/refresh-user";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Make Your Resume",
+  metadataBase: new URL("https://myr.jeetgr.dev"),
+  title: {
+    default: "Make Your Resume",
+    template: "%s · MYR",
+  },
   description: "Make your resume in seconds with our free resume builder.",
+  openGraph: {
+    siteName: "Make Your Resume",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

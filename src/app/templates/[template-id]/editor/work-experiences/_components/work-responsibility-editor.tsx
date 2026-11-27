@@ -4,7 +4,7 @@ import {
   WorkResponsibility,
   removeWorkResponsibilityField,
   setWorkResponsibilityField,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { Textarea } from "@/components/ui/textarea";

@@ -4,9 +4,9 @@ import { useEffect } from "react";
 
 import { useAppDispatch } from "@/redux/hooks";
 
-import { resetSkippedSections } from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import { resetStyles } from "@/redux/features/Custom Styles/customStyleSlice";
-import { resetResumeData } from "@/redux/features/Resume Data/resumeDataSlice";
+import { resetSkippedSections } from "@/redux/features/skipped-sections/skippedSectionSlice";
+import { resetStyles } from "@/redux/features/custom-styles/customStyleSlice";
+import { resetResumeData } from "@/redux/features/resume-data/resumeDataSlice";
 
 export default function Reset() {
   const dispatch = useAppDispatch();

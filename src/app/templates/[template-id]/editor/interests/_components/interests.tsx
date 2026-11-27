@@ -6,7 +6,7 @@ import {
   addField,
   selectInterests,
   setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { InterestEditor } from "./interest-editor";

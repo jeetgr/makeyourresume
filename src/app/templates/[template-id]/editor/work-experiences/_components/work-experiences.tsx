@@ -6,7 +6,7 @@ import {
   addField,
   selectWorkExperiences,
   setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { WorkExperienceEditor } from "./work-experience-editor";

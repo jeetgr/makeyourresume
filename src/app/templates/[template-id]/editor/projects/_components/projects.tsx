@@ -6,7 +6,7 @@ import {
   addField,
   selectProjects,
   setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
+} from "@/redux/features/resume-data/resumeDataSlice";
 
 import DNDContexts from "@/components/form/dnd-contexts";
 import { ProjectEditor } from "./project-editor";

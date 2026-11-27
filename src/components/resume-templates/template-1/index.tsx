@@ -8,7 +8,7 @@ import { useAppSelector } from "@/redux/hooks";
 import {
   selectLeftColumnGap,
   selectRightColumnGap,
-} from "@/redux/features/Custom Styles/customStyleSlice";
+} from "@/redux/features/custom-styles/customStyleSlice";
 
 import TemplateWrapper from "@/components/resume-templates/components/template-wrapper";
 import ImageSection from "./sections/image-section";
@@ -43,7 +43,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
         >
           <div
             className="
-              flex aspect-[595.27584/889.76] w-full 
+              flex aspect-[595.28/841.89] w-full 
               gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
               py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
               text-black

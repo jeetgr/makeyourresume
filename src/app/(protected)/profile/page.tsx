@@ -1,5 +1,6 @@
 "use client";
 import { useUser } from "@/stores/auth-store";
+import { setTemplate } from "@/stores/resume-store";
 import { Separator } from "@/components/ui/separator";
 import { LocalTemplate } from "@/components/local-template";
 import Link from "next/link";
@@ -28,7 +29,10 @@ export default function ProfilePage() {
                 key={templateId}
                 className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
               >
-                <Link href={`/templates/${templateId}/editor/profile`}>
+                <Link
+                  href="/resumes/local"
+                  onClick={() => setTemplate(templateId)}
+                >
                   <LocalTemplate templateId={templateId} />
                 </Link>
               </li>

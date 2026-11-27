@@ -6,14 +6,14 @@ import { Download, Pencil } from "lucide-react";
 import Link from "next/link";
 
 import { LocalTemplate } from "@/components/local-template";
-
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import { DEFAULT_TEMPLATE_ID } from "@/features/editor/editor-preview";
+import { useTemplateId } from "@/stores/resume-store";
 
 import { Button } from "@/components/ui/button";
 import EditStyles from "@/components/edit-styles";
 
 const ResumeOutputPage = () => {
-  const templateId = useTemplateIdParam();
+  const templateId = useTemplateId() ?? DEFAULT_TEMPLATE_ID;
 
   const componentRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
@@ -43,14 +43,9 @@ const ResumeOutputPage = () => {
             variant="secondary"
             className="flex items-center gap-2"
             nativeButton={false}
-            render={
-              <Link
-                href={`/templates/${templateId}/editor/profile`}
-                className="space-x-2 border"
-              />
-            }
+            render={<Link href="/resumes/local" className="space-x-2 border" />}
           >
-            <span>Edit Data</span> <Pencil size={17} />
+            <span>Edit</span> <Pencil size={17} />
           </Button>
 
           <Button

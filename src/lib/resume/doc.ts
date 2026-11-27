@@ -7,7 +7,7 @@ export type ResumeDocState = {
   templateId: string | null;
 };
 
-export type ResumeDocOps = {
+type ResumeDocOps = {
   setProfile: (patch: Partial<Profile>) => void;
   addItem: <K extends ListKey>(key: K, item?: Partial<ListItem<K>>) => void;
   updateItem: <K extends ListKey>(

@@ -27,7 +27,7 @@ const TemplatesPage = () => {
               key={template.id}
               className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
             >
-              <Link href={`/templates/${template.id}/editor/profile`}>
+              <Link href="/resumes/local">
                 <AddTemplate templateId={template.id}>
                   <LocalTemplate templateId={template.id} sample />
                 </AddTemplate>

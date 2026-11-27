@@ -28,7 +28,7 @@ export default async function ProfilePage() {
 
   return (
     <section className="mx-auto max-w-2xl space-y-6 py-20">
-      <h1 className="text-3xl font-bold text-accent">Profile</h1>
+      <h1 className="font-display text-4xl tracking-tight">Profile</h1>
       <AccountSection user={user} />
       <PasswordSection hasPassword={hasPassword} email={user.email} />
       {googleEnabled && (

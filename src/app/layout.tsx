@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import NextJSTopLoader from "nextjs-toploader";
 
 import "./globals.css";
 
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { cn } from "@/utils/cn";
 
 import { Footer } from "@/components/footer";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import { ResumeStoreHydrator } from "@/components/resume-store-hydrator";
 
-const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,9 +38,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html
+      lang="en"
+      className={cn(
+        geist.variable,
+        geistMono.variable,
+        instrumentSerif.variable,
+      )}
+    >
       <body className="relative">
-        <NextJSTopLoader color="#ffb300" showSpinner={false} />
+        <NextJSTopLoader color="#ffc83d" showSpinner={false} />
         <Header />
         <main className="mx-auto max-w-310 px-4">
           {children}

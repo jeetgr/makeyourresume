@@ -106,15 +106,11 @@ export default function Home() {
     <div className="space-y-24 pt-28 pb-24 sm:space-y-32 sm:pt-36">
       <section className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
         <div className="space-y-6">
-          <p className="w-fit rounded-full border bg-primary/10 px-3 py-1 text-sm font-medium text-accent">
+          <p className="w-fit rounded-full border bg-card px-3 py-1 font-mono text-xs tracking-wide text-muted-foreground uppercase">
             Free · No sign-up required
           </p>
-          <h1 className="text-5xl leading-[1.05] font-bold tracking-tight text-balance text-accent">
-            Make a resume that{" "}
-            <span className="underline decoration-primary decoration-[0.12em] underline-offset-[0.12em]">
-              gets read
-            </span>
-            .
+          <h1 className="font-display text-6xl leading-[1.02] tracking-tight text-balance">
+            Make a resume that <span className="mark italic">gets read</span>.
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
             ATS-friendly templates, a live PDF preview and export anytime. Start
@@ -170,7 +166,7 @@ export default function Home() {
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map(({ icon: Icon, title, text }) => (
             <li key={title} className="rounded-xl border bg-card p-6">
-              <span className="mb-4 grid size-10 place-items-center rounded-lg bg-primary/15 text-accent">
+              <span className="mb-4 grid size-10 place-items-center rounded-lg bg-highlight/25 text-foreground">
                 <Icon className="size-5" />
               </span>
               <h3 className="font-semibold">{title}</h3>
@@ -208,7 +204,7 @@ export default function Home() {
         <ol className="grid gap-4 md:grid-cols-3">
           {steps.map(({ title, text }, i) => (
             <li key={title} className="flex gap-4 rounded-xl border p-6">
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent font-bold text-accent-foreground">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary font-mono text-sm text-primary-foreground">
                 {i + 1}
               </span>
               <div>
@@ -237,14 +233,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rounded-2xl bg-accent px-6 py-14 text-center text-accent-foreground sm:px-12">
-        <h2 className="text-3xl font-bold text-balance">
+      <section className="rounded-2xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12">
+        <h2 className="font-display text-4xl tracking-tight text-balance">
           Your next resume is a few minutes away
         </h2>
-        <p className="mt-3 text-accent-foreground/75">
+        <p className="mt-3 text-primary-foreground/75">
           Free, private by default, and yours to export.
         </p>
-        <StartLink className="mt-8">
+        <StartLink variant="highlight" className="mt-8">
           Start building <ArrowRight />
         </StartLink>
       </section>
@@ -263,10 +259,10 @@ function SectionHeading({
 }) {
   return (
     <div className="space-y-2 text-center">
-      <p className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+      <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
         {eyebrow}
       </p>
-      <h2 id={id} className="text-3xl font-bold text-balance text-accent">
+      <h2 id={id} className="font-display text-4xl tracking-tight text-balance">
         {children}
       </h2>
     </div>

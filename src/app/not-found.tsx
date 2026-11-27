@@ -14,11 +14,11 @@ export default function NotFound() {
       <div className="space-y-3">
         <p
           aria-hidden
-          className="text-[6rem] leading-none font-bold tracking-tight text-muted"
+          className="font-display text-[7rem] leading-none tracking-tight text-muted-dark"
         >
           404
         </p>
-        <h1 className="text-3xl font-bold text-accent">Page not found</h1>
+        <h1 className="font-display text-4xl tracking-tight">Page not found</h1>
         <p className="text-muted-foreground">
           The page you&apos;re looking for doesn&apos;t exist or was moved.
         </p>

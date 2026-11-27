@@ -43,8 +43,8 @@ export default function ImageInput({
             <div
               {...getRootProps()}
               className={cn(
-                "h-28 w-28 cursor-pointer overflow-hidden rounded border-2 border-dashed border-primary/70 text-center text-xs",
-                isDragActive && "bg-primary/10",
+                "h-28 w-28 cursor-pointer overflow-hidden rounded border-2 border-dashed border-foreground/30 text-center text-xs",
+                isDragActive && "bg-highlight/20",
               )}
             >
               <input {...getInputProps()} id="profile-image" />

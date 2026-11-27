@@ -70,7 +70,7 @@ export function LoginForm({ next, google }: { next: string; google: boolean }) {
           />
           <Link
             href="/forgot-password"
-            className="block text-right text-sm text-blue-600 hover:underline"
+            className="block text-right text-sm text-link hover:underline"
           >
             Forgot password?
           </Link>

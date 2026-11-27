@@ -29,7 +29,7 @@ const accountLinks = [
 ];
 
 const mobileLink =
-  "text-[0.93rem] font-medium text-neutral-400 hover:text-secondary";
+  "text-[0.93rem] font-medium text-muted-foreground hover:text-foreground";
 
 export default function Header() {
   const path = usePathname();
@@ -44,13 +44,15 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Make Your Resume home"
-          className="-ml-1 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-hidden"
+          className="flex items-center gap-2 py-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-hidden"
         >
-          <LogoMark className="size-12.5" />
+          <LogoMark className="size-8" />
 
-          <span className="text-lg leading-tight font-bold text-accent uppercase">
+          <span className="text-lg leading-tight font-medium tracking-tight">
             <span className="sm:hidden">MYR</span>
-            <span className="hidden sm:inline">Make Your Resume</span>
+            <span className="hidden sm:inline">
+              make<b className="font-bold">your</b>resume
+            </span>
           </span>
         </Link>
 
@@ -61,9 +63,9 @@ export default function Header() {
                 href={href}
                 key={href}
                 className={cn(
-                  "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                  "relative text-[0.93rem] font-medium text-muted-foreground hover:text-foreground",
                   {
-                    "text-secondary": path === href,
+                    "text-foreground": path === href,
                   },
                 )}
               >
@@ -95,9 +97,9 @@ export default function Header() {
                       <Link
                         href={href}
                         className={cn(
-                          "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                          "relative text-[0.93rem] font-medium text-muted-foreground hover:text-foreground",
                           {
-                            "text-secondary": path === href,
+                            "text-foreground": path === href,
                           },
                         )}
                       />
@@ -132,7 +134,7 @@ export default function Header() {
                       render={
                         <Link
                           href="/register"
-                          className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                          className="text-[0.93rem] font-medium text-foreground/80 hover:text-foreground"
                         />
                       }
                     >

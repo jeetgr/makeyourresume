@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
       title="Forgot password"
       description="We'll email you a link to reset it."
       footer={
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/login" className="text-link hover:underline">
           Back to login
         </Link>
       }

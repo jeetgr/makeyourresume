@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/** Class-based so shadcn `dark:` styles never follow the OS; the site is light-only (Q46). */
 @custom-variant dark (&:is(.dark *));
 
 @utility container {
@@ -87,33 +88,6 @@
   --destructive-foreground: oklch(0.984 0.002 247.84);
   --border: oklch(0.912 0.007 264.53);
   --input: oklch(0.912 0.007 264.53);
-  --ring: oklch(0.817 0.17 77.69);
-}
-
-.dark {
-  --background: oklch(0.182 0 0);
-  --foreground: oklch(0.962 0 0);
-  --card: oklch(0.216 0 0);
-  --card-foreground: oklch(0.962 0 0);
-  --popover: oklch(0.216 0 0);
-  --popover-foreground: oklch(0.962 0 0);
-  --primary: oklch(0.817 0.17 77.69);
-  --primary-dark: oklch(0.755 0.157 77.92);
-  --primary-foreground: oklch(0.182 0 0);
-  --secondary: oklch(0.962 0 0);
-  --secondary-dark: oklch(0.861 0 0);
-  --secondary-foreground: oklch(0.182 0 0);
-  --accent: oklch(0.411 0.092 251.09);
-  --accent-dark: oklch(0.363 0.079 250.93);
-  --accent-foreground: oklch(1 0 0);
-  --muted: oklch(0.335 0.011 264.41);
-  --muted-dark: oklch(0.382 0.013 264.4);
-  --muted-foreground: oklch(0.765 0 0);
-  --destructive: oklch(0.579 0.214 27.17);
-  --destructive-dark: oklch(0.514 0.192 27.35);
-  --destructive-foreground: oklch(0.984 0.002 247.84);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.817 0.17 77.69);
 }
 

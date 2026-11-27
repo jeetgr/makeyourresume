@@ -5,7 +5,6 @@ import storage from "redux-persist/lib/storage";
 import SkippedSectionsReducer from "@/redux/features/skipped-sections/skippedSectionSlice";
 import CustomStyleReducer from "@/redux/features/custom-styles/customStyleSlice";
 import ResumeDataReducer from "@/redux/features/resume-data/resumeDataSlice";
-import AuthReducer from "@/redux/features/auth/authSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   resumeData: ResumeDataReducer,
   skippedSections: SkippedSectionsReducer,
   customStyles: CustomStyleReducer,
-  auth: AuthReducer,
 });
 
 const makeConfiguredStore = () =>

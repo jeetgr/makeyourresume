@@ -1,5 +1,6 @@
 "use client";
 
+import { setUser, type User } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import Link from "next/link";
@@ -19,8 +20,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { api } from "@/lib/api";
-import { useAppDispatch } from "@/redux/hooks";
-import { setUser, type User } from "@/redux/features/auth/authSlice";
 
 const loginFormSchema = z.object({
   email: z.email("Invalid email!"),
@@ -33,7 +32,6 @@ const loginFormSchema = z.object({
 export default function RegisterPage() {
   const [isLoading, startTransition] = useTransition();
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -54,7 +52,7 @@ export default function RegisterPage() {
         );
         toast.success(data.message);
         router.push("/");
-        dispatch(setUser(data.user));
+        setUser(data.user);
       } catch (error) {
         toast.error((error as Error).message);
       }

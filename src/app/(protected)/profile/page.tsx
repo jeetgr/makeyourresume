@@ -1,12 +1,11 @@
 "use client";
+import { useUser } from "@/stores/auth-store";
 import { Separator } from "@/components/ui/separator";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/hooks";
 import { templatesList } from "@/lib/templateList";
 import Link from "next/link";
 
 export default function ProfilePage() {
-  const user = useAppSelector(selectUser)!;
+  const user = useUser()!;
 
   return (
     <section className="space-y-6 py-20">

@@ -1,8 +1,7 @@
 "use client";
 
+import { useUser, setUser } from "@/stores/auth-store";
 import { usePathname } from "next/navigation";
-import { selectUser, setUser } from "@/redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { LogOut, User, Menu } from "lucide-react";
 
@@ -36,14 +35,13 @@ const navLinks = [
 export default function Header() {
   const path = usePathname();
 
-  const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
+  const user = useUser();
 
   async function handleLogout() {
     try {
       const data = await api("/api/auth/logout", { method: "DELETE" });
       toast.success(data.message);
-      dispatch(setUser(null));
+      setUser(null);
     } catch (error) {
       toast.error((error as Error).message);
     }

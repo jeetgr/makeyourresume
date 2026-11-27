@@ -29,7 +29,7 @@ export default async function VerifyEmailPage({
         )
       }
       footer={
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/login" className="text-link hover:underline">
           Back to login
         </Link>
       }

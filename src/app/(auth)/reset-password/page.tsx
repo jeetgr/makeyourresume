@@ -20,10 +20,7 @@ export default async function ResetPasswordPage({
         title="Link expired"
         description="This reset link is invalid or has expired."
         footer={
-          <Link
-            href="/forgot-password"
-            className="text-blue-600 hover:underline"
-          >
+          <Link href="/forgot-password" className="text-link hover:underline">
             Request a new link
           </Link>
         }

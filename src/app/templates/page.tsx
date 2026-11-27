@@ -14,7 +14,7 @@ const TemplatesPage = () => {
   return (
     <section className="py-20">
       <div className="mb-6">
-        <h2 className="text-3xl/tight font-bold text-accent">
+        <h2 className="font-display text-4xl/tight tracking-tight">
           Select a Template
         </h2>
         <p className="text-base">

@@ -22,7 +22,7 @@ export function AuthCard({
     <section className="py-20">
       <Card className="mx-auto mt-8 max-w-110">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-secondary">
+          <CardTitle className="font-display text-3xl font-normal tracking-tight">
             {title}
           </CardTitle>
           {description && <CardDescription>{description}</CardDescription>}

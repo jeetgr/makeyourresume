@@ -18,11 +18,11 @@ function layout({
   body: string;
   cta: { label: string; url: string };
 }) {
-  return `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:auto;padding:24px;color:#1f2937">
+  return `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:auto;padding:24px;color:#16161a">
 <h2 style="margin:0 0 16px">${escape(title)}</h2>
 <p style="line-height:1.5">${escape(body)}</p>
-<p style="margin:24px 0"><a href="${escape(cta.url)}" style="background:#ffb400;color:#1f2937;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:600">${escape(cta.label)}</a></p>
-<p style="font-size:12px;color:#6b7280">If you didn't request this, ignore this email.<br/>Make Your Resume</p>
+<p style="margin:24px 0"><a href="${escape(cta.url)}" style="background:#16161a;color:#fbfaf6;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:600">${escape(cta.label)}</a></p>
+<p style="font-size:12px;color:#5f5d56">If you didn't request this, ignore this email.<br/>Make Your Resume</p>
 </div>`;
 }
 

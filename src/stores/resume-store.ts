@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { useShallow } from "zustand/react/shallow";
 
+import type { ResumeDoc } from "@/lib/resume/doc";
 import { emptyResume } from "@/lib/resume/empty";
 import { migrate } from "@/lib/resume/migrate";
 import * as ops from "@/lib/resume/ops";
@@ -49,40 +51,43 @@ const useResumeStore = create<ResumeState>()(
 export const rehydrateResumeStore = () => useResumeStore.persist.rehydrate();
 
 export const useResumeData = () => useResumeStore((s) => s.data);
-export const useProfile = () => useResumeStore((s) => s.data.profile);
-export const useList = <K extends ListKey>(key: K) =>
-  useResumeStore((s) => s.data[key] as ListItem<K>[]);
-export const useIsSectionHidden = (section: string) =>
-  useResumeStore((s) => s.data.layout.hidden.includes(section));
 export const useTheme = () => useResumeStore((s) => s.theme);
+export const useTemplateId = () => useResumeStore((s) => s.templateId);
 
 const setData = (fn: (d: ResumeData) => ResumeData) =>
   useResumeStore.setState((s) => {
     s.data = fn(s.data);
   });
 
-export const setProfile = (patch: Partial<Profile>) =>
+const setProfile = (patch: Partial<Profile>) =>
   setData((d) => ops.setProfile(d, patch));
 
-export const addItem = <K extends ListKey>(
-  key: K,
-  item?: Partial<ListItem<K>>,
-) => setData((d) => ops.addItem(d, key, item));
+const addItem = <K extends ListKey>(key: K, item?: Partial<ListItem<K>>) =>
+  setData((d) => ops.addItem(d, key, item));
 
-export const updateItem = <K extends ListKey>(
+const updateItem = <K extends ListKey>(
   key: K,
   id: string,
   patch: Partial<ListItem<K>>,
 ) => setData((d) => ops.updateItem(d, key, id, patch));
 
-export const removeItem = (key: ListKey, id: string) =>
+const removeItem = (key: ListKey, id: string) =>
   setData((d) => ops.removeItem(d, key, id));
 
-export const moveItem = (key: ListKey, from: number, to: number) =>
+const duplicateItem = (key: ListKey, id: string) =>
+  setData((d) => ops.duplicateItem(d, key, id));
+
+const moveItem = (key: ListKey, from: number, to: number) =>
   setData((d) => ops.moveItem(d, key, from, to));
 
-export const toggleSection = (section: string, hidden?: boolean) =>
+const toggleSection = (section: string, hidden?: boolean) =>
   setData((d) => ops.toggleSection(d, section, hidden));
+
+const moveSection = (from: number, to: number) =>
+  setData((d) => ops.moveSection(d, from, to));
+
+/** Clears content; theme and template are kept. */
+const resetResume = () => setData(() => emptyResume());
 
 export const setTheme = (patch: Partial<Theme>) =>
   useResumeStore.setState((s) => {
@@ -91,3 +96,20 @@ export const setTheme = (patch: Partial<Theme>) =>
 
 export const setTemplate = (templateId: string) =>
   useResumeStore.setState({ templateId });
+
+export const localResumeDoc: ResumeDoc = {
+  useSelect: (selector) => useResumeStore(useShallow(selector)),
+  ops: {
+    setProfile,
+    addItem,
+    updateItem,
+    removeItem,
+    duplicateItem,
+    moveItem,
+    toggleSection,
+    moveSection,
+    setTheme,
+    setTemplate,
+    reset: resetResume,
+  },
+};

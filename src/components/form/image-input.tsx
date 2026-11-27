@@ -4,17 +4,24 @@ import { toast } from "sonner";
 import { cn } from "@/utils/cn";
 import { resizeImageToDataUrl } from "@/utils/resize-image";
 
-import { setProfile, useProfile } from "@/stores/resume-store";
-
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
-export default function ImageInput({ className }: { className?: string }) {
-  const image = useProfile().photo;
+type ImageInputProps = {
+  /** Data URL. */
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+};
 
+export default function ImageInput({
+  value: image,
+  onChange,
+  className,
+}: ImageInputProps) {
   return (
     <div className={cn("space-y-1.5", className)}>
-      <Label htmlFor="profile-image">Upload your profile picture</Label>
+      <Label htmlFor="profile-image">Photo</Label>
       <div className="flex items-end gap-4">
         <Dropzone
           accept={{
@@ -26,7 +33,7 @@ export default function ImageInput({ className }: { className?: string }) {
             if (!file) return;
 
             try {
-              setProfile({ photo: await resizeImageToDataUrl(file) });
+              onChange(await resizeImageToDataUrl(file));
             } catch {
               toast.error("Couldn't read that image. Try another file.");
             }
@@ -70,13 +77,10 @@ export default function ImageInput({ className }: { className?: string }) {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => setProfile({ photo: "" })}
+              onClick={() => onChange("")}
             >
               Remove Image
             </Button>
-            <p className="text-sm font-medium text-destructive">
-              If you click the above button image will be removed.
-            </p>
           </div>
         )}
       </div>

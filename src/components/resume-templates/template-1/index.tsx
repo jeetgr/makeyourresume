@@ -17,7 +17,12 @@ import AboutSection from "./sections/about-section";
 import ExperienceSection from "./sections/experience-section";
 import ProjectsSection from "./sections/projects-section";
 import EducationSection from "./sections/education-section";
-import CustomSections from "./sections/custom-sections";
+import CustomSectionById from "./sections/custom-sections";
+import LanguagesSection from "./sections/languages-section";
+import {
+  AwardsSection,
+  CertificationsSection,
+} from "./sections/dated-list-section";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +31,39 @@ const densityScale: Record<Density, number> = {
   normal: 1,
   relaxed: 1.4,
 };
+
+const leftSections: Partial<Record<string, React.ComponentType>> = {
+  skills: SkillsSection,
+  languages: LanguagesSection,
+  interests: InterestsSection,
+};
+
+const rightSections: Partial<Record<string, React.ComponentType>> = {
+  experience: ExperienceSection,
+  projects: ProjectsSection,
+  education: EducationSection,
+  certifications: CertificationsSection,
+  awards: AwardsSection,
+};
+
+/** Sections of one column in `layout.order`; custom sections go right. */
+function OrderedSections({
+  order,
+  sections,
+  custom = false,
+}: {
+  order: string[];
+  sections: Partial<Record<string, React.ComponentType>>;
+  custom?: boolean;
+}) {
+  return order.map((key) => {
+    if (custom && key.startsWith("custom:")) {
+      return <CustomSectionById key={key} id={key.slice(7)} />;
+    }
+    const Section = sections[key];
+    return Section ? <Section key={key} /> : null;
+  });
+}
 
 export default function Template1({ data, theme, ref }: TemplateProps) {
   const scale = densityScale[theme.density];
@@ -48,8 +86,10 @@ export default function Template1({ data, theme, ref }: TemplateProps) {
                   style={{ gap: `calc(var(--WIDTHPERCENTAGE)*${15 * scale})` }}
                 >
                   <ContactAndSocialSection />
-                  <SkillsSection />
-                  <InterestsSection />
+                  <OrderedSections
+                    order={data.layout.order}
+                    sections={leftSections}
+                  />
                 </div>
               </div>
               {/* RIGHT COLUMN */}
@@ -60,10 +100,11 @@ export default function Template1({ data, theme, ref }: TemplateProps) {
                   className="grid"
                   style={{ gap: `calc(var(--WIDTHPERCENTAGE)*${17 * scale})` }}
                 >
-                  <ExperienceSection />
-                  <ProjectsSection />
-                  <EducationSection />
-                  <CustomSections />
+                  <OrderedSections
+                    order={data.layout.order}
+                    sections={rightSections}
+                    custom
+                  />
                 </div>
               </div>
             </div>

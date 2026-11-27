@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
   return (
     <section className="py-20">
-      <Card className="mx-auto mt-8 max-w-[30rem]">
+      <Card className="mx-auto mt-8 max-w-120">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold text-secondary">
             Register

@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/utils/cn";
 
 const buttonVariants = cva(
-  "font-medium rounded-lg focus:outline-none focus:ring-4 inline-block transition-colors",
+  "font-medium rounded-lg focus:outline-hidden focus:ring-4 inline-block transition-colors",
   {
     variants: {
       variant: {
@@ -16,7 +16,7 @@ const buttonVariants = cva(
         accent:
           "text-accent-foreground bg-accent hover:bg-accent-dark focus:ring-accent/30",
         outline:
-          "text-gray-900 bg-transparent hover:bg-gray-100 outline outline-1 outline-gray-300 focus:ring-gray-300/40",
+          "text-gray-900 bg-transparent hover:bg-gray-100 outline-solid outline-1 outline-gray-300 focus:ring-gray-300/40",
         destructive:
           "text-destructive-foreground bg-destructive hover:bg-destructive-dark focus:ring-destructive/30",
         link: "text-primary underline-offset-4 hover:underline focus:underline",

@@ -84,7 +84,7 @@ export default function ProjectsSection() {
 
                 {!isDoubleHyphens(tags) && (
                   <p
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-snug italic"
                     style={{
                       color: accentColor,
                     }}

@@ -45,7 +45,7 @@ export default function EducationSection() {
               <div>
                 {!isDoubleHyphens(courseName) && (
                   <h3
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-[1.1] font-bold"
                     style={{
                       color: accentColor,
                     }}
@@ -55,7 +55,7 @@ export default function EducationSection() {
                 )}
 
                 {!isDoubleHyphens(collegeName) && (
-                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
+                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug italic">
                     {collegeName}
                   </p>
                 )}

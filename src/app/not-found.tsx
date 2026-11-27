@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-[100svh] w-full flex-col items-center justify-center">
+    <section className="flex min-h-svh w-full flex-col items-center justify-center">
       <Image
         src="/illustrations/404.svg"
         width={500}

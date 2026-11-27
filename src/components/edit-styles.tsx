@@ -67,7 +67,7 @@ export default function EditStyles({ className }: EditStylesProps) {
       </div>
 
       <Button
-        className="ml-auto mt-2 sm:mt-4"
+        className="mt-2 ml-auto sm:mt-4"
         variant="accent"
         onClick={() => dispatch(resetStyles({ templateId }))}
       >

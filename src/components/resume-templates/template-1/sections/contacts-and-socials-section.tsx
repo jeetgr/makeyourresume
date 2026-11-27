@@ -81,14 +81,14 @@ function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
   const Icon: LucideIcon = icons[icon] || icons.other;
 
   return (
-    <p className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*1)]">
+    <p className="flex flex-col gap-(--WIDTHPERCENTAGE)">
       <span>
         <Icon
           className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)]"
           color={accentColor}
         />
       </span>
-      <span className="break-all text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+      <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug break-all">
         {text}
       </span>
     </p>

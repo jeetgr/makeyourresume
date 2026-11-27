@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <section className="flex min-h-[100svh] flex-col gap-8 py-20 sm:flex-row sm:items-center">
+    <section className="flex min-h-svh flex-col gap-8 py-20 sm:flex-row sm:items-center">
       <div className="flex-1 space-y-6">
-        <h1 className="text-5xl font-bold leading-[1.1] text-accent">
+        <h1 className="text-5xl leading-[1.1] font-bold text-accent">
           Build Your Resume for&nbsp;<span className="text-primary">Free!</span>
         </h1>
         <p className="text-base font-medium tracking-wide">

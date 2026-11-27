@@ -57,7 +57,7 @@ export default function ExperienceSection() {
               <div className="grid flex-1">
                 {!isDoubleHyphens(jobTitle) && (
                   <h3
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] leading-none font-bold"
                     style={{ color: accentColor }}
                   >
                     {jobTitle}
@@ -65,7 +65,7 @@ export default function ExperienceSection() {
                 )}
 
                 {!isDoubleHyphens(companyName) && (
-                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
+                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] leading-tight font-semibold">
                     {companyName}
                   </p>
                 )}
@@ -74,7 +74,7 @@ export default function ExperienceSection() {
                   {(!isDoubleHyphens(joiningDate) ||
                     !isDoubleHyphens(leavingDate)) && (
                     <p
-                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-tight italic"
                       style={{ color: accentColor }}
                     >
                       {!isDoubleHyphens(joiningDate) && joiningDate}
@@ -86,7 +86,7 @@ export default function ExperienceSection() {
                   )}
                   {!isDoubleHyphens(location) && (
                     <p
-                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-tight italic"
                       style={{ color: accentColor }}
                     >
                       {location}

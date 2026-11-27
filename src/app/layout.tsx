@@ -37,7 +37,7 @@ export default function RootLayout({
         <StoreProvider>
           <NextJSTopLoader color="#ffb300" showSpinner={false} />
           <Header />
-          <main className="mx-auto max-w-[77.5rem] px-4">
+          <main className="mx-auto max-w-310 px-4">
             {children}
             <ToastContainer
               autoClose={3000}

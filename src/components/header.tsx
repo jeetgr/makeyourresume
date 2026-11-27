@@ -52,11 +52,11 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-[50] border-b bg-background/30 backdrop-blur">
-      <div className="mx-auto flex max-w-[77.5rem] items-center justify-between px-4 py-2 pr-6">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b bg-background/30 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-310 items-center justify-between px-4 py-2 pr-6">
         <Link
           href="/"
-          className="-ml-1 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="-ml-1 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-hidden"
         >
           <svg
             width="50"
@@ -79,7 +79,7 @@ export default function Header() {
             />
           </svg>
 
-          <span className="inline-block text-lg font-bold uppercase leading-tight text-accent">
+          <span className="inline-block text-lg leading-tight font-bold text-accent uppercase">
             Make Your Resume
           </span>
         </Link>
@@ -115,7 +115,7 @@ export default function Header() {
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 -translate-x-[5rem]">
+              <DropdownMenuContent className="w-56 -translate-x-20">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>

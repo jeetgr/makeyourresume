@@ -1,5 +1,8 @@
 allowBuilds:
-  '@prisma/client': true
-  '@prisma/engines': true
+  "@prisma/client": true
+  "@prisma/engines": true
   bcrypt: true
   prisma: true
+
+overrides:
+  "@rushstack/eslint-patch": ^1.16.1

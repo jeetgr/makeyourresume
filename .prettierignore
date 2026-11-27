@@ -1,2 +1,5 @@
-/src/app/not-found.tsx
 node_modules
+.next
+public
+__temp__
+pnpm-lock.yaml
